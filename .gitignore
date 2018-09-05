@@ -5,6 +5,7 @@ tmp/
 *.class
 
 !contest.jar
+!testrun.jar
 !BentCigarFunction.class
 !KatsuuraEvaluation.class
 !SchaffersEvaluation.class
