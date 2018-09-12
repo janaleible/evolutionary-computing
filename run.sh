@@ -1,5 +1,4 @@
-javac -cp contest.jar Player12.java
-jar cmf MainClass.txt submission.jar Player12.class
+./build.sh
 echo "===== Test Sphere function ==========="
 java -jar testrun.jar -submission=Player12 -evaluation=SphereEvaluation -seed=1
 echo "===== Test Bent Cigar ====="
