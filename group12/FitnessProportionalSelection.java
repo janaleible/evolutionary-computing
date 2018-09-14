@@ -31,8 +31,9 @@ public class FitnessProportionalSelection extends ParentSelection {
 		int pickIndex = 0;
 		for (Individual individual : population.iterable()) {
 			runningFitnessTotal += (individual.getFitness() / totalFitness);
-			while (picks[pickIndex++] < runningFitnessTotal) {
+			while (picks[pickIndex] < runningFitnessTotal) {
 				parents.add(individual);
+				pickIndex++;
 				if (pickIndex >= numberOfParents) { break; }
 			}
 			if (pickIndex >= numberOfParents) { break; }
