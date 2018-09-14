@@ -68,8 +68,6 @@ public class Player12 implements ContestSubmission {
 
 	public void run() {
 
-		System.out.println("Calling run()");
-
 		try {
 
 			// TODO: make iterative

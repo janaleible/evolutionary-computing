@@ -27,7 +27,7 @@ public class Population {
 
 	private void intialisePopulation(int populationSize) {
 
-		System.out.println("initialising population");
+		this.population = new ArrayList<>(populationSize);
 
 		for (int i = 0; i < populationSize; i++) {
 			this.population.add(Individual.createRandom(this.random));
