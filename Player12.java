@@ -23,7 +23,7 @@ public class Player12 implements ContestSubmission {
 		this.random = new Random();
 
 		// TODO: make used implementations configurable
-		this.crossover = new SimpleCrossover();
+		this.crossover = new RandomCrossover(this.random);
 		this.mutation = new NoMutation();
 
 		this.parentSelection = new FitnessProportionalSelection(this.random);
@@ -83,10 +83,9 @@ public class Player12 implements ContestSubmission {
 
 			Collections.shuffle(parents); // make sure that random parents mate
 			for (int i = 0; i < (parents.size() / 2); i++) {
-				Individual child1 = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), 1);
-				Individual child2 = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), 1);
-				offspring.add(this.mutation.mutate(child1));
-				offspring.add(this.mutation.mutate(child2));
+				Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), 1);
+				offspring.add(this.mutation.mutate(children[0]));
+				offspring.add(this.mutation.mutate(children[1]));
 			}
 
 			ArrayList<Individual> survivors = this.population.selectSurvivors(128 - 26);

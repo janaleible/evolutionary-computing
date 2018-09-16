@@ -20,6 +20,7 @@ public class Individual {
 		return this.genotype;
 	}
 
+	//TODO: limit domain to -5/5 (check assignment!)
 	public static Individual createRandom(Random random) {
 		return new Individual(
 			randomArray(10, random),
