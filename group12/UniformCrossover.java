@@ -6,7 +6,7 @@ public class UniformCrossover extends Crossover {
 
     private Random random;
 
-    public RandomCrossover(Random random) {
+    public UniformCrossover(Random random) {
         this.random = random;
     }
 
@@ -20,7 +20,7 @@ public class UniformCrossover extends Crossover {
         double[] childGenome = new double[10];
 
         for (int i = 0; i <10; i++) {
-            if(coinflip()){
+            if(coinflip()==1){
                 childGenome[i] = one.genome()[i];
             }
             else {
