@@ -32,6 +32,6 @@ public class UniformCrossover extends Crossover {
     }
 
     protected int coinflip() {
-        return this.random.nextInt(2); // return random number from 0 to 9
+        return this.random.nextInt(2); // return random number from 0 to 1
     }
 }
