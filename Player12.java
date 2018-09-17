@@ -69,28 +69,28 @@ public class Player12 implements ContestSubmission {
 	public void run() {
 
 		try {
+			while (true) {
 
-			// TODO: make iterative
-			for(Individual individual : this.population.iterable()) {
-				individual.setFitness((Double)this.contestEvaluation.evaluate(individual.genome()));
-				this.evaluationsCounter.count();
+				for(Individual individual : this.population.iterable()) {
+					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
+				}
+
+				// TODO: make reproduction method on population
+				// TODO: find generic way to set parameters
+				ArrayList<Individual> parents = this.population.selectParents(26);
+				ArrayList<Individual> offspring = new ArrayList<>(parents.size());
+
+				Collections.shuffle(parents); // make sure that random parents mate
+				for (int i = 0; i < (parents.size() / 2); i++) {
+					Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), 1);
+					offspring.add(this.mutation.mutate(children[0]));
+					offspring.add(this.mutation.mutate(children[1]));
+				}
+
+				ArrayList<Individual> survivors = this.population.selectSurvivors(128 - 26);
+
+				this.population.replace(survivors, offspring);
 			}
-
-			// TODO: make reproduction method on population
-			// TODO: find generic way to set parameters
-			ArrayList<Individual> parents = this.population.selectParents(26);
-			ArrayList<Individual> offspring = new ArrayList<>(parents.size());
-
-			Collections.shuffle(parents); // make sure that random parents mate
-			for (int i = 0; i < (parents.size() / 2); i++) {
-				Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), 1);
-				offspring.add(this.mutation.mutate(children[0]));
-				offspring.add(this.mutation.mutate(children[1]));
-			}
-
-			ArrayList<Individual> survivors = this.population.selectSurvivors(128 - 26);
-
-			this.population.replace(survivors, offspring);
 
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution

@@ -1,5 +1,7 @@
 package group12;
 
+import org.vu.contest.ContestEvaluation;
+
 import java.util.Random;
 
 public class Individual {
@@ -37,19 +39,25 @@ public class Individual {
 		return array;
 	}
 
-	public boolean hasFitness() {
-		return this.fitness != null;
-	}
-
-	public Double getFitness() {
-		return fitness;
-	}
-
 	public void setFitness(Double fitness) {
 		this.fitness = fitness;
 	}
 
 	public int generation() {
 		return this.generation;
+	}
+
+	public Double evaluate(ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) throws EvaluationsLimitExceededException {
+
+		if (this.fitness == null) {
+			this.fitness = (Double) contestEvaluation.evaluate(this.genotype);
+			evaluationsCounter.count();
+		}
+
+		return this.fitness;
+	}
+
+	public Double getFitness() {
+		return fitness;
 	}
 }

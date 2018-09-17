@@ -16,10 +16,8 @@ public class FitnessProportionalSelection extends ParentSelection {
 	@Override
 	public ArrayList<Individual> select(int numberOfParents, Population population) {
 
-		DoubleStream fitnesses = population.iterable().stream().mapToDouble(individual -> individual.getFitness());
-		double totalFitness = fitnesses.sum();
-
-
+		double totalFitness = population.iterable().stream().mapToDouble(Individual::getFitness).sum();
+		
 		double[] picks = new double[numberOfParents];
 		for (int i = 0; i < numberOfParents; i++) {
 			picks[i] = this.random.nextDouble();

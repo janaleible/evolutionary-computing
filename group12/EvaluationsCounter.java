@@ -11,7 +11,9 @@ public class EvaluationsCounter {
 	}
 
 	public void count() throws EvaluationsLimitExceededException {
-		this.evaluationsLimit++;
-		if (this.evaluations > this.evaluationsLimit) throw new EvaluationsLimitExceededException();
+		this.evaluations++;
+		if (this.evaluationsLimit < this.evaluations) {
+			throw new EvaluationsLimitExceededException();
+		}
 	}
 }
