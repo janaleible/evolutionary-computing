@@ -1,0 +1,5 @@
+# Parsing stdout collected in tmp/out.txt. Make new entry for each tag.
+
+cat tmp/out.txt | grep ">>familyTree: " | sed -e 's|>>familyTree: ||' > visualisations/familyTree.dot
+dot -Tsvg visualisations/familyTree.dot -o visualisations/familyTree.svg
+

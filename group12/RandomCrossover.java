@@ -5,10 +5,13 @@ import java.util.Random;
 public class RandomCrossover extends Crossover {
 
 	private Random random;
+	private IDGenerator idGenerator;
+
 	private int cutoff;
 
-	public RandomCrossover(Random random) {
+	public RandomCrossover(Random random, IDGenerator idGenerator) {
 		this.random = random;
+		this.idGenerator = idGenerator;
 		this.cutoff = this.random.nextInt(10); // return random number from 0 to 9
 	}
 
@@ -32,8 +35,8 @@ public class RandomCrossover extends Crossover {
 		}
 
 		Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents);
-		children[1] = new Individual(childGenomes[1], generation, parents);
+		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator);
+		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator);
 
 		return children;
 	}

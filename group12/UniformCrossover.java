@@ -5,9 +5,11 @@ import java.util.Random;
 public class UniformCrossover extends Crossover {
 
     private Random random;
+    private IDGenerator idGenerator;
 
-    public UniformCrossover(Random random) {
+    public UniformCrossover(Random random, IDGenerator idGenerator) {
         this.random = random;
+        this.idGenerator = idGenerator;
     }
 
     @Override
@@ -31,8 +33,8 @@ public class UniformCrossover extends Crossover {
         }
 
         Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents);
-		children[1] = new Individual(childGenomes[1], generation, parents);
+		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator);
+		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator);
 
 		return children;
     }
