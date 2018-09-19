@@ -22,7 +22,11 @@ public class Player12 implements ContestSubmission {
 	private Population population;
 	private Map<Integer, Individual> ancestry;
 
+	private PopulationStatistics populationStatistics;
+
 	public Player12() {
+
+		this.populationStatistics = new PopulationStatistics();
 
 		this.random = new Random();
 		this.idGenerator = new IDGenerator();
@@ -38,7 +42,7 @@ public class Player12 implements ContestSubmission {
 			this.idGenerator,
 			this.parentSelection,
 			this.survivorSelection,
-			this.diversityMeasure,
+			null,//this.diversityMeasure,
 			this.random,
 			64
 		);
@@ -92,10 +96,7 @@ public class Player12 implements ContestSubmission {
 					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
 				}
 
-				System.out.print("Maximum fitness: ");
-				System.out.println(this.population.getMaximumFitness());
-				System.out.print("Average age: ");
-				System.out.println(this.population.getAverageAge(generation));
+				this.populationStatistics.update(generation, this.population.getMaximumFitness(), this.population.getAverageFitness(), this.population.getAverageAge(generation));
 
 				// TODO: make reproduction method on population
 				// TODO: find generic way to set parameters
@@ -120,6 +121,7 @@ public class Player12 implements ContestSubmission {
 			// TODO: think of better solution
 
 			PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
+			this.populationStatistics.write();
 
 			return;
 		}
