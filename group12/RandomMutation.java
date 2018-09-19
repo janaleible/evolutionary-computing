@@ -24,7 +24,7 @@ public class RandomMutation extends Mutation {
     public Individual mutate(Individual self){
         double[] genome = self.genome();
         for(int i = 0; i<genome.length; i++){
-            if(this.random.nextFloat() < this.mutationRate){
+            if(this.random.nextDouble() < this.mutationRate){
                 genome[i] += random.nextGaussian();
             }
         }
