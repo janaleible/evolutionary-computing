@@ -34,6 +34,10 @@ public class Individual {
 		return genome;
 	}
 
+	public void mutateGenome(double[] newGenome){
+		this.genotype = clipGenome(newGenome);
+	}
+
 	public static Individual createRandom(Random random, IDGenerator idGenerator) {
 		return new Individual(
 			randomArray(10, random),
