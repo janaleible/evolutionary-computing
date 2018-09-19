@@ -1,5 +1,8 @@
 .idea/
 tmp/
+out/
+visualisations/*
+!visualisations/.gitkeep
 
 *.jar
 *.class
