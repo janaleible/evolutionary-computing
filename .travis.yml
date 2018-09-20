@@ -4,3 +4,5 @@ jdk:
 #install: .travis/export-library-path.sh
 install: true
 script: ./run.sh
+env:
+  - LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR

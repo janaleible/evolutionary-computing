@@ -1,5 +1,3 @@
-export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR
-
 ./build.sh
 
 echo "===== Test Sphere function ==========="
