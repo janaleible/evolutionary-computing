@@ -1,0 +1,7 @@
+language: java
+jdk:
+  - oraclejdk10
+install: true
+script: ./run.sh
+env:
+  - LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR
