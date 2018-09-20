@@ -11,24 +11,28 @@ public class Population {
 
 	private Random random;
 	private IDGenerator idGenerator;
-//	private DiversityMeasure diversityMeasure;
+	private DiversityMeasure diversityMeasure;
+
+	private int populationSize;
 
 	public Population(
 		IDGenerator idGenerator,
 		ParentSelection parentSelection,
 		SurvivorSelection survivorSelection,
-		Object diversityMeasure,// DiversityMeasure diversityMeasure,
+		DiversityMeasure diversityMeasure,
 		Random random,
 		int populationSize
 	) {
 		this.parentSelection = parentSelection;
 		this.survivorSelection = survivorSelection;
-//		this.diversityMeasure = diversityMeasure;
+		this.diversityMeasure = diversityMeasure;
 
 		this.random = random;
 		this.idGenerator = idGenerator;
 
-		intialisePopulation(populationSize);
+		this.populationSize = populationSize;
+
+		intialisePopulation(this.populationSize);
 	}
 
 	private void intialisePopulation(int populationSize) {
@@ -70,11 +74,15 @@ public class Population {
 		return this.population.stream().mapToInt(individual -> currentGeneration - individual.generation()).average().orElse(-10000);
 	}
 
-//	public double getDiversity() {
-//		return this.diversityMeasure.measure();
-//	}
+	public double getDiversity() {
+		return this.diversityMeasure.measure(this);
+	}
 
 	public Individual getFittestIndividual() {
 		return this.population.stream().filter(individual -> individual.getFitness() == this.getMaximumFitness()).findAny().orElse(null);
+	}
+
+	public int getPopulationSize() {
+		return this.populationSize;
 	}
 }
