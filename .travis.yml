@@ -1,5 +1,5 @@
 language: java
 jdk:
   - oraclejdk10
-install: true
+install: .travis/export-library-path.sh
 script: ./run.sh
