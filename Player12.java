@@ -33,7 +33,7 @@ public class Player12 implements ContestSubmission {
 
 		// TODO: make used implementations configurable
 		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator);
-		this.mutation = new RandomMutation();
+		this.mutation = new RandomMutation(this.random, 0.1); //use 1/(# of genes) as mutation rate
 
 		this.parentSelection = new FitnessProportionalSelection(this.random);
 		this.survivorSelection = new AgeBasedSurvivorSelection();
@@ -66,7 +66,6 @@ public class Player12 implements ContestSubmission {
 		Properties properties = evaluation.getProperties();
 
 		int evaluationsLimit = Integer.parseInt(properties.getProperty("Evaluations"));
-		evaluationsLimit = 300;
         this.evaluationsCounter = new EvaluationsCounter(evaluationsLimit);
 
         // Property keys depend on specific evaluation
@@ -100,7 +99,7 @@ public class Player12 implements ContestSubmission {
 
 				// TODO: make reproduction method on population
 				// TODO: find generic way to set parameters
-				ArrayList<Individual> parents = this.population.selectParents(12);
+				ArrayList<Individual> parents = this.population.selectParents(32);
 				ArrayList<Individual> offspring = new ArrayList<>(parents.size());
 
 				Collections.shuffle(parents); // make sure that random parents mate
