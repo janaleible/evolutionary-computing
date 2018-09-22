@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Player12 implements ContestSubmission {
 
+	private DiversityMeasure diversityMeasure;
 	private Random random;
 	private ContestEvaluation contestEvaluation;
 	private EvaluationsCounter evaluationsCounter;
@@ -38,11 +39,13 @@ public class Player12 implements ContestSubmission {
 		this.parentSelection = new FitnessProportionalSelection(this.random);
 		this.survivorSelection = new AgeBasedSurvivorSelection();
 
+		this.diversityMeasure = new InertiaDiversityMeasure();
+
 		this.population = new Population(
 			this.idGenerator,
 			this.parentSelection,
 			this.survivorSelection,
-			null,//this.diversityMeasure,
+			this.diversityMeasure,
 			this.random,
 			64
 		);
@@ -95,7 +98,13 @@ public class Player12 implements ContestSubmission {
 					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
 				}
 
-				this.populationStatistics.update(generation, this.population.getMaximumFitness(), this.population.getAverageFitness(), this.population.getAverageAge(generation));
+				this.populationStatistics.update(
+					generation,
+					this.population.getMaximumFitness(),
+					this.population.getAverageFitness(),
+					this.population.getAverageAge(generation),
+					this.population.getDiversity()
+				);
 
 				// TODO: make reproduction method on population
 				// TODO: find generic way to set parameters
