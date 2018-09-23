@@ -39,9 +39,9 @@ public class PopulationVisualiser {
 
 		dot.append("}");
 
-		for (String line : dot.toString().split("\n")) {
+		/*for (String line : dot.toString().split("\n")) {
 			System.out.print(">>familyTree: ");
 			System.out.println(line);
-		}
+		}*/
 	}
 }
