@@ -15,6 +15,11 @@ Build and run tests using:
 ```bash
 ./run.sh
 ```
+
+Build, run tests and submit using:
+```bash
+./submit.sh
+```
  
 ## Collecting Stats
 Writing to file is forbidden for "security reasons".
