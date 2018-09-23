@@ -5,7 +5,7 @@ import visual.PopulationVisualiser;
 
 import java.util.*;
 
-public class Player12 implements ContestSubmission {
+public class player12 implements ContestSubmission {
 
 	private DiversityMeasure diversityMeasure;
 	private Random random;
@@ -25,7 +25,7 @@ public class Player12 implements ContestSubmission {
 
 	private PopulationStatistics populationStatistics;
 
-	public Player12() {
+	public player12() {
 
 		this.populationStatistics = new PopulationStatistics();
 
@@ -128,8 +128,8 @@ public class Player12 implements ContestSubmission {
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution
 
-			PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
-			this.populationStatistics.write();
+			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
+			//this.populationStatistics.write();
 
 			return;
 		}

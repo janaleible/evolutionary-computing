@@ -31,7 +31,7 @@ Use the ignored visualisations directory for storing plots and the tracked visua
 2. As Run Configuration:
     * Create new config for JAR Application
     * Choose testrun.jar in 'Path to JAR'
-    * Set `-submission=Player12 -evaluation=SphereEvaluation -seed=1` as program arguments (vary evaluation argument as in `run.sh` for different functions)
+    * Set `-submission=player12 -evaluation=SphereEvaluation -seed=1` as program arguments (vary evaluation argument as in `run.sh` for different functions)
     * Set LD_LIBRARY_PATH=sourceroot as environment variable
     * Add external tool to 'Before launch': Program `/bin/sh`, arguments `build.sh`
     * In the logs tab, check save console output to file and select `tmp/out.txt`.
