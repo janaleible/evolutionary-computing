@@ -8,7 +8,7 @@ import java.util.*;
 public class player12 implements ContestSubmission {
 
 	private DiversityMeasure diversityMeasure;
-	private Random random;
+	private ExtendedRandom random;
 	private ContestEvaluation contestEvaluation;
 	private EvaluationsCounter evaluationsCounter;
 
@@ -29,11 +29,11 @@ public class player12 implements ContestSubmission {
 
 		this.populationStatistics = new PopulationStatistics();
 
-		this.random = new Random();
+		this.random = new ExtendedRandom();
 		this.idGenerator = new IDGenerator();
 
 		// TODO: make used implementations configurable
-		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator);
+		this.crossover = new BlendCrossover(this.random, 0.5, this.idGenerator);
 		this.mutation = new RandomMutation(this.random, 0.1); //use 1/(# of genes) as mutation rate
 
 		this.parentSelection = new FitnessProportionalSelection(this.random);
