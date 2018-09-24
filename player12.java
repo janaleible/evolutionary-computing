@@ -111,7 +111,7 @@ public class player12 implements ContestSubmission {
 				ArrayList<Individual> parents = this.population.selectParents(32);
 				ArrayList<Individual> offspring = new ArrayList<>(parents.size());
 
-				Collections.shuffle(parents); // make sure that random parents mate
+				Collections.shuffle(parents, this.random); // make sure that random parents mate
 				for (int i = 0; i < (parents.size() / 2); i++) {
 					Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
 					offspring.add(this.mutation.mutate(children[0]));
