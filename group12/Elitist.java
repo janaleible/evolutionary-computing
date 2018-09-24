@@ -3,12 +3,12 @@ package group12;
 import java.util.Comparator;
 import java.util.List;
 
-public class Elitism extends Selection {
+public class Elitist extends Selection {
 
 	private Selection selection;
 	private int sizeOfElite;
 
-	public Elitism(Selection selection, int sizeOfElite) {
+	public Elitist(Selection selection, int sizeOfElite) {
 		this.selection = selection;
 		this.sizeOfElite = sizeOfElite;
 	}

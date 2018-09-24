@@ -1,7 +1,6 @@
 import group12.*;
 import org.vu.contest.ContestSubmission;
 import org.vu.contest.ContestEvaluation;
-import visual.PopulationVisualiser;
 
 import java.util.*;
 
@@ -37,7 +36,7 @@ public class player12 implements ContestSubmission {
 		this.mutation = new RandomMutation(this.random, 0.1); //use 1/(# of genes) as mutation rate
 
 		this.parentSelection = new FitnessProportionalSelection(this.random);
-		this.survivorSelection = new Elitism(new FitnessProportionalSelection(this.random), 5);
+		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
 
 		this.diversityMeasure = new InertiaDiversityMeasure();
 
