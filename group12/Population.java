@@ -1,12 +1,13 @@
 package group12;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Population {
 
-	private ParentSelection parentSelection;
-	private SurvivorSelection survivorSelection;
+	private Selection parentSelection;
+	private Selection survivorSelection;
 	private ArrayList<Individual> population;
 
 	private Random random;
@@ -17,8 +18,8 @@ public class Population {
 
 	public Population(
 		IDGenerator idGenerator,
-		ParentSelection parentSelection,
-		SurvivorSelection survivorSelection,
+		Selection parentSelection,
+		Selection survivorSelection,
 		DiversityMeasure diversityMeasure,
 		Random random,
 		int populationSize
@@ -44,15 +45,15 @@ public class Population {
 		}
 	}
 
-	public ArrayList<Individual> selectParents(int numberOfPicks) {
-		return this.parentSelection.select(numberOfPicks, this);
+	public List<Individual> selectParents(int numberOfPicks) {
+		return this.parentSelection.select(numberOfPicks, this.population);
 	}
 
-	public ArrayList<Individual> selectSurvivors(int numberOfPicks) {
-		return this.survivorSelection.select(numberOfPicks, this);
+	public List<Individual> selectSurvivors(int numberOfPicks) {
+		return this.survivorSelection.select(numberOfPicks, this.population);
 	}
 
-	public void replace(ArrayList<Individual> survivors, ArrayList<Individual> offspring) {
+	public void replace(List<Individual> survivors, List<Individual> offspring) {
 		this.population = new ArrayList<>(survivors.size() + offspring.size());
 		this.population.addAll(survivors);
 		this.population.addAll(offspring);
