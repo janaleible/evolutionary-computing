@@ -40,20 +40,6 @@ public class player12 implements ContestSubmission {
 		this.survivorSelection = new AgeBasedSurvivorSelection();
 
 		this.diversityMeasure = new InertiaDiversityMeasure();
-
-		this.population = new Population(
-			this.idGenerator,
-			this.parentSelection,
-			this.survivorSelection,
-			this.diversityMeasure,
-			this.random,
-			64
-		);
-
-		this.ancestry = new HashMap<>();
-		for (Individual individual : this.population.iterable()) {
-			this.ancestry.put(individual.id, individual);
-		}
 	}
 
 	public void setSeed(long seed) {
@@ -88,6 +74,20 @@ public class player12 implements ContestSubmission {
 	public void run() {
 
 		int generation = 0;
+
+		this.population = new Population(
+			this.idGenerator,
+			this.parentSelection,
+			this.survivorSelection,
+			this.diversityMeasure,
+			this.random,
+			64
+		);
+
+		this.ancestry = new HashMap<>();
+		for (Individual individual : this.population.iterable()) {
+			this.ancestry.put(individual.id, individual);
+		}
 
 		try {
 			while (true) {
