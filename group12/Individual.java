@@ -38,21 +38,13 @@ public class Individual {
 		this.genotype = clipGenome(newGenome);
 	}
 
-	public static Individual createRandom(Random random, IDGenerator idGenerator) {
+	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator) {
 		return new Individual(
-			randomArray(10, random),
+			random.array(10, -5, 5),
 			0,
 			null,
 			idGenerator
 		);
-	}
-
-	private static double[] randomArray(int size, Random random) {
-		double[] array = new double[size];
-		for (int i = 0; i < size; i++) {
-			array[i] = (random.nextDouble() * 10) - 5; // scale result to [-5;5]
-		}
-		return array;
 	}
 
 	public int generation() {

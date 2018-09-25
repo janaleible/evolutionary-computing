@@ -1,13 +1,11 @@
 package group12;
 
-import java.util.Random;
-
 public class UniformCrossover extends Crossover {
 
-    private Random random;
+    private ExtendedRandom random;
     private IDGenerator idGenerator;
 
-    public UniformCrossover(Random random, IDGenerator idGenerator) {
+    public UniformCrossover(ExtendedRandom random, IDGenerator idGenerator) {
         this.random = random;
         this.idGenerator = idGenerator;
     }
@@ -22,7 +20,7 @@ public class UniformCrossover extends Crossover {
         double[][] childGenomes = new double[2][10];
 
         for (int i = 0; i <10; i++) {
-            if(coinflip()==1){
+            if(this.random.coinflip()) {
                 childGenomes[0][i] = one.genome()[i];
                 childGenomes[1][i] = another.genome()[i];
             }
@@ -37,9 +35,5 @@ public class UniformCrossover extends Crossover {
 		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator);
 
 		return children;
-    }
-
-    private int coinflip() {
-        return this.random.nextInt(2); // return random number from 0 to 1
     }
 }
