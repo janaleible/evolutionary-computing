@@ -39,20 +39,6 @@ public class player12 implements ContestSubmission {
 		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
 
 		this.diversityMeasure = new InertiaDiversityMeasure();
-
-		this.population = new Population(
-			this.idGenerator,
-			this.parentSelection,
-			this.survivorSelection,
-			this.diversityMeasure,
-			this.random,
-			128
-		);
-
-		this.ancestry = new HashMap<>();
-		for (Individual individual : this.population.iterable()) {
-			this.ancestry.put(individual.id, individual);
-		}
 	}
 
 	public void setSeed(long seed) {
@@ -88,6 +74,20 @@ public class player12 implements ContestSubmission {
 
 		int generation = 0;
 
+		this.population = new Population(
+			this.idGenerator,
+			this.parentSelection,
+			this.survivorSelection,
+			this.diversityMeasure,
+			this.random,
+			128
+		);
+
+		this.ancestry = new HashMap<>();
+		for (Individual individual : this.population.iterable()) {
+			this.ancestry.put(individual.id, individual);
+		}
+
 		try {
 			while (true) {
 
@@ -110,7 +110,7 @@ public class player12 implements ContestSubmission {
 				List<Individual> parents = this.population.selectParents(64);
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
-				Collections.shuffle(parents); // make sure that random parents mate
+				Collections.shuffle(parents, this.random); // make sure that random parents mate
 				for (int i = 0; i < (parents.size() / 2); i++) {
 					Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
 					offspring.add(this.mutation.mutate(children[0]));
@@ -128,7 +128,7 @@ public class player12 implements ContestSubmission {
 			// TODO: think of better solution
 
 			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
-			this.populationStatistics.write();
+			//this.populationStatistics.write();
 
 			return;
 		}
