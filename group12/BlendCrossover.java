@@ -24,9 +24,9 @@ public class BlendCrossover extends Crossover {
 
 			double d = y - x;
 
-			childGenome1[i] = random.sampleFromRange(x - this.alpha * d, x + this.alpha * d);
-			childGenome2[i] = random.sampleFromRange(x - this.alpha * d, x + this.alpha * d);
-
+			childGenome1[i] = random.sampleFromRange(x - this.alpha * d, y + this.alpha * d);
+			childGenome2[i] = random.sampleFromRange(x - this.alpha * d, y + this.alpha * d);
+			// upper bound according to the definition in the original paper, contrary to slide content
 		}
 
 		Individual[] parents = {self, other};
