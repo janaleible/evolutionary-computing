@@ -16,10 +16,11 @@ public class Individual {
 
 		this.id = idGenerator.next();
 
-		this.genotype = clipGenome(genotype);
+		this.genotype = wrapGenome(genotype);
 		this.fitness = null;
 		this.generation = generation;
 		this.parents = parents;
+
 	}
 
 	public double[] genome() {
@@ -34,8 +35,24 @@ public class Individual {
 		return genome;
 	}
 
+	private double[] wrapGenome(double[] genome){
+		for(int i = 0; i < genome.length; i++) {
+			if (genome[i] > 5){
+				double remainder = genome[i] - 5;
+				double mod = remainder % 10;
+				genome[i] = -5 + mod;
+			}
+			if (genome[i] < -5){
+				double remainder = genome[i] + 5;
+				double mod = remainder % 10;
+				genome[i] = 5 + mod;
+			}
+		}
+		return genome;
+	}
+
 	public void mutateGenome(double[] newGenome){
-		this.genotype = clipGenome(newGenome);
+		this.genotype = wrapGenome(newGenome);
 	}
 
 	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator) {
