@@ -12,6 +12,8 @@ public class Individual {
 	private Individual[] parents;
 	public final int id;
 
+	private double sigma;
+
 	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator) {
 
 		this.id = idGenerator.next();
@@ -21,6 +23,15 @@ public class Individual {
 		this.generation = generation;
 		this.parents = parents;
 
+		this.sigma = 1;
+	}
+
+	public double getSigma() {
+		return sigma;
+	}
+
+	public void setSigma(double sigma) {
+		this.sigma = sigma;
 	}
 
 	public double[] genome() {
