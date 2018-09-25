@@ -1,7 +1,6 @@
 import group12.*;
 import org.vu.contest.ContestSubmission;
 import org.vu.contest.ContestEvaluation;
-import visual.PopulationVisualiser;
 
 import java.util.*;
 
@@ -17,8 +16,8 @@ public class player12 implements ContestSubmission {
 	private Crossover crossover;
 	private Mutation mutation;
 
-	private ParentSelection parentSelection;
-	private SurvivorSelection survivorSelection;
+	private Selection parentSelection;
+	private Selection survivorSelection;
 
 	private Population population;
 	private Map<Integer, Individual> ancestry;
@@ -37,7 +36,7 @@ public class player12 implements ContestSubmission {
 		this.mutation = new RandomMutation(this.random, 0.1); //use 1/(# of genes) as mutation rate
 
 		this.parentSelection = new FitnessProportionalSelection(this.random);
-		this.survivorSelection = new AgeBasedSurvivorSelection();
+		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
 
 		this.diversityMeasure = new InertiaDiversityMeasure();
 
@@ -47,7 +46,7 @@ public class player12 implements ContestSubmission {
 			this.survivorSelection,
 			this.diversityMeasure,
 			this.random,
-			64
+			128
 		);
 
 		this.ancestry = new HashMap<>();
@@ -108,8 +107,8 @@ public class player12 implements ContestSubmission {
 
 				// TODO: make reproduction method on population
 				// TODO: find generic way to set parameters
-				ArrayList<Individual> parents = this.population.selectParents(32);
-				ArrayList<Individual> offspring = new ArrayList<>(parents.size());
+				List<Individual> parents = this.population.selectParents(64);
+				List<Individual> offspring = new ArrayList<>(parents.size());
 
 				Collections.shuffle(parents); // make sure that random parents mate
 				for (int i = 0; i < (parents.size() / 2); i++) {
@@ -120,7 +119,7 @@ public class player12 implements ContestSubmission {
 					this.ancestry.put(children[1].id, children[1]);
 				}
 
-				ArrayList<Individual> survivors = this.population.selectSurvivors(this.population.iterable().size() - offspring.size());
+				List<Individual> survivors = this.population.selectSurvivors(this.population.iterable().size() - offspring.size());
 
 				this.population.replace(survivors, offspring);
 			}
@@ -129,7 +128,7 @@ public class player12 implements ContestSubmission {
 			// TODO: think of better solution
 
 			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
-			//this.populationStatistics.write();
+			this.populationStatistics.write();
 
 			return;
 		}
