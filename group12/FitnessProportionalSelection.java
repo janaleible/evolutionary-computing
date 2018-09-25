@@ -2,10 +2,10 @@ package group12;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
-import java.util.stream.DoubleStream;
 
-public class FitnessProportionalSelection extends ParentSelection {
+public class FitnessProportionalSelection extends Selection {
 
 	private Random random;
 
@@ -14,27 +14,27 @@ public class FitnessProportionalSelection extends ParentSelection {
 	}
 
 	@Override
-	public ArrayList<Individual> select(int numberOfParents, Population population) {
+	public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
-		double totalFitness = population.iterable().stream().mapToDouble(Individual::getFitness).sum();
+		double totalFitness = population.stream().mapToDouble(Individual::getFitness).sum();
 		
-		double[] picks = new double[numberOfParents];
-		for (int i = 0; i < numberOfParents; i++) {
+		double[] picks = new double[numberOfPicks];
+		for (int i = 0; i < numberOfPicks; i++) {
 			picks[i] = this.random.nextDouble();
 		}
 		Arrays.sort(picks);
 
-		ArrayList<Individual> parents = new ArrayList<>(numberOfParents);
+		List<Individual> parents = new ArrayList<>(numberOfPicks);
 		double runningFitnessTotal = 0;
 		int pickIndex = 0;
-		for (Individual individual : population.iterable()) {
+		for (Individual individual : population) {
 			runningFitnessTotal += (individual.getFitness() / totalFitness);
 			while (picks[pickIndex] < runningFitnessTotal) {
 				parents.add(individual);
 				pickIndex++;
-				if (pickIndex >= numberOfParents) { break; }
+				if (pickIndex >= numberOfPicks) { break; }
 			}
-			if (pickIndex >= numberOfParents) { break; }
+			if (pickIndex >= numberOfPicks) { break; }
 		}
 
 		return parents;
