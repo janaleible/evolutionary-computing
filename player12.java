@@ -33,7 +33,7 @@ public class player12 implements ContestSubmission {
 
 		// TODO: make used implementations configurable
 		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator);
-		this.mutation = new AdaptiveMutation(this.random); //use 1/(# of genes) as mutation rate
+		this.mutation = new AdaptiveMutation(this.random);
 
 		this.parentSelection = new FitnessProportionalSelection(this.random);
 		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
