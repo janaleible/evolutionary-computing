@@ -2,7 +2,6 @@ package group12;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Population {
 
@@ -10,7 +9,7 @@ public class Population {
 	private Selection survivorSelection;
 	private ArrayList<Individual> population;
 
-	private Random random;
+	private ExtendedRandom random;
 	private IDGenerator idGenerator;
 	private DiversityMeasure diversityMeasure;
 
@@ -21,7 +20,7 @@ public class Population {
 		Selection parentSelection,
 		Selection survivorSelection,
 		DiversityMeasure diversityMeasure,
-		Random random,
+		ExtendedRandom random,
 		int populationSize
 	) {
 		this.parentSelection = parentSelection;
