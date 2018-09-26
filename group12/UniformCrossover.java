@@ -1,13 +1,19 @@
 package group12;
 
+import org.vu.contest.ContestEvaluation;
+
 public class UniformCrossover extends Crossover {
 
     private ExtendedRandom random;
     private IDGenerator idGenerator;
+    private ContestEvaluation contestEvaluation;
+    private EvaluationsCounter evaluationsCounter;
 
-    public UniformCrossover(ExtendedRandom random, IDGenerator idGenerator) {
+    public UniformCrossover(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter counter) {
         this.random = random;
         this.idGenerator = idGenerator;
+        this.contestEvaluation = contestEvaluation;
+        this.evaluationsCounter = counter;
     }
 
     @Override
@@ -31,8 +37,8 @@ public class UniformCrossover extends Crossover {
         }
 
         Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator);
+		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter);
+		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter);
 
 		return children;
     }

@@ -1,3 +1,3 @@
 package group12;
 
-public class EvaluationsLimitExceededException extends Exception { }
+public class EvaluationsLimitExceededException extends RuntimeException { }

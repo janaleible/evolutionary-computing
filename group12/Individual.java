@@ -2,9 +2,11 @@ package group12;
 
 import org.vu.contest.ContestEvaluation;
 
-import java.util.Random;
-
 public class Individual {
+
+	private IDGenerator idGenerator;
+	private ContestEvaluation contestEvaluation;
+	private EvaluationsCounter evaluationsCounter;
 
 	private double[] genotype;
 	private Double fitness;
@@ -14,9 +16,12 @@ public class Individual {
 
 	private double sigma;
 
-	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator) {
+	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
 
-		this.id = idGenerator.next();
+		this.idGenerator = idGenerator;
+		this.contestEvaluation = contestEvaluation;
+		this.evaluationsCounter = evaluationsCounter;
+		this.id = this.idGenerator.next();
 
 		this.genotype = wrapGenome(genotype);
 		this.fitness = null;
@@ -66,12 +71,14 @@ public class Individual {
 		this.genotype = wrapGenome(newGenome);
 	}
 
-	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator) {
+	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
 		return new Individual(
 			random.array(10, -5, 5),
 			0,
 			null,
-			idGenerator
+			idGenerator,
+			contestEvaluation,
+			evaluationsCounter
 		);
 	}
 
@@ -79,21 +86,34 @@ public class Individual {
 		return this.generation;
 	}
 
-	public Double evaluate(ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) throws EvaluationsLimitExceededException {
+	public Double getFitness() throws EvaluationsLimitExceededException {
 
 		if (this.fitness == null) {
-			this.fitness = (Double) contestEvaluation.evaluate(this.genotype);
-			evaluationsCounter.count();
+			this.fitness = (Double) this.contestEvaluation.evaluate(this.genotype);
+			this.evaluationsCounter.count();
 		}
 
 		return this.fitness;
 	}
 
-	public Double getFitness() {
-		return fitness;
+	public void setFitness(double fitness) {
+		this.fitness = fitness;
 	}
 
 	public Individual[] parents() {
 		return this.parents;
+	}
+
+	public Individual clone() {
+		Individual clone = new Individual(
+			this.genotype.clone(),
+			this.generation,
+			this.parents,
+			this.idGenerator,
+			this.contestEvaluation,
+			this.evaluationsCounter
+		);
+		clone.setFitness(this.fitness);
+		return clone;
 	}
 }

@@ -1,15 +1,21 @@
 package group12;
 
+import org.vu.contest.ContestEvaluation;
+
 public class BlendCrossover extends Crossover {
 
 	private double alpha;
 	private ExtendedRandom random;
 	private IDGenerator idGenerator;
+	private ContestEvaluation contestEvaluation;
+	private EvaluationsCounter evaluationsCounter;
 
-	public BlendCrossover(ExtendedRandom random, double alpha, IDGenerator idGenerator) {
+	public BlendCrossover(ExtendedRandom random, double alpha, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter counter) {
 		this.alpha = alpha;
 		this.random = random;
 		this.idGenerator = idGenerator;
+		this.contestEvaluation = contestEvaluation;
+		this.evaluationsCounter = counter;
 	}
 
 	@Override
@@ -32,8 +38,8 @@ public class BlendCrossover extends Crossover {
 		Individual[] parents = {self, other};
 
 		return new Individual[]{
-			new Individual(childGenome1, generation, parents, idGenerator),
-			new Individual(childGenome2, generation, parents, idGenerator)
+			new Individual(childGenome1, generation, parents, idGenerator, this.contestEvaluation, this.evaluationsCounter),
+			new Individual(childGenome2, generation, parents, idGenerator, this.contestEvaluation, this.evaluationsCounter)
 		};
 	}
 }

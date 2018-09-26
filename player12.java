@@ -30,15 +30,6 @@ public class player12 implements ContestSubmission {
 
 		this.random = new ExtendedRandom();
 		this.idGenerator = new IDGenerator();
-
-		// TODO: make used implementations configurable
-		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator);
-		this.mutation = new AdaptiveMutation(this.random);
-
-		this.parentSelection = new FitnessProportionalSelection(this.random);
-		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
-
-		this.diversityMeasure = new InertiaDiversityMeasure();
 	}
 
 	public void setSeed(long seed) {
@@ -72,16 +63,29 @@ public class player12 implements ContestSubmission {
 
 	public void run() {
 
+		// TODO: make used implementations configurable
+		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator, this.contestEvaluation, this.evaluationsCounter);
+		this.mutation = new AdaptiveMutation(this.random);
+
+		this.parentSelection = new FitnessProportionalSelection(this.random);
+		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
+
+		this.diversityMeasure = new InertiaDiversityMeasure();
+
 		int generation = 0;
 
 		this.population = new Population(
 			this.idGenerator,
+			this.contestEvaluation,
+			this.evaluationsCounter,
 			this.parentSelection,
 			this.survivorSelection,
 			this.diversityMeasure,
 			this.random,
 			128
 		);
+
+		Archipelago galapagos = new Archipelago(this.random, this.population);
 
 		this.ancestry = new HashMap<>();
 		for (Individual individual : this.population.iterable()) {
@@ -91,43 +95,43 @@ public class player12 implements ContestSubmission {
 		try {
 			while (true) {
 
-				generation++;
+				for (Population island : galapagos.islands()) {
+					generation++;
 
-				for(Individual individual : this.population.iterable()) {
-					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
+					this.populationStatistics.update(
+							generation,
+							island.getMaximumFitness(),
+							island.getAverageFitness(),
+							island.getAverageAge(generation),
+							island.getDiversity()
+					);
+
+					// TODO: make reproduction method on population
+					// TODO: find generic way to set parameters
+					List<Individual> parents = island.selectParents(64);
+					List<Individual> offspring = new ArrayList<>(parents.size());
+
+					Collections.shuffle(parents, this.random); // make sure that random parents mate
+					for (int i = 0; i < (parents.size() / 2); i++) {
+						Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
+						offspring.add(this.mutation.mutate(children[0]));
+						offspring.add(this.mutation.mutate(children[1]));
+						this.ancestry.put(children[0].id, children[0]);
+						this.ancestry.put(children[1].id, children[1]);
+					}
+
+					List<Individual> survivors = island.selectSurvivors(island.iterable().size() - offspring.size());
+
+					island.replace(survivors, offspring);
 				}
 
-				this.populationStatistics.update(
-					generation,
-					this.population.getMaximumFitness(),
-					this.population.getAverageFitness(),
-					this.population.getAverageAge(generation),
-					this.population.getDiversity()
-				);
-
-				// TODO: make reproduction method on population
-				// TODO: find generic way to set parameters
-				List<Individual> parents = this.population.selectParents(64);
-				List<Individual> offspring = new ArrayList<>(parents.size());
-
-				Collections.shuffle(parents, this.random); // make sure that random parents mate
-				for (int i = 0; i < (parents.size() / 2); i++) {
-					Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
-					offspring.add(this.mutation.mutate(children[0]));
-					offspring.add(this.mutation.mutate(children[1]));
-					this.ancestry.put(children[0].id, children[0]);
-					this.ancestry.put(children[1].id, children[1]);
-				}
-
-				List<Individual> survivors = this.population.selectSurvivors(this.population.iterable().size() - offspring.size());
-
-				this.population.replace(survivors, offspring);
+				galapagos.migration(0.02);
 			}
 
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution
 
-			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
+			//PopulationVisualiser.visualise("population", this.ancestry, island.getFittestIndividual());
 			//this.populationStatistics.write();
 
 			return;

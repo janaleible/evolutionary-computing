@@ -1,15 +1,21 @@
 package group12;
 
+import org.vu.contest.ContestEvaluation;
+
 import java.util.Random;
 
 public class ArithmeticCrossover extends Crossover {
 
 	private Random random;
 	private IDGenerator idGenerator;
+	private ContestEvaluation contestEvaluation;
+	private EvaluationsCounter evaluationsCounter;
 
-	public ArithmeticCrossover(Random random, IDGenerator idGenerator) {
+	public ArithmeticCrossover(Random random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter counter) {
 		this.random = random;
 		this.idGenerator = idGenerator;
+		this.contestEvaluation = contestEvaluation;
+		this.evaluationsCounter = counter;
 	}
 
 	@Override
@@ -28,8 +34,8 @@ public class ArithmeticCrossover extends Crossover {
 		}
 
 		Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenome1, generation, parents, this.idGenerator);
-		children[1] = new Individual(childGenome2, generation, parents, this.idGenerator);
+		children[0] = new Individual(childGenome1, generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter);
+		children[1] = new Individual(childGenome2, generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter);
 
 		return children;
 
