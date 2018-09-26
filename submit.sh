@@ -8,7 +8,7 @@ echo "compiling contest.jar"
 javac -cp contest.jar player12.java group12/*.java visual/*.java
 
 echo "packaging classes to submission.jar"
-jar cmf MainClass.txt submission.jar player12.class group12/*.class visual/*.class
+jar vcmf MainClass.txt submission.jar player12.class group12/*.class visual/*.class
 
 ls -l ./submission.jar
 
