@@ -3,7 +3,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install lynx
 jdk:
-  - oraclejdk10
+  - oraclejdk8
 install: true
 script: ./submit.sh
 env:
