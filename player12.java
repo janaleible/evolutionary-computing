@@ -19,9 +19,6 @@ public class player12 implements ContestSubmission {
 	private Selection parentSelection;
 	private Selection survivorSelection;
 
-	private Population population;
-	private Map<Integer, Individual> ancestry;
-
 	private PopulationStatistics populationStatistics;
 
 	public player12() {
@@ -74,7 +71,7 @@ public class player12 implements ContestSubmission {
 
 		int generation = 0;
 
-		this.population = new Population(
+		Population population = new Population(
 			this.idGenerator,
 			this.contestEvaluation,
 			this.evaluationsCounter,
@@ -85,11 +82,22 @@ public class player12 implements ContestSubmission {
 			128
 		);
 
-		Archipelago galapagos = new Archipelago(this.random, this.population);
+		Population population2 = new Population(
+			this.idGenerator,
+			this.contestEvaluation,
+			this.evaluationsCounter,
+			this.parentSelection,
+			this.survivorSelection,
+			this.diversityMeasure,
+			this.random,
+			128
+		);
 
-		this.ancestry = new HashMap<>();
-		for (Individual individual : this.population.iterable()) {
-			this.ancestry.put(individual.id, individual);
+		Archipelago galapagos = new Archipelago(this.random, population, population2);
+
+		Map<Integer, Individual> ancestry = new HashMap<>();
+		for (Individual individual : population.iterable()) {
+			ancestry.put(individual.id, individual);
 		}
 
 		try {
@@ -100,12 +108,12 @@ public class player12 implements ContestSubmission {
 				for (Population island : galapagos.islands()) {
 
 					this.populationStatistics.update(
-							generation,
-							island.islandID,
-							island.getMaximumFitness(),
-							island.getAverageFitness(),
-							island.getAverageAge(generation),
-							island.getDiversity()
+						generation,
+						island.islandID,
+						island.getMaximumFitness(),
+						island.getAverageFitness(),
+						island.getAverageAge(generation),
+						island.getDiversity()
 					);
 
 					// TODO: make reproduction method on population
@@ -118,8 +126,8 @@ public class player12 implements ContestSubmission {
 						Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
 						offspring.add(this.mutation.mutate(children[0]));
 						offspring.add(this.mutation.mutate(children[1]));
-						this.ancestry.put(children[0].id, children[0]);
-						this.ancestry.put(children[1].id, children[1]);
+						ancestry.put(children[0].id, children[0]);
+						ancestry.put(children[1].id, children[1]);
 					}
 
 					List<Individual> survivors = island.selectSurvivors(island.iterable().size() - offspring.size());
@@ -134,7 +142,7 @@ public class player12 implements ContestSubmission {
 			// TODO: think of better solution
 
 			//PopulationVisualiser.visualise("population", this.ancestry, island.getFittestIndividual());
-			this.populationStatistics.write();
+			//this.populationStatistics.write();
 
 			return;
 		}
