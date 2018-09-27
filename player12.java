@@ -95,11 +95,13 @@ public class player12 implements ContestSubmission {
 		try {
 			while (true) {
 
+				generation++;
+
 				for (Population island : galapagos.islands()) {
-					generation++;
 
 					this.populationStatistics.update(
 							generation,
+							island.islandID,
 							island.getMaximumFitness(),
 							island.getAverageFitness(),
 							island.getAverageAge(generation),
@@ -125,14 +127,14 @@ public class player12 implements ContestSubmission {
 					island.replace(survivors, offspring);
 				}
 
-				galapagos.migration(0.02);
+				if (generation % 10 == 0) galapagos.migration(0.02);
 			}
 
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution
 
 			//PopulationVisualiser.visualise("population", this.ancestry, island.getFittestIndividual());
-			//this.populationStatistics.write();
+			this.populationStatistics.write();
 
 			return;
 		}

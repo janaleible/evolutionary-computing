@@ -21,7 +21,7 @@ public class Individual {
 		this.idGenerator = idGenerator;
 		this.contestEvaluation = contestEvaluation;
 		this.evaluationsCounter = evaluationsCounter;
-		this.id = this.idGenerator.next();
+		this.id = this.idGenerator.nextIndividual();
 
 		this.genotype = wrapGenome(genotype);
 		this.fitness = null;

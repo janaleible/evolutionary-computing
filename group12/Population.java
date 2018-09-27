@@ -15,6 +15,8 @@ public class Population {
 	private IDGenerator idGenerator;
 	private DiversityMeasure diversityMeasure;
 
+	public final int islandID;
+
 	private int populationSize;
 
 	public Population(
@@ -35,6 +37,8 @@ public class Population {
 		this.idGenerator = idGenerator;
 
 		this.populationSize = populationSize;
+
+		this.islandID = this.idGenerator.nextIsland();
 
 		intialisePopulation(this.populationSize, contestEvaluation, evaluationsCounter);
 	}

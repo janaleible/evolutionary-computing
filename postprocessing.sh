@@ -4,4 +4,4 @@ cat out/out.txt | grep ">>familyTree: " | sed -e 's|>>familyTree: ||' > visualis
 dot -Tsvg visualisations/familyTree.dot -o visualisations/familyTree.svg
 
 cat out/out.txt | grep ">>populationStats: " | sed -e 's|>>populationStats: ||' > visualisations/populationStats.csv
-python3 visual/plotFitness.py "visualisations/populationStats.csv" "visualisations/fitness.pdf"
+python3 visual/plotFitness.py "visualisations/populationStats.csv" "visualisations/{}_fitness.pdf"
