@@ -83,11 +83,15 @@ public class ConfigurationsFactory {
 		return this.configurations.get(index);
 	}
 
-	public void writeConfigurations() {
+	public String serialise() {
+
+		StringBuilder serial = new StringBuilder();
+
 		for (Configuration configuration : this.configurations) {
-			System.out.print(">>Config: ");
-			System.out.println(configuration.toString());
+			serial.append(configuration.toString()).append("\n");
 		}
+
+		return serial.toString();
 	}
 
 	public class Configuration {
