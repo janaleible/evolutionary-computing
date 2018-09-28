@@ -10,7 +10,12 @@ public class UniformCrossover extends Crossover {
         this.idGenerator = idGenerator;
     }
 
-    @Override
+	@Override
+	public String toString() {
+		return "Uniform Crossover";
+	}
+
+	@Override
     public Individual[] cross(Individual one, Individual another, int generation) {
 
         Individual[] parents = new Individual[2];

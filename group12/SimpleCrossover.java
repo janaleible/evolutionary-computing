@@ -7,6 +7,11 @@ public class SimpleCrossover extends RandomCrossover {
 	}
 
 	@Override
+	public String toString() {
+		return "Simple Crossover";
+	}
+
+	@Override
 	protected int cutoff() {
 		return 5;
 	}

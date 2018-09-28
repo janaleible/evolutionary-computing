@@ -21,6 +21,11 @@ public class RandomMutation extends Mutation {
     }
 
     @Override
+    public String toString() {
+        return "Random Mutation";
+    }
+
+    @Override
     public Individual mutate(Individual self){
         double[] genome = self.genome();
         for(int i = 0; i<genome.length; i++){

@@ -6,13 +6,11 @@ public class RandomCrossover extends Crossover {
 
 	private Random random;
 	private IDGenerator idGenerator;
-
 	private int cutoff;
 
 	public RandomCrossover(Random random, IDGenerator idGenerator) {
 		this.random = random;
 		this.idGenerator = idGenerator;
-		this.cutoff = this.random.nextInt(10); // return random number from 0 to 9
 	}
 
 	@Override
@@ -24,8 +22,9 @@ public class RandomCrossover extends Crossover {
 
 		double[][] childGenomes = new double[2][10];
 
+		double cutoff = cutoff();
 		for (int i = 0; i < 10; i++) {
-			if(i < cutoff()) {
+			if(i < cutoff) {
 				childGenomes[0][i] = one.genome()[i];
 				childGenomes[1][i] = another.genome()[i];
 			} else {
@@ -42,6 +41,11 @@ public class RandomCrossover extends Crossover {
 	}
 
 	protected int cutoff() {
-		return this.cutoff;
+		return this.random.nextInt(10);
+	}
+
+	@Override
+	public String toString() {
+		return "Random Crossover";
 	}
 }

@@ -6,23 +6,17 @@ import java.util.*;
 
 public class player12 implements ContestSubmission {
 
-	private DiversityMeasure diversityMeasure;
 	private ExtendedRandom random;
 	private ContestEvaluation contestEvaluation;
 	private EvaluationsCounter evaluationsCounter;
 
 	private IDGenerator idGenerator;
-
-	private Crossover crossover;
-	private Mutation mutation;
-
-	private Selection parentSelection;
-	private Selection survivorSelection;
-
-	private Population population;
-	private Map<Integer, Individual> ancestry;
-
+	private DiversityMeasure diversityMeasure;
 	private PopulationStatistics populationStatistics;
+	private long seed;
+	private int configID;
+
+	private String function;
 
 	public player12() {
 
@@ -31,18 +25,18 @@ public class player12 implements ContestSubmission {
 		this.random = new ExtendedRandom();
 		this.idGenerator = new IDGenerator();
 
-		// TODO: make used implementations configurable
-		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator);
-		this.mutation = new AdaptiveMutation(this.random);
-
-		this.parentSelection = new FitnessProportionalSelection(this.random);
-		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
-
 		this.diversityMeasure = new InertiaDiversityMeasure();
 	}
 
-	public void setSeed(long seed) {
-		this.random.setSeed(seed);
+	public void setSeed(long param) {
+
+		// Don't judge me, I'm desperate. Can't see any other way to get a parameter passed to the algorithm.
+		// Pass seed and configID concatenated as long, where the last two digits are the seed and everything else is the configID
+
+		this.seed = param % 100;
+		this.random.setSeed(this.seed);
+
+		this.configID = (int)(param / 100);
 	}
 
 	public void setEvaluation(ContestEvaluation evaluation) {
@@ -68,24 +62,31 @@ public class player12 implements ContestSubmission {
         } else {
             // Do sth else
         }
+
+        if (!isMultimodal && !hasStructure && !isSeparable) this.function = "BentCigar";
+        else if (!hasStructure) this.function = "Katsuura";
+        else if (isMultimodal) this.function = "Schaffers";
+        else this.function = "Sphere";
     }
 
 	public void run() {
 
+		ConfigurationsFactory.Configuration config = (new ConfigurationsFactory(this.random, this.idGenerator)).get(this.configID);
+
 		int generation = 0;
 
-		this.population = new Population(
-			this.idGenerator,
-			this.parentSelection,
-			this.survivorSelection,
-			this.diversityMeasure,
-			this.random,
-			128
+		Population population = new Population(
+				this.idGenerator,
+				config.parentSelection,
+				config.survivorSelection,
+				this.diversityMeasure,
+				this.random,
+				config.populationSize
 		);
 
-		this.ancestry = new HashMap<>();
-		for (Individual individual : this.population.iterable()) {
-			this.ancestry.put(individual.id, individual);
+		Map<Integer, Individual> ancestry = new HashMap<>();
+		for (Individual individual : population.iterable()) {
+			ancestry.put(individual.id, individual);
 		}
 
 		try {
@@ -93,35 +94,33 @@ public class player12 implements ContestSubmission {
 
 				generation++;
 
-				for(Individual individual : this.population.iterable()) {
+				for(Individual individual : population.iterable()) {
 					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
 				}
 
 				this.populationStatistics.update(
 					generation,
-					this.population.getMaximumFitness(),
-					this.population.getAverageFitness(),
-					this.population.getAverageAge(generation),
-					this.population.getDiversity()
+					population.getMaximumFitness(),
+					population.getAverageFitness(),
+					population.getAverageAge(generation),
+					population.getDiversity()
 				);
 
-				// TODO: make reproduction method on population
-				// TODO: find generic way to set parameters
-				List<Individual> parents = this.population.selectParents(64);
+				List<Individual> parents = population.selectParents(config.childrenPerGeneration);
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
 				Collections.shuffle(parents, this.random); // make sure that random parents mate
 				for (int i = 0; i < (parents.size() / 2); i++) {
-					Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
-					offspring.add(this.mutation.mutate(children[0]));
-					offspring.add(this.mutation.mutate(children[1]));
-					this.ancestry.put(children[0].id, children[0]);
-					this.ancestry.put(children[1].id, children[1]);
+					Individual[] children = config.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
+					offspring.add(config.mutation.mutate(children[0]));
+					offspring.add(config.mutation.mutate(children[1]));
+					ancestry.put(children[0].id, children[0]);
+					ancestry.put(children[1].id, children[1]);
 				}
 
-				List<Individual> survivors = this.population.selectSurvivors(this.population.iterable().size() - offspring.size());
+				List<Individual> survivors = population.selectSurvivors(population.iterable().size() - offspring.size());
 
-				this.population.replace(survivors, offspring);
+				population.replace(survivors, offspring);
 			}
 
 		} catch (EvaluationsLimitExceededException exception) {
@@ -129,6 +128,7 @@ public class player12 implements ContestSubmission {
 
 			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
 			//this.populationStatistics.write();
+			System.out.print(config.toString());
 
 			return;
 		}

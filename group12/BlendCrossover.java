@@ -13,6 +13,11 @@ public class BlendCrossover extends Crossover {
 	}
 
 	@Override
+	public String toString() {
+		return "Blend Crossover";
+	}
+
+	@Override
 	public Individual[] cross(Individual self, Individual other, int generation) {
 
 		double[] childGenome1 = new double[self.genome().length];

@@ -14,6 +14,11 @@ public class Elitist extends Selection {
 	}
 
 	@Override
+	public String toString() {
+		return "Elitist " + this.selection.toString();
+	}
+
+	@Override
 	public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
 		population.sort(Comparator.comparingDouble(Individual::getFitness).reversed());

@@ -13,6 +13,11 @@ public class ArithmeticCrossover extends Crossover {
 	}
 
 	@Override
+	public String toString() {
+		return "Arithmetic Crossover";
+	}
+
+	@Override
 	public Individual[] cross(Individual one, Individual another, int generation) {
 
 		double[] childGenome1 = new double[10];

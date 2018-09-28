@@ -7,6 +7,11 @@ import java.util.Random;
 
 public class FitnessProportionalSelection extends Selection {
 
+	@Override
+	public String toString() {
+		return "Fitness-proportional Selection";
+	}
+
 	private Random random;
 
 	public FitnessProportionalSelection(Random random) {

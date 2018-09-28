@@ -6,6 +6,11 @@ import java.util.List;
 public class AgeBasedSurvivorSelection extends Selection {
 
 	@Override
+	public String toString() {
+		return "Age-based Survivor Selection";
+	}
+
+	@Override
 	public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
 		// sort oldest individuals to beginning
