@@ -21,6 +21,8 @@ public class FitnessProportionalSelection extends Selection {
 	@Override
 	public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
+		if (numberOfPicks == 0) return new ArrayList<Individual>();
+
 		double totalFitness = population.stream().mapToDouble(Individual::getFitness).sum();
 		
 		double[] picks = new double[numberOfPicks];

@@ -56,13 +56,6 @@ public class player12 implements ContestSubmission {
         boolean hasStructure = Boolean.parseBoolean(properties.getProperty("Regular"));
         boolean isSeparable = Boolean.parseBoolean(properties.getProperty("Separable"));
 
-		// Do sth with property values, e.g. specify relevant settings of your algorithm
-        if(isMultimodal) {
-            // Do sth
-        } else {
-            // Do sth else
-        }
-
         if (!isMultimodal && !hasStructure && !isSeparable) this.function = "BentCigar";
         else if (!hasStructure) this.function = "Katsuura";
         else if (isMultimodal) this.function = "Schaffers";
@@ -106,7 +99,7 @@ public class player12 implements ContestSubmission {
 					population.getDiversity()
 				);
 
-				List<Individual> parents = population.selectParents(config.childrenPerGeneration);
+				List<Individual> parents = population.selectParents(config.childrenPerGeneration - config.survivorSelection.sizeOfElite());
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
 				Collections.shuffle(parents, this.random); // make sure that random parents mate

@@ -2,7 +2,6 @@ package group12;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ConfigurationsFactory {
 
@@ -23,29 +22,21 @@ public class ConfigurationsFactory {
 		parentSelections.add(new FitnessProportionalSelection(random));
 
 		survivorSelections.add(new FitnessProportionalSelection(random));
-		survivorSelections.add(new AgeBasedSurvivorSelection());
 		survivorSelections.add(new Elitist(new FitnessProportionalSelection(random), 2));
-		survivorSelections.add(new Elitist(new FitnessProportionalSelection(random), 5));
 		survivorSelections.add(new Elitist(new AgeBasedSurvivorSelection(), 2));
-		survivorSelections.add(new Elitist(new AgeBasedSurvivorSelection(), 5));
 
 		populationSizes.add(64);
-		populationSizes.add(100);
 		populationSizes.add(128);
 
-		childrenPerGenerations.add(24);
 		childrenPerGenerations.add(32);
 		childrenPerGenerations.add(64);
-		childrenPerGenerations.add(100);
 		childrenPerGenerations.add(128);
 
 		crossovers.add(new UniformCrossover(random, idGenerator));
 		crossovers.add(new SimpleCrossover(idGenerator));
-		crossovers.add(new RandomCrossover(random, idGenerator));
 		crossovers.add(new ArithmeticCrossover(random, idGenerator));
 
 		mutationRates.add(0.1);
-		mutationRates.add(0.3);
 		mutationRates.add(0.5);
 
 		mutations.add(new AdaptiveMutation(random));

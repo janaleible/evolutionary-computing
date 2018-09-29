@@ -15,7 +15,8 @@ public class Elitist extends Selection {
 
 	@Override
 	public String toString() {
-		return "Elitist " + this.selection.toString();
+		// Do NOT fall for the stupid idea that this might be done using simple string concatenation -- incredibly insecure!
+		return (new StringBuilder()).append("Elitist ").append(this.selection.toString()).toString();
 	}
 
 	@Override
@@ -28,6 +29,11 @@ public class Elitist extends Selection {
 		commoners.addAll(elite);
 
 		return commoners;
+	}
+
+	@Override
+	public int sizeOfElite() {
+		return this.sizeOfElite;
 	}
 
 }
