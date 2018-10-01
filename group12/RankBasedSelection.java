@@ -27,21 +27,25 @@ public class RankBasedSelection extends Selection{
         for (int i = 0; i < numberOfPicks; i++) {
             picks[i] = this.random.nextDouble();
         }
-        //Picks needs to be reversed (I think)
+
         Arrays.sort(picks);
 
         List<Individual> parents = new ArrayList<>(numberOfPicks);
+
         double runningTotal = 0;
         int pickIndex = 0;
+        int rank = 0;
         for (Individual individual : population) {
-            runningTotal += (2-this.sigma)/mu + 2*pickIndex*(this.sigma-1)/(mu*(mu-1));
+            runningTotal += (2-this.sigma)/mu + 2*rank*(this.sigma-1)/(mu*(mu-1));
             while (picks[pickIndex] < runningTotal) {
                 parents.add(individual);
                 pickIndex++;
                 if (pickIndex >= numberOfPicks) { break; }
             }
             if (pickIndex >= numberOfPicks) { break; }
+            rank++;
         }
+
         return parents;
     }
 }
