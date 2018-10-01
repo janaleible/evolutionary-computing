@@ -96,10 +96,10 @@ public class ConfigurationsFactory {
 		public final Crossover crossover;
 		public final Mutation mutation;
 
-		public Configuration(int id, Selection parentSelection, Selection survivorSelectio, int populationSize, int childrenPerGeneration, Crossover crossover, Mutation mutation) {
+		public Configuration(int id, Selection parentSelection, Selection survivorSelection, int populationSize, int childrenPerGeneration, Crossover crossover, Mutation mutation) {
 			this.id = id;
 			this.parentSelection = parentSelection;
-			this.survivorSelection = survivorSelectio;
+			this.survivorSelection = survivorSelection;
 			this.populationSize = populationSize;
 			this.childrenPerGeneration = childrenPerGeneration;
 			this.crossover = crossover;

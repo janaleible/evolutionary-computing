@@ -22,7 +22,7 @@ public class RandomMutation extends Mutation {
 
     @Override
     public String toString() {
-        return "Random Mutation";
+        return (new StringBuilder()).append("Random Mutation (mutation rate: ").append(mutationRate).append(")").toString();
     }
 
     @Override
