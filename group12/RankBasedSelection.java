@@ -19,14 +19,15 @@ public class RankBasedSelection extends Selection{
     @Override
     public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
-        population.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
+        population.sort(Comparator.comparingDouble(Individual::getFitness));
 
         int mu = population.size();
 
-        double[] picks = new double[numberOfPicks];
+        Double[] picks = new Double[numberOfPicks];
         for (int i = 0; i < numberOfPicks; i++) {
             picks[i] = this.random.nextDouble();
         }
+        //Picks needs to be reversed (I think)
         Arrays.sort(picks);
 
         List<Individual> parents = new ArrayList<>(numberOfPicks);
