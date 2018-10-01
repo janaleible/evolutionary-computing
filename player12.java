@@ -64,7 +64,7 @@ public class player12 implements ContestSubmission {
 
 	public void run() {
 
-		ConfigurationsFactory.Configuration config = (new ConfigurationsFactory(this.random, this.idGenerator)).get(this.configID);
+		Configuration config = (new ConfigurationsFactory(this.random, this.idGenerator)).get(this.configID);
 
 		int generation = 0;
 
