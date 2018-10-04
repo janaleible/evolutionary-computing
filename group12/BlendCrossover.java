@@ -5,11 +5,13 @@ public class BlendCrossover extends Crossover {
 	private double alpha;
 	private ExtendedRandom random;
 	private IDGenerator idGenerator;
+	private RangeFunction rangeFunction;
 
-	public BlendCrossover(ExtendedRandom random, double alpha, IDGenerator idGenerator) {
+	public BlendCrossover(ExtendedRandom random, double alpha, IDGenerator idGenerator, RangeFunction rangeFunction) {
 		this.alpha = alpha;
 		this.random = random;
 		this.idGenerator = idGenerator;
+		this.rangeFunction = rangeFunction;
 	}
 
 	@Override
@@ -32,8 +34,8 @@ public class BlendCrossover extends Crossover {
 		Individual[] parents = {self, other};
 
 		return new Individual[]{
-			new Individual(childGenome1, generation, parents, idGenerator),
-			new Individual(childGenome2, generation, parents, idGenerator)
+			new Individual(childGenome1, generation, parents, idGenerator, this.rangeFunction),
+			new Individual(childGenome2, generation, parents, idGenerator, this.rangeFunction)
 		};
 	}
 }

@@ -6,10 +6,12 @@ public class ArithmeticCrossover extends Crossover {
 
 	private Random random;
 	private IDGenerator idGenerator;
+	private RangeFunction rangeFunction;
 
-	public ArithmeticCrossover(Random random, IDGenerator idGenerator) {
+	public ArithmeticCrossover(Random random, IDGenerator idGenerator, RangeFunction rangeFunction) {
 		this.random = random;
 		this.idGenerator = idGenerator;
+		this.rangeFunction = rangeFunction;
 	}
 
 	@Override
@@ -28,8 +30,8 @@ public class ArithmeticCrossover extends Crossover {
 		}
 
 		Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenome1, generation, parents, this.idGenerator);
-		children[1] = new Individual(childGenome2, generation, parents, this.idGenerator);
+		children[0] = new Individual(childGenome1, generation, parents, this.idGenerator, this.rangeFunction);
+		children[1] = new Individual(childGenome2, generation, parents, this.idGenerator, this.rangeFunction);
 
 		return children;
 

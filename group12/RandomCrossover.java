@@ -6,13 +6,15 @@ public class RandomCrossover extends Crossover {
 
 	private Random random;
 	private IDGenerator idGenerator;
+	private RangeFunction rangeFunction;
 
 	private int cutoff;
 
-	public RandomCrossover(Random random, IDGenerator idGenerator) {
+	public RandomCrossover(Random random, IDGenerator idGenerator, RangeFunction rangeFunction) {
 		this.random = random;
 		this.idGenerator = idGenerator;
 		this.cutoff = this.random.nextInt(10); // return random number from 0 to 9
+		this.rangeFunction = rangeFunction;
 	}
 
 	@Override
@@ -35,8 +37,8 @@ public class RandomCrossover extends Crossover {
 		}
 
 		Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator);
+		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.rangeFunction);
+		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.rangeFunction);
 
 		return children;
 	}

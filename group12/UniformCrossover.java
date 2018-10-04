@@ -4,10 +4,12 @@ public class UniformCrossover extends Crossover {
 
     private ExtendedRandom random;
     private IDGenerator idGenerator;
+    private RangeFunction rangeFunction;
 
-    public UniformCrossover(ExtendedRandom random, IDGenerator idGenerator) {
+    public UniformCrossover(ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
         this.random = random;
         this.idGenerator = idGenerator;
+        this.rangeFunction = rangeFunction;
     }
 
     @Override
@@ -31,8 +33,8 @@ public class UniformCrossover extends Crossover {
         }
 
         Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator);
+		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.rangeFunction);
+		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.rangeFunction);
 
 		return children;
     }
