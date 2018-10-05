@@ -2,8 +2,8 @@ package group12;
 
 public class SimpleCrossover extends RandomCrossover {
 
-	public SimpleCrossover(IDGenerator idGenerator, RangeFunction rangeFunction) {
-		super(null, idGenerator, rangeFunction);
+	public SimpleCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
+		super(crossoverRate, random, idGenerator, rangeFunction);
 	}
 
 	@Override

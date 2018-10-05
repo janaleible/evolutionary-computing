@@ -34,8 +34,8 @@ public class player12 implements ContestSubmission {
 		this.idGenerator = new IDGenerator();
 
 		// TODO: make used implementations configurable
-		this.rangeFunction = new ClipRange(-5,5);
-		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator, this.rangeFunction);
+		this.rangeFunction = new ClipRange(-5, 5);
+		this.crossover = new ArithmeticCrossover(1, this.random, this.idGenerator, this.rangeFunction);
 		this.mutation = new AdaptiveMutation(this.random);
 
 		this.parentSelection = new RankBasedSelection(this.random, 1.5);

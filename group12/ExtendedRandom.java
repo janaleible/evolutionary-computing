@@ -22,4 +22,9 @@ public class ExtendedRandom extends Random {
     public boolean coinflip() {
         return this.nextInt(2) == 0;
     }
+
+    public boolean coinflip(double bias) {
+		// return true with probability bias
+		return nextDouble() < bias;
+	}
 }
