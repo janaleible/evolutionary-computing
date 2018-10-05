@@ -40,29 +40,6 @@ public class Individual {
 		return this.genotype;
 	}
 
-//	private double[] clipGenome(double[] genome) {
-//		for(int i = 0; i < genome.length; i++) {
-//			if (genome[i] > 5) genome[i] = 5;
-//			if (genome[i] < -5) genome[i] = -5;
-//		}
-//		return genome;
-//	}
-//
-//	private double[] wrapGenome(double[] genome){
-//		for(int i = 0; i < genome.length; i++) {
-//			if (genome[i] > 5){
-//				double remainder = genome[i] - 5;
-//				double mod = remainder % 10;
-//				genome[i] = -5 + mod;
-//			}
-//			if (genome[i] < -5){
-//				double remainder = genome[i] + 5;
-//				double mod = remainder % 10;
-//				genome[i] = 5 + mod;
-//			}
-//		}
-//		return genome;
-//	}
 
 	public void mutateGenome(double[] newGenome){
 		this.genotype = this.rangeFunction.limitToRange(newGenome);
