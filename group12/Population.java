@@ -18,6 +18,7 @@ public class Population {
 	public final int islandID;
 
 	private int populationSize;
+	private RangeFunction rangeFunction;
 
 	public Population(
 		IDGenerator idGenerator,
@@ -27,7 +28,8 @@ public class Population {
 		Selection survivorSelection,
 		DiversityMeasure diversityMeasure,
 		ExtendedRandom random,
-		int populationSize
+		int populationSize,
+		RangeFunction rangeFunction
 	) {
 		this.parentSelection = parentSelection;
 		this.survivorSelection = survivorSelection;
@@ -37,8 +39,9 @@ public class Population {
 		this.idGenerator = idGenerator;
 
 		this.populationSize = populationSize;
-
 		this.islandID = this.idGenerator.nextIsland();
+
+		this.rangeFunction = rangeFunction;
 
 		intialisePopulation(this.populationSize, contestEvaluation, evaluationsCounter);
 	}
@@ -48,7 +51,7 @@ public class Population {
 		this.population = new ArrayList<>(populationSize);
 
 		for (int i = 0; i < populationSize; i++) {
-			this.population.add(Individual.createRandom(this.random, this.idGenerator, contestEvaluation, counter));
+			this.population.add(Individual.createRandom(this.random, this.idGenerator, contestEvaluation, counter, this.rangeFunction));
 		}
 	}
 

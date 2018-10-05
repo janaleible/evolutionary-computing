@@ -21,6 +21,8 @@ public class player12 implements ContestSubmission {
 
 	private PopulationStatistics populationStatistics;
 
+	private RangeFunction rangeFunction;
+
 	public player12() {
 
 		this.populationStatistics = new PopulationStatistics();
@@ -60,14 +62,17 @@ public class player12 implements ContestSubmission {
 
 	public void run() {
 
+		this.rangeFunction = new ClipRange(-5, 5);
+
 		// TODO: make used implementations configurable
-		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator, this.contestEvaluation, this.evaluationsCounter);
+		this.crossover = new ArithmeticCrossover(0.8, this.random, this.idGenerator, this.rangeFunction, this.contestEvaluation, this.evaluationsCounter);
 		this.mutation = new AdaptiveMutation(this.random);
 
 		this.parentSelection = new FitnessProportionalSelection(this.random);
 		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
 
 		this.diversityMeasure = new InertiaDiversityMeasure();
+
 
 		int generation = 0;
 
@@ -79,7 +84,8 @@ public class player12 implements ContestSubmission {
 			this.survivorSelection,
 			this.diversityMeasure,
 			this.random,
-			128
+			128,
+			this.rangeFunction
 		);
 
 		Population population2 = new Population(
@@ -90,7 +96,8 @@ public class player12 implements ContestSubmission {
 			this.survivorSelection,
 			this.diversityMeasure,
 			this.random,
-			128
+			128,
+				this.rangeFunction
 		);
 
 		Archipelago galapagos = new Archipelago(this.random, population, population2);

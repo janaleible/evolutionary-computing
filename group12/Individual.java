@@ -13,17 +13,19 @@ public class Individual {
 	private int generation;
 	private Individual[] parents;
 	public final int id;
+	private RangeFunction rangeFunction;
 
 	private double sigma;
 
-	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
+	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, RangeFunction rangeFunction) {
 
 		this.idGenerator = idGenerator;
 		this.contestEvaluation = contestEvaluation;
 		this.evaluationsCounter = evaluationsCounter;
 		this.id = this.idGenerator.nextIndividual();
+		this.rangeFunction = rangeFunction;
 
-		this.genotype = wrapGenome(genotype);
+		this.genotype = this.rangeFunction.limitToRange(genotype);
 		this.fitness = null;
 		this.generation = generation;
 		this.parents = parents;
@@ -43,42 +45,20 @@ public class Individual {
 		return this.genotype;
 	}
 
-	private double[] clipGenome(double[] genome) {
-		for(int i = 0; i < genome.length; i++) {
-			if (genome[i] > 5) genome[i] = 5;
-			if (genome[i] < -5) genome[i] = -5;
-		}
-		return genome;
-	}
-
-	private double[] wrapGenome(double[] genome){
-		for(int i = 0; i < genome.length; i++) {
-			if (genome[i] > 5){
-				double remainder = genome[i] - 5;
-				double mod = remainder % 10;
-				genome[i] = -5 + mod;
-			}
-			if (genome[i] < -5){
-				double remainder = genome[i] + 5;
-				double mod = remainder % 10;
-				genome[i] = 5 + mod;
-			}
-		}
-		return genome;
-	}
 
 	public void mutateGenome(double[] newGenome){
-		this.genotype = wrapGenome(newGenome);
+		this.genotype = this.rangeFunction.limitToRange(newGenome);
 	}
 
-	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
+	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, RangeFunction rangeFunction) {
 		return new Individual(
 			random.array(10, -5, 5),
 			0,
 			null,
 			idGenerator,
 			contestEvaluation,
-			evaluationsCounter
+			evaluationsCounter,
+			rangeFunction
 		);
 	}
 
@@ -111,7 +91,8 @@ public class Individual {
 			this.parents,
 			this.idGenerator,
 			this.contestEvaluation,
-			this.evaluationsCounter
+			this.evaluationsCounter,
+			this.rangeFunction
 		);
 		clone.setFitness(this.fitness);
 		return clone;

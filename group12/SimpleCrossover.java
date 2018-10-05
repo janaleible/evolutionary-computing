@@ -4,8 +4,8 @@ import org.vu.contest.ContestEvaluation;
 
 public class SimpleCrossover extends RandomCrossover {
 
-	public SimpleCrossover(IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter counter) {
-		super(null, idGenerator, contestEvaluation, counter);
+	public SimpleCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter) {
+		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter);
 	}
 
 	@Override

@@ -4,20 +4,12 @@ import org.vu.contest.ContestEvaluation;
 
 public class UniformCrossover extends Crossover {
 
-    private ExtendedRandom random;
-    private IDGenerator idGenerator;
-    private ContestEvaluation contestEvaluation;
-    private EvaluationsCounter evaluationsCounter;
+	public UniformCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter) {
+		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter);
+	}
 
-    public UniformCrossover(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter counter) {
-        this.random = random;
-        this.idGenerator = idGenerator;
-        this.contestEvaluation = contestEvaluation;
-        this.evaluationsCounter = counter;
-    }
-
-    @Override
-    public Individual[] cross(Individual one, Individual another, int generation) {
+	@Override
+    public Individual[] getOffspring(Individual one, Individual another, int generation) {
 
         Individual[] parents = new Individual[2];
         parents[0] = one;
@@ -36,10 +28,9 @@ public class UniformCrossover extends Crossover {
             }
         }
 
-        Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter);
-
-		return children;
+		return new Individual[] {
+			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction),
+			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction)
+		};
     }
 }
