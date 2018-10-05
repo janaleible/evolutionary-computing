@@ -4,28 +4,21 @@ import java.util.Random;
 
 public class RandomCrossover extends Crossover {
 
-	private Random random;
-	private IDGenerator idGenerator;
-
-	private int cutoff;
-
-	public RandomCrossover(Random random, IDGenerator idGenerator) {
-		this.random = random;
-		this.idGenerator = idGenerator;
-		this.cutoff = this.random.nextInt(10); // return random number from 0 to 9
+	public RandomCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator) {
+		super(crossoverRate, random, idGenerator);
 	}
 
 	@Override
-	public Individual[] cross(Individual one, Individual another, int generation) {
+	public Individual[] getOffspring(Individual one, Individual another, int generation) {
 
-		Individual[] parents = new Individual[2];
-		parents[0] = one;
-		parents[1] = another;
+		Individual[] parents = {one, another};
 
 		double[][] childGenomes = new double[2][10];
 
+		int cutoff = cutoff();
+
 		for (int i = 0; i < 10; i++) {
-			if(i < cutoff()) {
+			if(i < cutoff) {
 				childGenomes[0][i] = one.genome()[i];
 				childGenomes[1][i] = another.genome()[i];
 			} else {
@@ -34,14 +27,13 @@ public class RandomCrossover extends Crossover {
 			}
 		}
 
-		Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator);
-
-		return children;
+		return new Individual[]{
+			new Individual(childGenomes[0], generation, parents, this.idGenerator),
+			new Individual(childGenomes[1], generation, parents, this.idGenerator)
+		};
 	}
 
 	protected int cutoff() {
-		return this.cutoff;
+		return this.random.nextInt(10);
 	}
 }

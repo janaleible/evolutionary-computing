@@ -32,7 +32,7 @@ public class player12 implements ContestSubmission {
 		this.idGenerator = new IDGenerator();
 
 		// TODO: make used implementations configurable
-		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator);
+		this.crossover = new ArithmeticCrossover(1, this.random, this.idGenerator);
 		this.mutation = new AdaptiveMutation(this.random);
 
 		this.parentSelection = new FitnessProportionalSelection(this.random);
