@@ -11,17 +11,19 @@ public class Individual {
 	private int generation;
 	private Individual[] parents;
 	public final int id;
+	private RangeFunction rangeFunction;
 
 	private double sigma;
 
-	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator) {
+	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, RangeFunction rangeFunction) {
 
 		this.id = idGenerator.next();
-
-		this.genotype = wrapGenome(genotype);
+		this.rangeFunction = rangeFunction;
+		this.genotype = this.rangeFunction.limitToRange(genotype);
 		this.fitness = null;
 		this.generation = generation;
 		this.parents = parents;
+
 
 		this.sigma = 1;
 	}
@@ -38,40 +40,18 @@ public class Individual {
 		return this.genotype;
 	}
 
-	private double[] clipGenome(double[] genome) {
-		for(int i = 0; i < genome.length; i++) {
-			if (genome[i] > 5) genome[i] = 5;
-			if (genome[i] < -5) genome[i] = -5;
-		}
-		return genome;
-	}
-
-	private double[] wrapGenome(double[] genome){
-		for(int i = 0; i < genome.length; i++) {
-			if (genome[i] > 5){
-				double remainder = genome[i] - 5;
-				double mod = remainder % 10;
-				genome[i] = -5 + mod;
-			}
-			if (genome[i] < -5){
-				double remainder = genome[i] + 5;
-				double mod = remainder % 10;
-				genome[i] = 5 + mod;
-			}
-		}
-		return genome;
-	}
 
 	public void mutateGenome(double[] newGenome){
-		this.genotype = wrapGenome(newGenome);
+		this.genotype = this.rangeFunction.limitToRange(newGenome);
 	}
 
-	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator) {
+	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
 		return new Individual(
 			random.array(10, -5, 5),
 			0,
 			null,
-			idGenerator
+			idGenerator,
+			rangeFunction
 		);
 	}
 
