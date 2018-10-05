@@ -38,8 +38,8 @@ public class player12 implements ContestSubmission {
 		this.crossover = new ArithmeticCrossover(this.random, this.idGenerator, this.rangeFunction);
 		this.mutation = new AdaptiveMutation(this.random);
 
-		this.parentSelection = new FitnessProportionalSelection(this.random);
-		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
+		this.parentSelection = new RankBasedSelection(this.random, 1.5);
+		this.survivorSelection = new TournamentSelection(5, this.random);
 
 		this.diversityMeasure = new InertiaDiversityMeasure();
 
