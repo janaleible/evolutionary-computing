@@ -1,0 +1,6 @@
+- populationsize: 100
+  crossover: arithmetic
+  mutation: adaptive
+  alpha: 0.2
+  parentselection: fitnessproportional
+  survivorselection: fitnessproportional

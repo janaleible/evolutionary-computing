@@ -13,8 +13,6 @@ public class player12 implements ContestSubmission {
 	private IDGenerator idGenerator;
 	private DiversityMeasure diversityMeasure;
 	private PopulationStatistics populationStatistics;
-	private long seed;
-	private int configID;
 
 	private String function;
 
@@ -28,15 +26,8 @@ public class player12 implements ContestSubmission {
 		this.diversityMeasure = new InertiaDiversityMeasure();
 	}
 
-	public void setSeed(long param) {
-
-		// Don't judge me, I'm desperate. Can't see any other way to get a parameter passed to the algorithm.
-		// Pass seed and configID concatenated as long, where the last two digits are the seed and everything else is the configID
-
-		this.seed = param % 100;
-		this.random.setSeed(this.seed);
-
-		this.configID = (int)(param / 100);
+	public void setSeed(long seed) {
+		this.random.setSeed(seed);
 	}
 
 	public void setEvaluation(ContestEvaluation evaluation) {
@@ -64,7 +55,7 @@ public class player12 implements ContestSubmission {
 
 	public void run() {
 
-		Configuration config = (new ConfigurationsFactory(this.random, this.idGenerator)).get(this.configID);
+		Configuration config = new Configuration(this.random, this.idGenerator, this.function);
 
 		int generation = 0;
 
@@ -99,11 +90,11 @@ public class player12 implements ContestSubmission {
 					population.getDiversity()
 				);
 
-				List<Individual> parents = population.selectParents(config.childrenPerGeneration - config.survivorSelection.sizeOfElite());
+				List<Individual> parents = population.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
 				Collections.shuffle(parents, this.random); // make sure that random parents mate
-				for (int i = 0; i < (parents.size() / 2); i++) {
+				for (int i = 0; i < Math.floor(parents.size() / 2); i++) {
 					Individual[] children = config.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
 					offspring.add(config.mutation.mutate(children[0]));
 					offspring.add(config.mutation.mutate(children[1]));
@@ -121,7 +112,6 @@ public class player12 implements ContestSubmission {
 
 			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
 			//this.populationStatistics.write();
-			System.out.print(config.toString());
 
 			return;
 		}
