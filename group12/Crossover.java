@@ -5,11 +5,13 @@ public abstract class Crossover {
 	private double crossoverRate;
 	protected ExtendedRandom random;
 	protected IDGenerator idGenerator;
+	protected RangeFunction rangeFunction;
 
-	public Crossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator) {
+	public Crossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
 		this.crossoverRate = crossoverRate;
 		this.random = random;
 		this.idGenerator = idGenerator;
+		this.rangeFunction = rangeFunction;
 	}
 
 	protected abstract Individual[] getOffspring(Individual one, Individual another, int generation);

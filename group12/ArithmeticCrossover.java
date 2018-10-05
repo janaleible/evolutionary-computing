@@ -2,8 +2,8 @@ package group12;
 
 public class ArithmeticCrossover extends Crossover {
 
-	public ArithmeticCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator) {
-		super(crossoverRate, random, idGenerator);
+	public ArithmeticCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
+		super(crossoverRate, random, idGenerator, rangeFunction);
 	}
 
 	@Override
@@ -20,8 +20,8 @@ public class ArithmeticCrossover extends Crossover {
 		}
 
 		return new Individual[] {
-			new Individual(childGenome1, generation, parents, this.idGenerator),
-			new Individual(childGenome2, generation, parents, this.idGenerator)
+			new Individual(childGenome1, generation, parents, this.idGenerator, this.rangeFunction),
+			new Individual(childGenome2, generation, parents, this.idGenerator, this.rangeFunction)
 		};
 	}
 }
