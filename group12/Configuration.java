@@ -87,7 +87,7 @@ public class Configuration {
 				break;
 			case "tournament":
 				int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
-				this.survivorSelection = new TournamentSelection(tournamentSize, random);
+				survivorSelection = new TournamentSelection(tournamentSize, random);
 				break;
 		}
 		
