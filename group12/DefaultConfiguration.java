@@ -5,7 +5,7 @@ public class DefaultConfiguration {
 	public String crossover = "arithmetic";
 	public String mutation = "random";
 	
-	public String alpha = "0.5";
+	public String alpha_blendCrossover = "0.5";
 
 	public String parentSelection = "fitnessproportional";
 	public String survivorSelection = "fitnessproportional";
@@ -15,12 +15,12 @@ public class DefaultConfiguration {
 
 	public String crossOverRate = "1";
 	public String mutationRate = "0.3";
-	public String learningRate = "0.1";
+	public String learningRate_adaptiveMutation = "0.1";
 
 	public String populationSize = "100";
 	public String generationGap = "0.5";
 	public String rangeFunction = "clip";
-	public String sigma = "1.5";
+	public String sigma_rankbasedselection = "1.5";
 	public String tournamentSize = "5";
 
 	public DefaultConfiguration(String function) {

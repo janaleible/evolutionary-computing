@@ -33,7 +33,7 @@ public class Configuration {
 				this.crossover = new ArithmeticCrossover(crossoverRate, random, idGenerator, rangeFunction);
 				break;
 			case "blend":
-				double alpha = Double.parseDouble(System.getProperty("alpha", defaultConfiguration.alpha));
+				double alpha = Double.parseDouble(System.getProperty("alpha_blendCrossover", defaultConfiguration.alpha_blendCrossover));
 				this.crossover = new BlendCrossover(alpha, crossoverRate, random,  idGenerator, this.rangeFunction);
 				break;
 			case "random":
@@ -57,7 +57,7 @@ public class Configuration {
 				this.mutation = new RandomMutation(random, mutationRate);
 				break;
 			case "adaptive":
-				double learningRate = Double.parseDouble(System.getProperty("learningrate", defaultConfiguration.learningRate));
+				double learningRate = Double.parseDouble(System.getProperty("learningrate_adaptivemutation", defaultConfiguration.learningRate_adaptiveMutation));
 				this.mutation = new AdaptiveMutation(random, learningRate);
 				break;
 		}
@@ -67,7 +67,7 @@ public class Configuration {
 				this.parentSelection = new FitnessProportionalSelection(random);
 				break;
 			case "rankbased":
-				double sigma = Double.parseDouble(System.getProperty("sigma", defaultConfiguration.sigma));
+				double sigma = Double.parseDouble(System.getProperty("sigma_rankbasedselection", defaultConfiguration.sigma_rankbasedselection));
 				this.parentSelection = new RankBasedSelection(random, sigma);
 				break;
 			case "tournament":
@@ -82,7 +82,7 @@ public class Configuration {
 				survivorSelection = new FitnessProportionalSelection(random);
 				break;
 			case "rankbased":
-				double sigma = Double.parseDouble(System.getProperty("sigma", defaultConfiguration.sigma));
+				double sigma = Double.parseDouble(System.getProperty("sigma_rankbasedselection", defaultConfiguration.sigma_rankbasedselection));
 				this.survivorSelection = new RankBasedSelection(random, sigma);
 				break;
 			case "tournament":
