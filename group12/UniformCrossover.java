@@ -2,13 +2,9 @@ package group12;
 
 public class UniformCrossover extends Crossover {
 
-    private ExtendedRandom random;
-    private IDGenerator idGenerator;
-
-    public UniformCrossover(ExtendedRandom random, IDGenerator idGenerator) {
-        this.random = random;
-        this.idGenerator = idGenerator;
-    }
+	public UniformCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
+		super(crossoverRate, random, idGenerator, rangeFunction);
+	}
 
 	@Override
 	public String toString() {
@@ -16,7 +12,7 @@ public class UniformCrossover extends Crossover {
 	}
 
 	@Override
-    public Individual[] cross(Individual one, Individual another, int generation) {
+    public Individual[] getOffspring(Individual one, Individual another, int generation) {
 
         Individual[] parents = new Individual[2];
         parents[0] = one;
@@ -35,10 +31,9 @@ public class UniformCrossover extends Crossover {
             }
         }
 
-        Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator);
-
-		return children;
+		return new Individual[] {
+			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.rangeFunction),
+			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.rangeFunction)
+		};
     }
 }

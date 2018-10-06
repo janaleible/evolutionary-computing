@@ -8,15 +8,7 @@ public class Configuration {
 	public double generationGap;
 	public Crossover crossover;
 	public Mutation mutation;
-
-	public Configuration(Selection parentSelection, Selection survivorSelection, int populationSize, double generationGap, Crossover crossover, Mutation mutation) {
-		this.parentSelection = parentSelection;
-		this.survivorSelection = survivorSelection;
-		this.populationSize = populationSize;
-		this.generationGap = generationGap;
-		this.crossover = crossover;
-		this.mutation = mutation;
-	}
+	public RangeFunction rangeFunction;
 
 	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function) {
 		
@@ -24,23 +16,34 @@ public class Configuration {
 
 		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize));
 		this.generationGap = Double.parseDouble(System.getProperty("generationgap", defaultConfiguration.generationGap));
-		
+
+		double crossoverRate = Double.parseDouble(System.getProperty("crossoverrate", defaultConfiguration.crossOverRate));
+
+		switch (System.getProperty("rangefunction", defaultConfiguration.rangeFunction)) {
+			case "wrap":
+				this.rangeFunction = new WrapRange(-5, 5);
+				break;
+			case "clip":
+				this.rangeFunction = new ClipRange(-5, 5);
+				break;
+		}
+
 		switch(System.getProperty("crossover", defaultConfiguration.crossover)) {
 			case "arithmetic": 
-				this.crossover = new ArithmeticCrossover(random, idGenerator);
+				this.crossover = new ArithmeticCrossover(crossoverRate, random, idGenerator, rangeFunction);
 				break;
 			case "blend":
 				double alpha = Double.parseDouble(System.getProperty("alpha", defaultConfiguration.alpha));
-				this.crossover = new BlendCrossover(random, alpha, idGenerator);
+				this.crossover = new BlendCrossover(alpha, crossoverRate, random,  idGenerator, this.rangeFunction);
 				break;
 			case "random":
-				this.crossover = new RandomCrossover(random, idGenerator);
+				this.crossover = new RandomCrossover(crossoverRate, random, idGenerator, this.rangeFunction);
 				break;
 			case "simple":
-				this.crossover = new SimpleCrossover(idGenerator);
+				this.crossover = new SimpleCrossover(crossoverRate, random, idGenerator, this.rangeFunction);
 				break;
 			case "uniform":
-				this.crossover = new UniformCrossover(random, idGenerator);
+				this.crossover = new UniformCrossover(crossoverRate, random, idGenerator, this.rangeFunction);
 				break;
 		}
 		
@@ -64,7 +67,12 @@ public class Configuration {
 				this.parentSelection = new FitnessProportionalSelection(random);
 				break;
 			case "rankbased":
-				// TODO: add
+				double sigma = Double.parseDouble(System.getProperty("sigma", defaultConfiguration.sigma));
+				this.parentSelection = new RankBasedSelection(random, sigma);
+				break;
+			case "tournament":
+				int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
+				this.parentSelection = new TournamentSelection(tournamentSize, random);
 				break;
 		}
 		
@@ -74,7 +82,12 @@ public class Configuration {
 				survivorSelection = new FitnessProportionalSelection(random);
 				break;
 			case "rankbased":
-				//TODO: add
+				double sigma = Double.parseDouble(System.getProperty("sigma", defaultConfiguration.sigma));
+				this.survivorSelection = new RankBasedSelection(random, sigma);
+				break;
+			case "tournament":
+				int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
+				this.survivorSelection = new TournamentSelection(tournamentSize, random);
 				break;
 		}
 		

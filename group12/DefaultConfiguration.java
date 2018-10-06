@@ -19,6 +19,9 @@ public class DefaultConfiguration {
 
 	public String populationSize = "100";
 	public String generationGap = "0.5";
+	public String rangeFunction = "clip";
+	public String sigma = "1.5";
+	public String tournamentSize = "5";
 
 	public DefaultConfiguration(String function) {
 

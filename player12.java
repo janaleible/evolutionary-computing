@@ -60,12 +60,13 @@ public class player12 implements ContestSubmission {
 		int generation = 0;
 
 		Population population = new Population(
-				this.idGenerator,
-				config.parentSelection,
-				config.survivorSelection,
-				this.diversityMeasure,
-				this.random,
-				config.populationSize
+			this.idGenerator,
+			config.parentSelection,
+			config.survivorSelection,
+			this.diversityMeasure,
+			this.random,
+			config.populationSize,
+			config.rangeFunction
 		);
 
 		Map<Integer, Individual> ancestry = new HashMap<>();
@@ -94,7 +95,7 @@ public class player12 implements ContestSubmission {
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
 				Collections.shuffle(parents, this.random); // make sure that random parents mate
-				for (int i = 0; i < Math.floor(parents.size() / 2); i++) {
+				for (int i = 0; i < Math.floor(parents.size() / 2.0); i++) {
 					Individual[] children = config.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
 					offspring.add(config.mutation.mutate(children[0]));
 					offspring.add(config.mutation.mutate(children[1]));
