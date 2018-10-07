@@ -42,7 +42,7 @@ public class player12 implements ContestSubmission {
 		this.crossover = new BlendCrossover(1, this.random, this.idGenerator, this.rangeFunction, this.sigma);
 		this.mutation = new AdaptiveMutation(this.random);
 
-		this.parentSelection = new RankBasedSelection(this.random, 2);
+		this.parentSelection = new GenderAware(new RankBasedSelection(this.random, 2));
 		this.survivorSelection = new TournamentSelection(5, this.random);
 
 		this.diversityMeasure = new InertiaDiversityMeasure();
@@ -120,9 +120,10 @@ public class player12 implements ContestSubmission {
 				List<Individual> parents = this.population.selectParents(64);
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
-				Collections.shuffle(parents, this.random); // make sure that random parents mate
-				for (int i = 0; i < (parents.size() / 2); i++) {
-					Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
+				ParentMatching parentMatching = new GenderAwareParentMatching();
+
+				for (Individual[] couple : parentMatching.getMatches(parents)) {
+					Individual[] children = this.crossover.cross(couple[0], couple[1], generation);
 					offspring.add(this.mutation.mutate(children[0]));
 					offspring.add(this.mutation.mutate(children[1]));
 					this.ancestry.put(children[0].id, children[0]);

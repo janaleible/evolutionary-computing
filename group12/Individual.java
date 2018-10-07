@@ -13,9 +13,10 @@ public class Individual {
 	public final int id;
 	private RangeFunction rangeFunction;
 
+	private Gender gender;
 	private double sigma;
 
-	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
+	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma, Gender gender) {
 
 		this.id = idGenerator.next();
 		this.rangeFunction = rangeFunction;
@@ -24,7 +25,7 @@ public class Individual {
 		this.generation = generation;
 		this.parents = parents;
 
-
+		this.gender = gender;
 		this.sigma = sigma;
 	}
 
@@ -46,13 +47,17 @@ public class Individual {
 	}
 
 	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
+
+		Gender gender = random.coinflip() ? Gender.male : Gender.female;
+
 		return new Individual(
 			random.array(10, -5, 5),
 			0,
 			null,
 			idGenerator,
 			rangeFunction,
-			sigma
+			sigma,
+			gender
 		);
 	}
 
@@ -76,5 +81,9 @@ public class Individual {
 
 	public Individual[] parents() {
 		return this.parents;
+	}
+
+	public Gender gender() {
+		return this.gender;
 	}
 }

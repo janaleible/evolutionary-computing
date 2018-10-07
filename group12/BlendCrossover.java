@@ -37,8 +37,8 @@ public class BlendCrossover extends Crossover {
 		Individual[] parents = {one, another};
 
 		return new Individual[]{
-			new Individual(childGenome1, generation, parents, idGenerator, this.rangeFunction, this.sigma),
-			new Individual(childGenome2, generation, parents, idGenerator, this.rangeFunction, this.sigma)
+			new Individual(childGenome1, generation, parents, idGenerator, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female),
+			new Individual(childGenome2, generation, parents, idGenerator, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female)
 		};
 	}
 }
