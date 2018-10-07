@@ -22,6 +22,7 @@ public class DefaultConfiguration {
 	public String rangeFunction = "clip";
 	public String sigma_rankbasedselection = "1.5";
 	public String tournamentSize = "5";
+	public String sigma_adaptivemutation = "0.5";
 
 	public DefaultConfiguration(String function) {
 

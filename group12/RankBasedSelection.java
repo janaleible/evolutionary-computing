@@ -18,7 +18,7 @@ public class RankBasedSelection extends Selection{
 
     @Override
     public String toString() {
-        return (new StringBuilder()).append("Rankbased selection (sigma: ").append(this.sigma).append(")").toString();
+        return (new StringBuilder()).append("Rankbased selection (sigma_adaptiveMutation: ").append(this.sigma).append(")").toString();
     }
 
     @Override

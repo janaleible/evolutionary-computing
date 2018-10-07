@@ -66,7 +66,8 @@ public class player12 implements ContestSubmission {
 			this.diversityMeasure,
 			this.random,
 			config.populationSize,
-			config.rangeFunction
+			config.rangeFunction,
+			config.sigma_adaptiveMutation
 		);
 
 		Map<Integer, Individual> ancestry = new HashMap<>();

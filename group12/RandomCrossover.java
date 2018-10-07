@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class RandomCrossover extends Crossover {
 
-	public RandomCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
-		super(crossoverRate, random, idGenerator, rangeFunction);
+	public RandomCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
+		super(crossoverRate, random, idGenerator, rangeFunction, sigma);
 	}
 
 	@Override
@@ -28,8 +28,8 @@ public class RandomCrossover extends Crossover {
 		}
 
 		return new Individual[]{
-			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.rangeFunction),
-			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.rangeFunction)
+			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.rangeFunction, this.sigma),
+			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.rangeFunction, this.sigma)
 		};
 	}
 
