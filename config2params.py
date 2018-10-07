@@ -8,8 +8,7 @@ with open(configFileName) as configFile:
 
 params = ''
 
-for set_of_params in config:
-    for key, value in set_of_params.items():
-        params += ' -D{}={} '.format(key, value)
+for param, value in config.items():
+    params += ' -D{}={} '.format(param, value)
 
 print(params)

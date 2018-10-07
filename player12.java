@@ -115,6 +115,8 @@ public class player12 implements ContestSubmission {
 			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
 			//this.populationStatistics.write();
 
+			System.out.println(config.toString());
+
 			return;
 		}
 	}
