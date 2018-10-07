@@ -26,6 +26,8 @@ public class player12 implements ContestSubmission {
 
 	private RangeFunction rangeFunction;
 
+	private double sigma;
+
 	public player12() {
 
 		this.populationStatistics = new PopulationStatistics();
@@ -33,12 +35,14 @@ public class player12 implements ContestSubmission {
 		this.random = new ExtendedRandom();
 		this.idGenerator = new IDGenerator();
 
+		this.sigma = 0.5;
+
 		// TODO: make used implementations configurable
-		this.rangeFunction = new ClipRange(-5, 5);
-		this.crossover = new ArithmeticCrossover(1, this.random, this.idGenerator, this.rangeFunction);
+		this.rangeFunction = new WrapRange(-5, 5);
+		this.crossover = new BlendCrossover(1, this.random, this.idGenerator, this.rangeFunction, this.sigma);
 		this.mutation = new AdaptiveMutation(this.random);
 
-		this.parentSelection = new RankBasedSelection(this.random, 1.5);
+		this.parentSelection = new RankBasedSelection(this.random, 2);
 		this.survivorSelection = new TournamentSelection(5, this.random);
 
 		this.diversityMeasure = new InertiaDiversityMeasure();
@@ -85,7 +89,8 @@ public class player12 implements ContestSubmission {
 			this.diversityMeasure,
 			this.random,
 			128,
-				this.rangeFunction
+			this.rangeFunction,
+			this.sigma
 		);
 
 		this.ancestry = new HashMap<>();

@@ -15,7 +15,7 @@ public class Individual {
 
 	private double sigma;
 
-	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, RangeFunction rangeFunction) {
+	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
 
 		this.id = idGenerator.next();
 		this.rangeFunction = rangeFunction;
@@ -25,7 +25,7 @@ public class Individual {
 		this.parents = parents;
 
 
-		this.sigma = 1;
+		this.sigma = sigma;
 	}
 
 	public double getSigma() {
@@ -45,13 +45,14 @@ public class Individual {
 		this.genotype = this.rangeFunction.limitToRange(newGenome);
 	}
 
-	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
+	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
 		return new Individual(
 			random.array(10, -5, 5),
 			0,
 			null,
 			idGenerator,
-			rangeFunction
+			rangeFunction,
+			sigma
 		);
 	}
 

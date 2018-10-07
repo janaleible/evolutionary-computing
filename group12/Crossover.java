@@ -6,12 +6,14 @@ public abstract class Crossover {
 	protected ExtendedRandom random;
 	protected IDGenerator idGenerator;
 	protected RangeFunction rangeFunction;
+	protected double sigma;
 
-	public Crossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction) {
+	public Crossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
 		this.crossoverRate = crossoverRate;
 		this.random = random;
 		this.idGenerator = idGenerator;
 		this.rangeFunction = rangeFunction;
+		this.sigma = sigma;
 	}
 
 	protected abstract Individual[] getOffspring(Individual one, Individual another, int generation);

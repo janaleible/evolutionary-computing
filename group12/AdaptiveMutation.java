@@ -5,6 +5,8 @@ public class AdaptiveMutation extends Mutation {
 	private ExtendedRandom random;
 	private double learningRate;
 
+
+
 	public AdaptiveMutation(ExtendedRandom random) {
 		this(random, 1 / Math.sqrt(10)); // rule of thumb depending on size of genome
 	}
