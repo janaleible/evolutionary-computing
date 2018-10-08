@@ -8,6 +8,11 @@ public class TournamentSelection extends Selection {
 	private int tournamentSize;
 	private ExtendedRandom random;
 
+	@Override
+	public String toString() {
+		return (new StringBuilder()).append("Tournament selection (size: ").append(this.tournamentSize).append(")").toString();
+	}
+
 	public TournamentSelection(int tournamentSize, ExtendedRandom random) {
 		this.tournamentSize = tournamentSize;
 		this.random = random;

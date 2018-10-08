@@ -36,4 +36,9 @@ public class RandomCrossover extends Crossover {
 	protected int cutoff() {
 		return this.random.nextInt(10);
 	}
+
+	@Override
+	public String toString() {
+		return "Random Crossover";
+	}
 }

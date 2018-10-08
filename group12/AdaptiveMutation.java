@@ -38,4 +38,9 @@ public class AdaptiveMutation extends Mutation {
 	private double mutateSigma(double sigma) {
 		return Math.max(0.1, sigma * Math.exp(this.learningRate * this.random.nextGaussian()));
 	}
+
+	@Override
+	public String toString() {
+		return "Adaptive Mutation";
+	}
 }

@@ -17,6 +17,11 @@ public class RankBasedSelection extends Selection{
     }
 
     @Override
+    public String toString() {
+        return (new StringBuilder()).append("Rankbased selection (sigma_adaptiveMutation: ").append(this.sigma).append(")").toString();
+    }
+
+    @Override
     public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
         population.sort(Comparator.comparingDouble(Individual::getFitness));
