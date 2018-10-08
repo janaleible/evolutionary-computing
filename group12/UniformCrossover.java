@@ -7,6 +7,11 @@ public class UniformCrossover extends Crossover {
 	}
 
 	@Override
+	public String toString() {
+		return "Uniform Crossover";
+	}
+
+	@Override
     public Individual[] getOffspring(Individual one, Individual another, int generation) {
 
         Individual[] parents = new Individual[2];

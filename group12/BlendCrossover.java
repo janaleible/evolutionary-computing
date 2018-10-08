@@ -15,6 +15,11 @@ public class BlendCrossover extends Crossover {
 	}
 
 	@Override
+	public String toString() {
+		return "Blend Crossover";
+	}
+
+	@Override
 	public Individual[] getOffspring(Individual one, Individual another, int generation) {
 
 		double[] childGenome1 = new double[one.genome().length];

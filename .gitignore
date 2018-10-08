@@ -1,8 +1,12 @@
 .idea/
 tmp/
 out/
+
 visualisations/*
 !visualisations/.gitkeep
+
+gridsearch/*
+!gridsearch/.gitkeep
 
 *.jar
 *.class

@@ -6,27 +6,15 @@ import java.util.*;
 
 public class player12 implements ContestSubmission {
 
-	private DiversityMeasure diversityMeasure;
 	private ExtendedRandom random;
 	private ContestEvaluation contestEvaluation;
 	private EvaluationsCounter evaluationsCounter;
 
 	private IDGenerator idGenerator;
-
-	private Crossover crossover;
-	private Mutation mutation;
-
-	private Selection parentSelection;
-	private Selection survivorSelection;
-
-	private Population population;
-	private Map<Integer, Individual> ancestry;
-
+	private DiversityMeasure diversityMeasure;
 	private PopulationStatistics populationStatistics;
 
-	private RangeFunction rangeFunction;
-
-	private double sigma;
+	private String function;
 
 	public player12() {
 
@@ -35,18 +23,7 @@ public class player12 implements ContestSubmission {
 		this.random = new ExtendedRandom();
 		this.idGenerator = new IDGenerator();
 
-		this.sigma = 0.5;
-
-		// TODO: make used implementations configurable
-		this.rangeFunction = new WrapRange(-5, 5);
-		this.crossover = new BlendCrossover(1, this.random, this.idGenerator, this.rangeFunction, this.sigma);
-		this.mutation = new AdaptiveMutation(this.random);
-
-		this.parentSelection = new GenderAware(new RankBasedSelection(this.random, 2));
-		this.survivorSelection = new TournamentSelection(5, this.random);
-
 		this.diversityMeasure = new InertiaDiversityMeasure();
-
 	}
 
 	public void setSeed(long seed) {
@@ -70,32 +47,32 @@ public class player12 implements ContestSubmission {
         boolean hasStructure = Boolean.parseBoolean(properties.getProperty("Regular"));
         boolean isSeparable = Boolean.parseBoolean(properties.getProperty("Separable"));
 
-		// Do sth with property values, e.g. specify relevant settings of your algorithm
-        if(isMultimodal) {
-            // Do sth
-        } else {
-            // Do sth else
-        }
+        if (!isMultimodal && !hasStructure && !isSeparable) this.function = "BentCigar";
+        else if (!hasStructure) this.function = "Katsuura";
+        else if (isMultimodal) this.function = "Schaffers";
+        else this.function = "Sphere";
     }
 
 	public void run() {
 
+		Configuration config = new Configuration(this.random, this.idGenerator, this.function);
+
 		int generation = 0;
 
-		this.population = new Population(
+		Population population = new Population(
 			this.idGenerator,
-			this.parentSelection,
-			this.survivorSelection,
+			config.parentSelection,
+			config.survivorSelection,
 			this.diversityMeasure,
 			this.random,
-			128,
-			this.rangeFunction,
-			this.sigma
+			config.populationSize,
+			config.rangeFunction,
+			config.sigma_adaptiveMutation
 		);
 
-		this.ancestry = new HashMap<>();
-		for (Individual individual : this.population.iterable()) {
-			this.ancestry.put(individual.id, individual);
+		Map<Integer, Individual> ancestry = new HashMap<>();
+		for (Individual individual : population.iterable()) {
+			ancestry.put(individual.id, individual);
 		}
 
 		try {
@@ -103,43 +80,43 @@ public class player12 implements ContestSubmission {
 
 				generation++;
 
-				for(Individual individual : this.population.iterable()) {
+				for(Individual individual : population.iterable()) {
 					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
 				}
 
 				this.populationStatistics.update(
 					generation,
-					this.population.getMaximumFitness(),
-					this.population.getAverageFitness(),
-					this.population.getAverageAge(generation),
-					this.population.getDiversity()
+					population.getMaximumFitness(),
+					population.getAverageFitness(),
+					population.getAverageAge(generation),
+					population.getDiversity()
 				);
 
-				// TODO: make reproduction method on population
-				// TODO: find generic way to set parameters
-				List<Individual> parents = this.population.selectParents(64);
+				List<Individual> parents = population.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
 				ParentMatching parentMatching = new GenderAwareParentMatching();
 
 				for (Individual[] couple : parentMatching.getMatches(parents)) {
-					Individual[] children = this.crossover.cross(couple[0], couple[1], generation);
-					offspring.add(this.mutation.mutate(children[0]));
-					offspring.add(this.mutation.mutate(children[1]));
-					this.ancestry.put(children[0].id, children[0]);
-					this.ancestry.put(children[1].id, children[1]);
+					Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
+					offspring.add(config.mutation.mutate(children[0]));
+					offspring.add(config.mutation.mutate(children[1]));
+					ancestry.put(children[0].id, children[0]);
+					ancestry.put(children[1].id, children[1]);
 				}
 
-				List<Individual> survivors = this.population.selectSurvivors(this.population.iterable().size() - offspring.size());
+				List<Individual> survivors = population.selectSurvivors(population.iterable().size() - offspring.size());
 
-				this.population.replace(survivors, offspring);
+				population.replace(survivors, offspring);
 			}
 
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution
 
-			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
+			//PopulationVisualiser.visualise("population", ancestry, this.population.getFittestIndividual());
 			//this.populationStatistics.write();
+
+			System.out.println(config.toString());
 
 			return;
 		}

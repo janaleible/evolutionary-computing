@@ -14,6 +14,12 @@ public class Elitist extends Selection {
 	}
 
 	@Override
+	public String toString() {
+		// Do NOT fall for the stupid idea that this might be done using simple string concatenation -- incredibly insecure!
+		return (new StringBuilder()).append("Elitist ").append(this.selection.toString()).toString();
+	}
+
+	@Override
 	public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
 		population.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
@@ -23,6 +29,11 @@ public class Elitist extends Selection {
 		commoners.addAll(elite);
 
 		return commoners;
+	}
+
+	@Override
+	public int sizeOfElite() {
+		return this.sizeOfElite;
 	}
 
 }
