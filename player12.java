@@ -95,9 +95,7 @@ public class player12 implements ContestSubmission {
 				List<Individual> parents = population.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
-				ParentMatching parentMatching = new GenderAwareParentMatching();
-
-				for (Individual[] couple : parentMatching.getMatches(parents)) {
+				for (Individual[] couple : config.parentMatching.getMatches(parents)) {
 					Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
 					offspring.add(config.mutation.mutate(children[0]));
 					offspring.add(config.mutation.mutate(children[1]));

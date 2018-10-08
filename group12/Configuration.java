@@ -3,6 +3,7 @@ package group12;
 public class Configuration {
 
 	public Selection parentSelection;
+	public ParentMatching parentMatching;
 	public Selection survivorSelection;
 	public int populationSize;
 	public double generationGap;
@@ -64,20 +65,31 @@ public class Configuration {
 				this.mutation = new AdaptiveMutation(random, learningRate);
 				break;
 		}
-		
+
+		Selection parentSelection = null;
+		boolean genderAware = Boolean.parseBoolean(System.getProperty("genderaware", defaultConfiguration.genderAware));
 		switch(System.getProperty("parentselection", defaultConfiguration.parentSelection)) {
 			case "fitnessproportional":
-				this.parentSelection = new FitnessProportionalSelection(random);
+				parentSelection = new FitnessProportionalSelection(random);
 				break;
 			case "rankbased":
 				double sigma = Double.parseDouble(System.getProperty("sigma_rankbasedselection", defaultConfiguration.sigma_rankbasedselection));
-				this.parentSelection = new RankBasedSelection(random, sigma);
+				parentSelection = new RankBasedSelection(random, sigma);
 				break;
 			case "tournament":
 				int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
-				this.parentSelection = new TournamentSelection(tournamentSize, random);
+				parentSelection = new TournamentSelection(tournamentSize, random);
 				break;
 		}
+
+		if (genderAware) {
+			parentSelection = new GenderAware(parentSelection);
+			this.parentMatching = new GenderAwareParentMatching();
+		}
+		else {
+			this.parentMatching = new ParentMatching(random);
+		}
+		this.parentSelection = parentSelection;
 		
 		Selection survivorSelection = null;
 		switch(System.getProperty("survivorselection", defaultConfiguration.survivorSelection)) {
