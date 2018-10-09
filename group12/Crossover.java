@@ -1,5 +1,7 @@
 package group12;
 
+import org.vu.contest.ContestEvaluation;
+
 public abstract class Crossover {
 
 	private double crossoverRate;
@@ -7,12 +9,16 @@ public abstract class Crossover {
 	protected IDGenerator idGenerator;
 	protected RangeFunction rangeFunction;
 	protected double sigma;
+	protected ContestEvaluation contestEvaluation;
+	protected EvaluationsCounter evaluationsCounter;
 
-	public Crossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
+	public Crossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation contestEvaluation, EvaluationsCounter counter, double sigma) {
 		this.crossoverRate = crossoverRate;
 		this.random = random;
 		this.idGenerator = idGenerator;
 		this.rangeFunction = rangeFunction;
+		this.contestEvaluation = contestEvaluation;
+		this.evaluationsCounter = counter;
 		this.sigma = sigma;
 	}
 

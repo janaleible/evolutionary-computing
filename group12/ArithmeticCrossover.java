@@ -1,9 +1,11 @@
 package group12;
 
+import org.vu.contest.ContestEvaluation;
+
 public class ArithmeticCrossover extends Crossover {
 
-	public ArithmeticCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
-		super(crossoverRate, random, idGenerator, rangeFunction, sigma);
+	public ArithmeticCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter, double sigma) {
+		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter, sigma);
 	}
 
 	@Override
@@ -25,8 +27,8 @@ public class ArithmeticCrossover extends Crossover {
 		}
 
 		return new Individual[] {
-			new Individual(childGenome1, generation, parents, this.idGenerator, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female),
-			new Individual(childGenome2, generation, parents, this.idGenerator, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female)
+			new Individual(childGenome1, generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female),
+			new Individual(childGenome2, generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female)
 		};
 	}
 }

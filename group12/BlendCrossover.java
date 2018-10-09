@@ -1,16 +1,18 @@
 package group12;
 
+import org.vu.contest.ContestEvaluation;
+
 public class BlendCrossover extends Crossover {
 
 	private double alpha;
 
-	public BlendCrossover(double alpha, double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
-		super(crossoverRate, random, idGenerator, rangeFunction, sigma);
+	public BlendCrossover(double alpha, double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter, double sigma) {
+		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter, sigma);
 		this.alpha = alpha;
 	}
 
-	public BlendCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
-		super(crossoverRate, random, idGenerator, rangeFunction, sigma);
+	public BlendCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter, double sigma) {
+		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter, sigma);
 		this.alpha = 0.5;
 	}
 
@@ -42,8 +44,8 @@ public class BlendCrossover extends Crossover {
 		Individual[] parents = {one, another};
 
 		return new Individual[]{
-			new Individual(childGenome1, generation, parents, idGenerator, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female),
-			new Individual(childGenome2, generation, parents, idGenerator, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female)
+			new Individual(childGenome1, generation, parents, idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female),
+			new Individual(childGenome2, generation, parents, idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female)
 		};
 	}
 }
