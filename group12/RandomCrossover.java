@@ -1,11 +1,11 @@
 package group12;
 
-import org.vu.contest.ContestEvaluation;
+import java.util.Random;
 
 public class RandomCrossover extends Crossover {
 
-	public RandomCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter, double sigma) {
-		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter, sigma);
+	public RandomCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, double sigma) {
+		super(crossoverRate, random, idGenerator, rangeFunction, sigma);
 	}
 
 	@Override
@@ -27,11 +27,10 @@ public class RandomCrossover extends Crossover {
 			}
 		}
 
-		Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female);
-
-		return children;
+		return new Individual[]{
+			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female),
+			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female)
+		};
 	}
 
 	protected int cutoff() {

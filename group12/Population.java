@@ -1,7 +1,5 @@
 package group12;
 
-import org.vu.contest.ContestEvaluation;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +13,6 @@ public class Population {
 	private IDGenerator idGenerator;
 	private DiversityMeasure diversityMeasure;
 
-	public final int islandID;
-
 	private int populationSize;
 	private RangeFunction rangeFunction;
 
@@ -24,8 +20,6 @@ public class Population {
 
 	public Population(
 		IDGenerator idGenerator,
-		ContestEvaluation contestEvaluation,
-		EvaluationsCounter evaluationsCounter,
 		Selection parentSelection,
 		Selection survivorSelection,
 		DiversityMeasure diversityMeasure,
@@ -42,20 +36,20 @@ public class Population {
 		this.idGenerator = idGenerator;
 
 		this.populationSize = populationSize;
-		this.islandID = this.idGenerator.nextIsland();
 
 		this.rangeFunction = rangeFunction;
+
 		this.sigma = sigma;
 
-		intialisePopulation(this.populationSize, contestEvaluation, evaluationsCounter);
+		intialisePopulation(this.populationSize);
 	}
 
-	private void intialisePopulation(int populationSize, ContestEvaluation contestEvaluation, EvaluationsCounter counter) {
+	private void intialisePopulation(int populationSize) {
 
 		this.population = new ArrayList<>(populationSize);
 
 		for (int i = 0; i < populationSize; i++) {
-			this.population.add(Individual.createRandom(this.random, this.idGenerator, contestEvaluation, counter, this.rangeFunction, this.sigma));
+			this.population.add(Individual.createRandom(this.random, this.idGenerator,this.rangeFunction, this.sigma));
 		}
 	}
 
@@ -77,11 +71,11 @@ public class Population {
 		return this.population;
 	}
 
-	public double getAverageFitness() throws EvaluationsLimitExceededException {
+	public double getAverageFitness() {
 		return this.population.stream().mapToDouble(Individual::getFitness).average().orElse(-10000);
 	}
 
-	public double getMaximumFitness() throws EvaluationsLimitExceededException {
+	public double getMaximumFitness() {
 		return this.population.stream().mapToDouble(individual -> individual.getFitness() != null ? individual.getFitness() : -100000).max().orElse(-10000);
 	}
 
@@ -93,7 +87,7 @@ public class Population {
 		return this.diversityMeasure.measure(this);
 	}
 
-	public Individual getFittestIndividual() throws EvaluationsLimitExceededException {
+	public Individual getFittestIndividual() {
 		return this.population.stream().filter(individual -> individual.getFitness() == this.getMaximumFitness()).findAny().orElse(null);
 	}
 

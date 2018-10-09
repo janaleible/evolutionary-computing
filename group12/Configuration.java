@@ -1,10 +1,7 @@
 package group12;
 
-import org.vu.contest.ContestEvaluation;
-
 public class Configuration {
 
-	public int numberOfMigrants;
 	public Selection parentSelection;
 	public ParentMatching parentMatching;
 	public Selection survivorSelection;
@@ -14,18 +11,12 @@ public class Configuration {
 	public Mutation mutation;
 	public RangeFunction rangeFunction;
 	public double sigma_adaptiveMutation;
-	public int numberOfIslands;
-	public int generationsPerEpoch;
 
-	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
+	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function) {
 		
 		DefaultConfiguration defaultConfiguration = new DefaultConfiguration(function);
 
-		this.numberOfIslands = Integer.parseInt(System.getProperty("numberofislands", defaultConfiguration.numberOfIslands));
-		this.generationsPerEpoch = Integer.parseInt(System.getProperty("generationsperepoch", defaultConfiguration.generationsPerEpoch));
-		this.numberOfMigrants = Integer.parseInt(System.getProperty("numberofmigrants", defaultConfiguration.numberOfMigrants));
-
-		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize)) / numberOfIslands;
+		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize));
 		this.generationGap = Double.parseDouble(System.getProperty("generationgap", defaultConfiguration.generationGap));
 
 		this.sigma_adaptiveMutation = Double.parseDouble(System.getProperty("sigma_adaptivemutation", defaultConfiguration.sigma_adaptivemutation));
@@ -43,20 +34,20 @@ public class Configuration {
 
 		switch(System.getProperty("crossover", defaultConfiguration.crossover)) {
 			case "arithmetic": 
-				this.crossover = new ArithmeticCrossover(crossoverRate, random, idGenerator, rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
+				this.crossover = new ArithmeticCrossover(crossoverRate, random, idGenerator, rangeFunction, this.sigma_adaptiveMutation);
 				break;
 			case "blend":
 				double alpha = Double.parseDouble(System.getProperty("alpha_blendCrossover", defaultConfiguration.alpha_blendCrossover));
-				this.crossover = new BlendCrossover(alpha, crossoverRate, random,  idGenerator, this.rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
+				this.crossover = new BlendCrossover(alpha, crossoverRate, random,  idGenerator, this.rangeFunction, this.sigma_adaptiveMutation);
 				break;
 			case "random":
-				this.crossover = new RandomCrossover(crossoverRate, random, idGenerator, this.rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
+				this.crossover = new RandomCrossover(crossoverRate, random, idGenerator, this.rangeFunction, this.sigma_adaptiveMutation);
 				break;
 			case "simple":
-				this.crossover = new SimpleCrossover(crossoverRate, random, idGenerator, this.rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
+				this.crossover = new SimpleCrossover(crossoverRate, random, idGenerator, this.rangeFunction, this.sigma_adaptiveMutation);
 				break;
 			case "uniform":
-				this.crossover = new UniformCrossover(crossoverRate, random, idGenerator, this.rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
+				this.crossover = new UniformCrossover(crossoverRate, random, idGenerator, this.rangeFunction, this.sigma_adaptiveMutation);
 				break;
 		}
 		

@@ -55,77 +55,63 @@ public class player12 implements ContestSubmission {
 
 	public void run() {
 
-		Configuration config = new Configuration(this.random, this.idGenerator, this.function, this.contestEvaluation, this.evaluationsCounter);
+		Configuration config = new Configuration(this.random, this.idGenerator, this.function);
 
 		int generation = 0;
 
-		List<Population> islands = new ArrayList<>(config.numberOfIslands);
+		Population population = new Population(
+			this.idGenerator,
+			config.parentSelection,
+			config.survivorSelection,
+			this.diversityMeasure,
+			this.random,
+			config.populationSize,
+			config.rangeFunction,
+			config.sigma_adaptiveMutation
+		);
 
-		for (int i = 0; i < config.numberOfIslands; i++) {
-			islands.add(new Population(
-				this.idGenerator,
-				this.contestEvaluation,
-				this.evaluationsCounter,
-				config.parentSelection,
-				config.survivorSelection,
-				this.diversityMeasure,
-				this.random,
-				config.populationSize,
-				config.rangeFunction,
-				config.sigma_adaptiveMutation
-			));
-		}
-
-		Archipelago galapagos = new Archipelago(this.random, islands);
 		Map<Integer, Individual> ancestry = new HashMap<>();
+		for (Individual individual : population.iterable()) {
+			ancestry.put(individual.id, individual);
+		}
 
 		try {
 			while (true) {
 
 				generation++;
-//
-//				for(Individual individual : population.iterable()) {
-//					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
-//				}
 
-				for (Population island : galapagos.islands()) {
-
-					for (Individual individual : island.iterable()) {
-						ancestry.put(individual.id, individual);
-					}
-
-					this.populationStatistics.update(
-						generation,
-						island.islandID,
-						island.getMaximumFitness(),
-						island.getAverageFitness(),
-						island.getAverageAge(generation),
-						island.getDiversity()
-					);
-
-					List<Individual> parents = island.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
-					List<Individual> offspring = new ArrayList<>(parents.size());
-
-					for (Individual[] couple : config.parentMatching.getMatches(parents)) {
-						Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
-						offspring.add(config.mutation.mutate(children[0]));
-						offspring.add(config.mutation.mutate(children[1]));
-						ancestry.put(children[0].id, children[0]);
-						ancestry.put(children[1].id, children[1]);
-					}
-
-					List<Individual> survivors = island.selectSurvivors(island.iterable().size() - offspring.size());
-
-					island.replace(survivors, offspring);
+				for(Individual individual : population.iterable()) {
+					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
 				}
 
-				if((generation + 1) % config.generationsPerEpoch == 0) galapagos.migration(config.numberOfMigrants);
+				this.populationStatistics.update(
+					generation,
+					population.getMaximumFitness(),
+					population.getAverageFitness(),
+					population.getAverageAge(generation),
+					population.getDiversity()
+				);
+
+				List<Individual> parents = population.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
+				List<Individual> offspring = new ArrayList<>(parents.size());
+
+				for (Individual[] couple : config.parentMatching.getMatches(parents)) {
+					Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
+					offspring.add(config.mutation.mutate(children[0]));
+					offspring.add(config.mutation.mutate(children[1]));
+					ancestry.put(children[0].id, children[0]);
+					ancestry.put(children[1].id, children[1]);
+				}
+
+				List<Individual> survivors = population.selectSurvivors(population.iterable().size() - offspring.size());
+
+				population.replace(survivors, offspring);
 			}
 
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution
 
-			//PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
+			//PopulationVisualiser.visualise("population", ancestry, this.population.getFittestIndividual());
 			//this.populationStatistics.write();
 
 			System.out.println(config.toString());

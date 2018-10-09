@@ -25,14 +25,9 @@ public class DefaultConfiguration {
 	public String tournamentSize = "5";
 	public String sigma_adaptivemutation = "0.5";
 
-	public String numberOfIslands = "1";
-	public String generationsPerEpoch = "25";
-	public String numberOfMigrants = "2";
-
-
 	public DefaultConfiguration(String function) {
 
-		// use to set specific values
+		// TODO: use to set specific values
 		switch (function) {
 			case "Sphere":
 				this.tournamentSize = "25";

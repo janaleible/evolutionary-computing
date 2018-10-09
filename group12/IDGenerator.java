@@ -2,11 +2,9 @@ package group12;
 
 public class IDGenerator {
 
-	private int individualID = 0;
-	private int islandID = 0;
+	private int id = 0;
 
-	public int nextIndividual() {
-		return individualID++;
+	public int next() {
+		return id++;
 	}
-	public int nextIsland() { return islandID++; }
 }
