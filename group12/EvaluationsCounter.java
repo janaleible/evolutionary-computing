@@ -16,4 +16,8 @@ public class EvaluationsCounter {
 			throw new EvaluationsLimitExceededException();
 		}
 	}
+
+	public int getEvaluations() {
+		return evaluations;
+	}
 }

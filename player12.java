@@ -95,9 +95,8 @@ public class player12 implements ContestSubmission {
 				List<Individual> parents = population.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
 				List<Individual> offspring = new ArrayList<>(parents.size());
 
-				Collections.shuffle(parents, this.random); // make sure that random parents mate
-				for (int i = 0; i < Math.floor(parents.size() / 2.0); i++) {
-					Individual[] children = config.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
+				for (Individual[] couple : config.parentMatching.getMatches(parents)) {
+					Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
 					offspring.add(config.mutation.mutate(children[0]));
 					offspring.add(config.mutation.mutate(children[1]));
 					ancestry.put(children[0].id, children[0]);
@@ -112,7 +111,7 @@ public class player12 implements ContestSubmission {
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution
 
-			//PopulationVisualiser.visualise("population", this.ancestry, this.population.getFittestIndividual());
+			//PopulationVisualiser.visualise("population", ancestry, this.population.getFittestIndividual());
 			//this.populationStatistics.write();
 
 			System.out.println(config.toString());

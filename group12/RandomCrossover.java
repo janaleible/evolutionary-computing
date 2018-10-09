@@ -28,8 +28,8 @@ public class RandomCrossover extends Crossover {
 		}
 
 		return new Individual[]{
-			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.rangeFunction, this.sigma),
-			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.rangeFunction, this.sigma)
+			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female),
+			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female)
 		};
 	}
 
