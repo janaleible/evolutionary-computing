@@ -7,6 +7,11 @@ import java.util.Random;
 
 public class FitnessProportionalSelection extends Selection {
 
+	@Override
+	public String toString() {
+		return "Fitness-proportional Selection";
+	}
+
 	private Random random;
 
 	public FitnessProportionalSelection(Random random) {
@@ -15,6 +20,8 @@ public class FitnessProportionalSelection extends Selection {
 
 	@Override
 	public List<Individual> select(int numberOfPicks, List<Individual> population) {
+
+		if (numberOfPicks == 0) return new ArrayList<Individual>();
 
 		double totalFitness = population.stream().mapToDouble(Individual::getFitness).sum();
 		

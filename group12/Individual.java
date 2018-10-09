@@ -15,9 +15,10 @@ public class Individual {
 	public final int id;
 	private RangeFunction rangeFunction;
 
+	private Gender gender;
 	private double sigma;
 
-	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, RangeFunction rangeFunction) {
+	public Individual(double[] genotype, int generation, Individual[] parents, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, RangeFunction rangeFunction, double sigma, Gender gender) {
 
 		this.idGenerator = idGenerator;
 		this.contestEvaluation = contestEvaluation;
@@ -30,7 +31,8 @@ public class Individual {
 		this.generation = generation;
 		this.parents = parents;
 
-		this.sigma = 1;
+		this.gender = gender;
+		this.sigma = sigma;
 	}
 
 	public double getSigma() {
@@ -50,7 +52,8 @@ public class Individual {
 		this.genotype = this.rangeFunction.limitToRange(newGenome);
 	}
 
-	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, RangeFunction rangeFunction) {
+	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, RangeFunction rangeFunction, double sigma) {
+
 		return new Individual(
 			random.array(10, -5, 5),
 			0,
@@ -58,7 +61,9 @@ public class Individual {
 			idGenerator,
 			contestEvaluation,
 			evaluationsCounter,
-			rangeFunction
+			rangeFunction,
+			sigma,
+			random.coinflip() ? Gender.male : Gender.female
 		);
 	}
 
@@ -92,9 +97,15 @@ public class Individual {
 			this.idGenerator,
 			this.contestEvaluation,
 			this.evaluationsCounter,
-			this.rangeFunction
+			this.rangeFunction,
+			this.sigma,
+			this.gender
 		);
 		clone.setFitness(this.fitness);
 		return clone;
+	}
+		
+	public Gender gender() {
+		return this.gender;
 	}
 }

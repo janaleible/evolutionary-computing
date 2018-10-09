@@ -4,8 +4,13 @@ import org.vu.contest.ContestEvaluation;
 
 public class UniformCrossover extends Crossover {
 
-	public UniformCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter) {
-		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter);
+	public UniformCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter, double sigma) {
+		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter, sigma);
+	}
+
+	@Override
+	public String toString() {
+		return "Uniform Crossover";
 	}
 
 	@Override
@@ -29,8 +34,8 @@ public class UniformCrossover extends Crossover {
         }
 
 		return new Individual[] {
-			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction),
-			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction)
+			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female),
+			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female)
 		};
     }
 }

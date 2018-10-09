@@ -4,8 +4,8 @@ import org.vu.contest.ContestEvaluation;
 
 public class RandomCrossover extends Crossover {
 
-	public RandomCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter) {
-		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter);
+	public RandomCrossover(double crossoverRate, ExtendedRandom random, IDGenerator idGenerator, RangeFunction rangeFunction, ContestEvaluation evaluation, EvaluationsCounter counter, double sigma) {
+		super(crossoverRate, random, idGenerator, rangeFunction, evaluation, counter, sigma);
 	}
 
 	@Override
@@ -28,13 +28,18 @@ public class RandomCrossover extends Crossover {
 		}
 
 		Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction);
+		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female);
+		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female);
 
 		return children;
 	}
 
 	protected int cutoff() {
 		return this.random.nextInt(10);
+	}
+
+	@Override
+	public String toString() {
+		return "Random Crossover";
 	}
 }

@@ -6,22 +6,15 @@ import java.util.*;
 
 public class player12 implements ContestSubmission {
 
-	private DiversityMeasure diversityMeasure;
 	private ExtendedRandom random;
 	private ContestEvaluation contestEvaluation;
 	private EvaluationsCounter evaluationsCounter;
 
 	private IDGenerator idGenerator;
-
-	private Crossover crossover;
-	private Mutation mutation;
-
-	private Selection parentSelection;
-	private Selection survivorSelection;
-
+	private DiversityMeasure diversityMeasure;
 	private PopulationStatistics populationStatistics;
 
-	private RangeFunction rangeFunction;
+	private String function;
 
 	public player12() {
 
@@ -29,6 +22,8 @@ public class player12 implements ContestSubmission {
 
 		this.random = new ExtendedRandom();
 		this.idGenerator = new IDGenerator();
+
+		this.diversityMeasure = new InertiaDiversityMeasure();
 	}
 
 	public void setSeed(long seed) {
@@ -52,67 +47,48 @@ public class player12 implements ContestSubmission {
         boolean hasStructure = Boolean.parseBoolean(properties.getProperty("Regular"));
         boolean isSeparable = Boolean.parseBoolean(properties.getProperty("Separable"));
 
-		// Do sth with property values, e.g. specify relevant settings of your algorithm
-        if(isMultimodal) {
-            // Do sth
-        } else {
-            // Do sth else
-        }
+        if (!isMultimodal && !hasStructure && !isSeparable) this.function = "BentCigar";
+        else if (!hasStructure) this.function = "Katsuura";
+        else if (isMultimodal) this.function = "Schaffers";
+        else this.function = "Sphere";
     }
 
 	public void run() {
 
-		this.rangeFunction = new ClipRange(-5, 5);
-
-		// TODO: make used implementations configurable
-		this.crossover = new ArithmeticCrossover(0.8, this.random, this.idGenerator, this.rangeFunction, this.contestEvaluation, this.evaluationsCounter);
-		this.mutation = new AdaptiveMutation(this.random);
-
-		this.parentSelection = new FitnessProportionalSelection(this.random);
-		this.survivorSelection = new Elitist(new FitnessProportionalSelection(this.random), 5);
-
-		this.diversityMeasure = new InertiaDiversityMeasure();
-
+		Configuration config = new Configuration(this.random, this.idGenerator, this.function, this.contestEvaluation, this.evaluationsCounter);
 
 		int generation = 0;
 
-		Population population = new Population(
+		Population population1 = new Population(
 			this.idGenerator,
 			this.contestEvaluation,
 			this.evaluationsCounter,
-			this.parentSelection,
-			this.survivorSelection,
+			config.parentSelection,
+			config.survivorSelection,
 			this.diversityMeasure,
 			this.random,
-			128,
-			this.rangeFunction
+			config.populationSize,
+			config.rangeFunction,
+			config.sigma_adaptiveMutation
 		);
 
-		Population population2 = new Population(
-			this.idGenerator,
-			this.contestEvaluation,
-			this.evaluationsCounter,
-			this.parentSelection,
-			this.survivorSelection,
-			this.diversityMeasure,
-			this.random,
-			128,
-				this.rangeFunction
-		);
-
-		Archipelago galapagos = new Archipelago(this.random, population, population2);
-
+		Archipelago galapagos = new Archipelago(this.random, population1);
 		Map<Integer, Individual> ancestry = new HashMap<>();
-		for (Individual individual : population.iterable()) {
-			ancestry.put(individual.id, individual);
-		}
 
 		try {
 			while (true) {
 
 				generation++;
+//
+//				for(Individual individual : population.iterable()) {
+//					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
+//				}
 
 				for (Population island : galapagos.islands()) {
+
+					for (Individual individual : population1.iterable()) {
+						ancestry.put(individual.id, individual);
+					}
 
 					this.populationStatistics.update(
 						generation,
@@ -123,16 +99,13 @@ public class player12 implements ContestSubmission {
 						island.getDiversity()
 					);
 
-					// TODO: make reproduction method on population
-					// TODO: find generic way to set parameters
-					List<Individual> parents = island.selectParents(64);
+					List<Individual> parents = island.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
 					List<Individual> offspring = new ArrayList<>(parents.size());
 
-					Collections.shuffle(parents, this.random); // make sure that random parents mate
-					for (int i = 0; i < (parents.size() / 2); i++) {
-						Individual[] children = this.crossover.cross(parents.get(i), parents.get(i + (parents.size() / 2)), generation);
-						offspring.add(this.mutation.mutate(children[0]));
-						offspring.add(this.mutation.mutate(children[1]));
+					for (Individual[] couple : config.parentMatching.getMatches(parents)) {
+						Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
+						offspring.add(config.mutation.mutate(children[0]));
+						offspring.add(config.mutation.mutate(children[1]));
 						ancestry.put(children[0].id, children[0]);
 						ancestry.put(children[1].id, children[1]);
 					}
@@ -142,14 +115,17 @@ public class player12 implements ContestSubmission {
 					island.replace(survivors, offspring);
 				}
 
-				if (generation % 10 == 0) galapagos.migration(0.02);
+				// if(generation % config.epoch == 0) galapagos.migration(config.migrationRate);
+
 			}
 
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution
 
-			//PopulationVisualiser.visualise("population", this.ancestry, island.getFittestIndividual());
+			//PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
 			//this.populationStatistics.write();
+
+			System.out.println(config.toString());
 
 			return;
 		}
