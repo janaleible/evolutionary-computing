@@ -13,6 +13,11 @@ public class GenderAware extends Selection {
 	}
 
 	@Override
+	public String toString() {
+		return (new StringBuilder()).append("Gender aware ").append(this.selection.toString()).toString();
+	}
+
+	@Override
 	public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
 		List<Individual> males = population.stream().filter(individual -> individual.gender() == Gender.male).collect(Collectors.toList());
