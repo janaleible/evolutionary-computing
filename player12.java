@@ -59,20 +59,24 @@ public class player12 implements ContestSubmission {
 
 		int generation = 0;
 
-		Population population1 = new Population(
-			this.idGenerator,
-			this.contestEvaluation,
-			this.evaluationsCounter,
-			config.parentSelection,
-			config.survivorSelection,
-			this.diversityMeasure,
-			this.random,
-			config.populationSize,
-			config.rangeFunction,
-			config.sigma_adaptiveMutation
-		);
+		List<Population> islands = new ArrayList<>(config.numberOfIslands);
 
-		Archipelago galapagos = new Archipelago(this.random, population1);
+		for (int i = 0; i < config.numberOfIslands; i++) {
+			islands.add(new Population(
+				this.idGenerator,
+				this.contestEvaluation,
+				this.evaluationsCounter,
+				config.parentSelection,
+				config.survivorSelection,
+				this.diversityMeasure,
+				this.random,
+				config.populationSize,
+				config.rangeFunction,
+				config.sigma_adaptiveMutation
+			));
+		}
+
+		Archipelago galapagos = new Archipelago(this.random, islands);
 		Map<Integer, Individual> ancestry = new HashMap<>();
 
 		try {
@@ -86,7 +90,7 @@ public class player12 implements ContestSubmission {
 
 				for (Population island : galapagos.islands()) {
 
-					for (Individual individual : population1.iterable()) {
+					for (Individual individual : island.iterable()) {
 						ancestry.put(individual.id, individual);
 					}
 
@@ -115,7 +119,7 @@ public class player12 implements ContestSubmission {
 					island.replace(survivors, offspring);
 				}
 
-				// if(generation % config.epoch == 0) galapagos.migration(config.migrationRate);
+				// if(generation % config.generationsPerEpoch == 0) galapagos.migration(config.migrationRate);
 
 			}
 

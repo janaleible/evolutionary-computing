@@ -7,10 +7,10 @@ public class Archipelago {
 	private List<Population> islands;
 	private ExtendedRandom random;
 
-	public Archipelago(ExtendedRandom random, Population... islands) {
+	public Archipelago(ExtendedRandom random, List<Population> islands) {
 		this.random = random;
-		this.islands = new ArrayList<>(islands.length);
-		this.islands.addAll(Arrays.asList(islands));
+		this.islands = new ArrayList<>(islands.size());
+		this.islands.addAll(islands);
 	}
 
 	public List<Population> islands() {

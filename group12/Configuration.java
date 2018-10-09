@@ -13,12 +13,17 @@ public class Configuration {
 	public Mutation mutation;
 	public RangeFunction rangeFunction;
 	public double sigma_adaptiveMutation;
+	public int numberOfIslands;
+	public int generationsPerEpoch;
 
 	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
 		
 		DefaultConfiguration defaultConfiguration = new DefaultConfiguration(function);
 
-		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize));
+		this.numberOfIslands = Integer.parseInt(System.getProperty("numberofislands", defaultConfiguration.numberOfIslands));
+		this.generationsPerEpoch = Integer.parseInt(System.getProperty("generationsperepoch", defaultConfiguration.generationsPerEpoch));
+
+		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize)) / numberOfIslands;
 		this.generationGap = Double.parseDouble(System.getProperty("generationgap", defaultConfiguration.generationGap));
 
 		this.sigma_adaptiveMutation = Double.parseDouble(System.getProperty("sigma_adaptivemutation", defaultConfiguration.sigma_adaptivemutation));
