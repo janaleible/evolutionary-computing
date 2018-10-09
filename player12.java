@@ -119,8 +119,7 @@ public class player12 implements ContestSubmission {
 					island.replace(survivors, offspring);
 				}
 
-				// if(generation % config.generationsPerEpoch == 0) galapagos.migration(config.migrationRate);
-
+				if((generation + 1) % config.generationsPerEpoch == 0) galapagos.migration(config.numberOfMigrants);
 			}
 
 		} catch (EvaluationsLimitExceededException exception) {

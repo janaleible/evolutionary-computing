@@ -17,7 +17,7 @@ public class Archipelago {
 		return this.islands;
 	}
 
-	public void migration(double migrationRate) {
+	public void migration(int numberOfMigrants) {
 
 		Collections.shuffle(this.islands, this.random);
 
@@ -30,12 +30,11 @@ public class Archipelago {
  			List<Individual> fromIsland = this.islands.get(i).iterable();
  			List<Individual> toIsland = this.islands.get(i > 0 ? i - 1 : this.islands.size() - 1).iterable();
 
- 			int numberOfImmigrants = (int)Math.ceil(toIsland.size() * migrationRate);
-			toIsland.subList(0, numberOfImmigrants).clear();
+			toIsland.subList(0, numberOfMigrants).clear();
 
-			List<Individual> immigrants = new ArrayList<>(numberOfImmigrants);
+			List<Individual> immigrants = new ArrayList<>(numberOfMigrants);
 			int numberOfInhabitants = fromIsland.size();
-			for (Individual immigrant : fromIsland.subList(numberOfInhabitants - numberOfImmigrants - 1, numberOfInhabitants - 1)) {
+			for (Individual immigrant : fromIsland.subList(numberOfInhabitants - numberOfMigrants - 1, numberOfInhabitants - 1)) {
 				immigrants.add(immigrant.clone());
 			}
 			toIsland.addAll(immigrants);

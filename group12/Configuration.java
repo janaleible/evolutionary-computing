@@ -4,6 +4,7 @@ import org.vu.contest.ContestEvaluation;
 
 public class Configuration {
 
+	public int numberOfMigrants;
 	public Selection parentSelection;
 	public ParentMatching parentMatching;
 	public Selection survivorSelection;
@@ -22,6 +23,7 @@ public class Configuration {
 
 		this.numberOfIslands = Integer.parseInt(System.getProperty("numberofislands", defaultConfiguration.numberOfIslands));
 		this.generationsPerEpoch = Integer.parseInt(System.getProperty("generationsperepoch", defaultConfiguration.generationsPerEpoch));
+		this.numberOfMigrants = Integer.parseInt(System.getProperty("numberofmigrants", defaultConfiguration.numberOfMigrants));
 
 		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize)) / numberOfIslands;
 		this.generationGap = Double.parseDouble(System.getProperty("generationgap", defaultConfiguration.generationGap));

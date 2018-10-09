@@ -27,11 +27,12 @@ public class DefaultConfiguration {
 
 	public String numberOfIslands = "1";
 	public String generationsPerEpoch = "25";
+	public String numberOfMigrants = "2";
 
 
 	public DefaultConfiguration(String function) {
 
-		// TODO: use to set specific values
+		// use to set specific values
 		switch (function) {
 			case "Sphere":
 				this.tournamentSize = "25";
