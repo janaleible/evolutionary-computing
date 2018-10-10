@@ -34,4 +34,9 @@ public class GenderAware extends Selection {
 	public boolean isGenderAware() {
 		return true;
 	}
+
+	@Override
+	public boolean isAncestryAware() {
+		return false;
+	}
 }

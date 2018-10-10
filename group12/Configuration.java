@@ -68,6 +68,7 @@ public class Configuration {
 
 		Selection parentSelection = null;
 		boolean genderAware = Boolean.parseBoolean(System.getProperty("genderaware", defaultConfiguration.genderAware));
+		boolean ancestryAware = Boolean.parseBoolean(System.getProperty("ancestryaware", defaultConfiguration.ancestryAware));
 		switch(System.getProperty("parentselection", defaultConfiguration.parentSelection)) {
 			case "fitnessproportional":
 				parentSelection = new FitnessProportionalSelection(random);
@@ -85,6 +86,10 @@ public class Configuration {
 		if (genderAware) {
 			parentSelection = new GenderAware(parentSelection);
 			this.parentMatching = new GenderAwareParentMatching();
+		}
+		else if (ancestryAware){
+			parentSelection = new AncestryAware(parentSelection);
+			this.parentMatching = new AncestryAwareParentMatching();
 		}
 		else {
 			this.parentMatching = new ParentMatching(random);

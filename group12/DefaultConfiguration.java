@@ -3,6 +3,7 @@ package group12;
 public class DefaultConfiguration {
 
 	public String genderAware = "false";
+	public String ancestryAware = "true";
 	public String crossover = "arithmetic";
 	public String mutation = "adaptive";
 	
