@@ -31,6 +31,6 @@ public class AncestryAware extends Selection {
 
     @Override
     public boolean isAncestryAware() {
-        return false;
+        return true;
     }
 }

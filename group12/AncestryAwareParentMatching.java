@@ -2,6 +2,7 @@ package group12;
 
 import java.util.List;
 import java.util.Set;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -22,9 +23,10 @@ public class AncestryAwareParentMatching extends ParentMatching {
 
     @Override
     public List<Individual[]> getMatches(List<Individual> parents) {
+        int listSize = parents.size();
         return match(
-                parents,
-                parents
+                parents.subList(0,(listSize+1)/2),
+                parents.subList((listSize+1)/2,listSize)
         );
     }
 
@@ -36,62 +38,40 @@ public class AncestryAwareParentMatching extends ParentMatching {
 
         for (int i = 0; i < numberOfMatches; i++) {
             Individual mother = mothers.get(i);
-            List<Individual> ancestorsMother = new ArrayList<Individual>();
-            ancestorsMother.add(mother);
-            for(int j = 0; j< generations; j++){
-                for(int k = 0; k<ancestorsMother.size();k++){
-                    if(ancestorsMother.get(k).parents()!=null && ancestorsMother.get(k).generation()>1) {
-                        for (Individual parent : ancestorsMother.get(k).parents()) {
-                            ancestorsMother.add(parent);
-                        }
-                    }
-                }
-            }
-            ancestorsMother.remove(0);
-            Set<Individual> motherAncestorSet = new HashSet<Individual>(ancestorsMother);
-
             Individual father = fathers.get(i);
-            List<Individual> ancestorsFather = new ArrayList<Individual>();
-            ancestorsFather.add(father);
-            for(int j = 0; j< generations; j++){
-                for(int k = 0; k<ancestorsFather.size();k++){
-                    if(ancestorsFather.get(k).parents()!=null && ancestorsFather.get(k).generation()>1) {
-                        for (Individual parent : ancestorsFather.get(k).parents()) {
-                            ancestorsFather.add(parent);
-                        }
+
+            if(mother.parents()!=null && father.parents()!=null) {
+
+                Set<Individual> parentsMother = new HashSet<Individual>(Arrays.asList(mother.parents()));
+                Set<Individual> parentsFather = new HashSet<Individual>(Arrays.asList(father.parents()));
+
+                boolean added = false;
+                for(int j = 1; j<fathers.size(); j++){
+                    if(!parentsFather.retainAll(parentsMother)){
+                        added = true;
+                        matches.add(new Individual[] {mother, father});
+                        break;
+                    }
+
+                    father = fathers.get((j + i) % fathers.size());
+                    if(father.parents()!=null) {
+                        parentsFather = new HashSet<Individual>(Arrays.asList(father.parents()));
+                    }
+                    else{
+                        added = true;
+                        matches.add(new Individual[] {mother, father});
+                        break;
                     }
                 }
-            }
-            ancestorsFather.remove(0);
-            Set<Individual> fatherAncestorSet = new HashSet<Individual>(ancestorsFather);
 
-            int idx = 0;
-            while(!Collections.disjoint(motherAncestorSet,fatherAncestorSet)){
-
-                System.out.println(motherAncestorSet);
-                System.out.println(fatherAncestorSet);
-                System.out.println(Collections.disjoint(motherAncestorSet,fatherAncestorSet));
-                fathers.get(idx);
-                idx++;
-
-                ancestorsFather = new ArrayList<Individual>();
-                ancestorsFather.add(father);
-                for(int j = 0; j< generations; j++){
-                    for(int k = 0; k<ancestorsFather.size();k++){
-                        if(ancestorsFather.get(k).parents()!=null && ancestorsFather.get(k).generation()>1) {
-                            for (Individual parent : ancestorsFather.get(k).parents()) {
-                                ancestorsFather.add(parent);
-                            }
-                        }
-                    }
+                if(!added){
+                    matches.add(new Individual[] {mother, fathers.get(i)});
                 }
-                ancestorsFather.remove(0);
-                fatherAncestorSet = new HashSet<Individual>(ancestorsFather);
             }
-
-            matches.add(new Individual[] {mother, father});
+            else{
+                matches.add(new Individual[] {mother, father});
+            }
         }
-
         return matches;
     }
 }
