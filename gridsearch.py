@@ -17,7 +17,7 @@ def write_config(config):
 
 def generate():
     global file_number
-    for range_function in ['wrap', 'clip']:
+    for range_function in ['wrap']:
         for crossover in ['arithmetic', 'blend', 'random', 'uniform']:
             for mutation in ['random', 'adaptive']:
                 for mutation_rate in [0.01, 0.3, 0.5]:
@@ -25,7 +25,7 @@ def generate():
                         for elitism in ['true', 'false']:
                             for population_size in [30, 100, 250]:
                                 for generation_gap in [0.5, 1]:
-                                    for crossover_rate in [0.8, 1]:
+                                    for crossover_rate in [1]:
 
                                         config = {
                                             'rangefunction': range_function,
@@ -55,32 +55,29 @@ def generate():
     print(file_number)
 
 
+def analyse(function):
+
+    results = defaultdict(lambda: [])
+
+    for file_name in filter(lambda name: name.endswith(".txt"), os.listdir('gridsearch/{}/'.format(function))):
+
+            with open('gridsearch/{}/{}'.format(function, file_name)) as file:
+                (config, seed) = file_name[:-4].split('_')
+                try:
+                    score = float(file.readlines()[1].split(': ')[1][:-1])
+                    results[config].append(score)
+                except:
+                    continue
+
+
+    aggregated = sorted({key: sum(value) / len(value) for key, value in results.items()}.items(), key=operator.itemgetter(1), reverse=True)
+    print(aggregated)
+
+
 if __name__ == '__main__':
 
     if sys.argv[1] == 'generate':
         generate()
 
-# for function in functions:
-#
-#     configuration_scores = defaultdict(lambda: 0)
-#
-#     for file_name in filter(lambda name: name.endswith(".txt"), os.listdir('gridsearch/{}/'.format(function))):
-#
-#             with open('gridsearch/{}/{}'.format(function, file_name)) as file:
-#
-#                 properties = file.readline().strip('\n').split(', ')
-#                 for property in properties:
-#                     (key, value) = property.split(': ')
-#
-#                     if key == 'Score':
-#                         score = float(value)
-#
-#                     if key == 'configuration':
-#                         id = value
-#
-#
-#                 configuration_scores[id] += score
-#
-#     topConfig = max(configuration_scores.items(), key=operator.itemgetter(1))[0]
-#
-#     print('Function {}: config {}, score {}'.format(function, topConfig, configuration_scores[topConfig] / 5)) # normalise by number of tested seeds
+    if sys.argv[1] == 'analyse':
+        analyse(sys.argv[2])

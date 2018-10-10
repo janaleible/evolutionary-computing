@@ -29,4 +29,9 @@ public class WrapRange extends RangeFunction{
         }
         return genome;
     }
+
+    @Override
+    public String toString() {
+        return "WrapRange";
+    }
 }
