@@ -8,7 +8,7 @@ mkdir -p gridsearch
 mkdir -p gridsearch/configurations
 
 echo "generating configurations ..."
-#python3 gridsearch.py generate
+python3 gridsearch.py generate
 
 function=$1
 number_of_seeds=$2
