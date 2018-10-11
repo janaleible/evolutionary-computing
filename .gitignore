@@ -17,6 +17,3 @@ gridsearch/*
 !KatsuuraEvaluation.class
 !SchaffersEvaluation.class
 !SphereEvaluation.class
-build.sh
-contest.jar
-build.sh
