@@ -80,24 +80,27 @@ public class Configuration {
 		}
 		
 		Selection survivorSelection = null;
+		int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
 		switch(System.getProperty("survivorselection", defaultConfiguration.survivorSelection)) {
 			case "fitnessproportional":
 				survivorSelection = new FitnessProportionalSelection(random);
 				break;
 			case "rankbased":
 				double sigma = Double.parseDouble(System.getProperty("sigma_rankbasedselection", defaultConfiguration.sigma_rankbasedselection));
-				this.survivorSelection = new RankBasedSelection(random, sigma);
+				survivorSelection = new RankBasedSelection(random, sigma);
 				break;
 			case "tournament":
-				int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
 				survivorSelection = new TournamentSelection(tournamentSize, random);
+			case "restrictedtournament":
+				survivorSelection = new RestrictedTournamentSelection(tournamentSize, random);
 				break;
 		}
 		
 		boolean elitism = Boolean.parseBoolean(System.getProperty("elitism", defaultConfiguration.elitism));
 		if (elitism) {
 			int sizeOfElite = Integer.parseInt(System.getProperty("sizeofelite", defaultConfiguration.sizeOfElite));
-			survivorSelection = new Elitist(survivorSelection, sizeOfElite);
+			System.out.println("Elitist " + survivorSelection.getClass());
+			survivorSelection = new Elitist(survivorSelection, sizeOfElite, survivorSelection.RTSflag());
 		}
 		this.survivorSelection = survivorSelection;
 	}

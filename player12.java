@@ -104,6 +104,19 @@ public class player12 implements ContestSubmission {
 					ancestry.put(children[1].id, children[1]);
 				}
 
+				if (config.survivorSelection.RTSflag() == 1) {
+
+					for(Individual individual : offspring) {
+						individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
+					}
+
+					population.replace(population.iterable(), offspring);
+					List<Individual> survivors = config.survivorSelection.select(offspring.size(), population.iterable());
+					List<Individual> emptyList = new ArrayList<>();
+					population.replace(survivors, emptyList);
+					continue;
+				}
+
 				List<Individual> survivors = population.selectSurvivors(population.iterable().size() - offspring.size());
 
 				population.replace(survivors, offspring);
