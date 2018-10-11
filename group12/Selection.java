@@ -10,5 +10,7 @@ public abstract class Selection {
 
 	public boolean isAncestryAware() { return false; }
 
+	public boolean isInertiaAware() { return false; }
+
 	public int sizeOfElite() { return 0; }
 }

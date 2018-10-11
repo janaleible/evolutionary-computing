@@ -39,4 +39,9 @@ public class GenderAware extends Selection {
 	public boolean isAncestryAware() {
 		return false;
 	}
+
+	@Override
+	public boolean isInertiaAware() {
+		return false;
+	}
 }
