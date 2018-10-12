@@ -132,6 +132,7 @@ public class Configuration {
 				.append(", generationGap: ").append(generationGap)
 				.append(", crossover: ").append(crossover)
 				.append(", mutation: ").append(mutation)
+				.append(", range function: ").append(rangeFunction)
 			.append(", ")
 			.toString();
 	}

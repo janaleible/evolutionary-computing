@@ -35,20 +35,51 @@ public class DefaultConfiguration {
 		// use to set specific values
 		switch (function) {
 			case "Sphere":
-				this.tournamentSize = "25";
+				this.parentSelection = "rankbased";
+				this.elitism = "true";
+				this.populationSize = "30";
+				this.generationGap = "1";
+				this.crossover = "arithmetic";
+				this.crossOverRate = "1";
+				this.mutation = "random";
+				this.mutationRate = "0.01";
+				this.rangeFunction = "wrap";
 				break;
 			case "BentCigar":
+				this.crossover = "blend";
+				this.crossOverRate = "1";
+				this.elitism = "false";
+				this.generationGap = "0.5";
 				this.mutation = "random";
+				this.mutationRate = "0.01";
 				this.parentSelection = "fitnessproportional";
-				this.survivorSelection = "fitnessproportional";
+				this.populationSize = "30";
+				this.rangeFunction = "wrap";
+				this.survivorSelection = "rankbased";
 				break;
 			case "Schaffers":
+				this.crossover = "arithmetic";
+				this.crossOverRate = "1";
+				this.elitism = "true";
+				this.generationGap = "0.5";
 				this.mutation = "random";
+				this.mutationRate = "0.3";
 				this.parentSelection = "fitnessproportional";
-				this.survivorSelection = "fitnessproportional";
+				this.populationSize = "250";
+				this.rangeFunction = "wrap";
+				this.survivorSelection = "tournament";
+				this.tournamentSize = "2";
 				break;
 			case "Katsuura":
-				this.crossover = "simple";
+				this.crossover = "arithmetic";
+				this.crossOverRate = "1";
+				this.elitism = "true";
+				this.generationGap = "1";
+				this.mutation = "random";
+				this.mutationRate = "0.01";
+				this.parentSelection = "rankbased";
+				this.populationSize = "250";
+				this.rangeFunction = "wrap";
 				break;
 		}
 	}
