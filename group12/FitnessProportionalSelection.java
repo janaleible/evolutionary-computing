@@ -36,7 +36,6 @@ public class FitnessProportionalSelection extends Selection {
 			for (int i = 0; i < numberOfPicks; i++) {
 				parents.add(population.get(this.random.nextInt(population.size())));
 			}
-			System.out.println("fitness 0");
 		} else {
 			double runningFitnessTotal = 0;
 			int pickIndex = 0;
