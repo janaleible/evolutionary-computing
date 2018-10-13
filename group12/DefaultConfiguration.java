@@ -46,7 +46,7 @@ public class DefaultConfiguration {
 				this.rangeFunction = "wrap";
 				break;
 			case "BentCigar":
-				this.crossover = "blend";
+				this.crossover = "arithmetic";
 				this.crossOverRate = "1";
 				this.elitism = "false";
 				this.generationGap = "0.5";
@@ -55,7 +55,8 @@ public class DefaultConfiguration {
 				this.parentSelection = "fitnessproportional";
 				this.populationSize = "30";
 				this.rangeFunction = "wrap";
-				this.survivorSelection = "rankbased";
+				this.survivorSelection = "tournament";
+				this.tournamentSize = "5";
 				break;
 			case "Schaffers":
 				this.crossover = "arithmetic";
