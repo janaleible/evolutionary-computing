@@ -32,16 +32,26 @@ public class FitnessProportionalSelection extends Selection {
 		Arrays.sort(picks);
 
 		List<Individual> parents = new ArrayList<>(numberOfPicks);
-		double runningFitnessTotal = 0;
-		int pickIndex = 0;
-		for (Individual individual : population) {
-			runningFitnessTotal += (individual.getFitness() / totalFitness);
-			while (picks[pickIndex] < runningFitnessTotal) {
-				parents.add(individual);
-				pickIndex++;
-				if (pickIndex >= numberOfPicks) { break; }
+		if (totalFitness == 0) { // pick uniformly if all fitnesses are 0
+			for (int i = 0; i < numberOfPicks; i++) {
+				parents.add(population.get(this.random.nextInt(population.size())));
 			}
-			if (pickIndex >= numberOfPicks) { break; }
+		} else {
+			double runningFitnessTotal = 0;
+			int pickIndex = 0;
+			for (Individual individual : population) {
+				runningFitnessTotal += (individual.getFitness() / totalFitness);
+				while (picks[pickIndex] < runningFitnessTotal) {
+					parents.add(individual);
+					pickIndex++;
+					if (pickIndex >= numberOfPicks) {
+						break;
+					}
+				}
+				if (pickIndex >= numberOfPicks) {
+					break;
+				}
+			}
 		}
 
 		return parents;
