@@ -64,7 +64,7 @@ def analyse(function):
             with open('gridsearch/{}/{}'.format(function, file_name)) as file:
                 (config, seed) = file_name[:-4].split('_')
                 try:
-                    score = float(file.readlines()[1].split(': ')[1][:-1])
+                    score = float(file.readlines()[-2].split(': ')[1][:-1])
                     results[config].append(score)
                 except:
                     continue
