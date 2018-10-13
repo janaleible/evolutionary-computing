@@ -10,6 +10,11 @@ public class ClipRange extends RangeFunction{
     }
 
     @Override
+    public String toString() {
+        return "ClipRange";
+    }
+
+    @Override
     public double[] limitToRange(double[] genome){
         for(int i = 0; i < genome.length; i++) {
             if (genome[i] > this.max) genome[i] = this.max;

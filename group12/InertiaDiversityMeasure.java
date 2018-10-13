@@ -23,35 +23,16 @@ public class InertiaDiversityMeasure extends DiversityMeasure {
 
 		List<double[]> genomes = population.iterable().stream().map(Individual::genome).collect(Collectors.toList());
 
-		double[] centroid = this.centroid(genomes);
+		double[] centroid = DiversityMeasure.centroid(genomes);
 		double inertia = 0;
 
 		for (double[] genome : genomes) {
-			inertia += hammingDistance(genome, centroid);
+			inertia += DiversityMeasure.hammingDistance(genome, centroid);
 		}
 
 		return inertia / population.getPopulationSize();
 	}
 
-	private double hammingDistance(double[] from, double[] to) {
 
-		double distance = 0;
 
-		for (int i = 0; i < from.length; i++) {
-			distance += Math.pow(from[i] - to[i], 2);
-		}
-
-		return distance;
-	}
-
-	private double[] centroid(List<double[]> vectors) {
-
-		double result[] = new double[vectors.get(0).length];
-
-		for (double[] vector : vectors) {
-    		Arrays.setAll(result, i -> result[i] + (vector[i] / vectors.size()));
-		}
-
-		return result;
-	}
 }

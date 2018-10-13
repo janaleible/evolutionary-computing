@@ -1,8 +1,12 @@
 package group12;
 
+import org.vu.contest.ContestEvaluation;
+
 public class Configuration {
 
+	public int numberOfMigrants;
 	public Selection parentSelection;
+	public ParentMatching parentMatching;
 	public Selection survivorSelection;
 	public int populationSize;
 	public double generationGap;
@@ -10,12 +14,18 @@ public class Configuration {
 	public Mutation mutation;
 	public RangeFunction rangeFunction;
 	public double sigma_adaptiveMutation;
+	public int numberOfIslands;
+	public int generationsPerEpoch;
 
-	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function) {
+	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
 		
 		DefaultConfiguration defaultConfiguration = new DefaultConfiguration(function);
 
-		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize));
+		this.numberOfIslands = Integer.parseInt(System.getProperty("numberofislands", defaultConfiguration.numberOfIslands));
+		this.generationsPerEpoch = Integer.parseInt(System.getProperty("generationsperepoch", defaultConfiguration.generationsPerEpoch));
+		this.numberOfMigrants = Integer.parseInt(System.getProperty("numberofmigrants", defaultConfiguration.numberOfMigrants));
+
+		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize)) / numberOfIslands;
 		this.generationGap = Double.parseDouble(System.getProperty("generationgap", defaultConfiguration.generationGap));
 
 		this.sigma_adaptiveMutation = Double.parseDouble(System.getProperty("sigma_adaptivemutation", defaultConfiguration.sigma_adaptivemutation));
@@ -33,20 +43,20 @@ public class Configuration {
 
 		switch(System.getProperty("crossover", defaultConfiguration.crossover)) {
 			case "arithmetic": 
-				this.crossover = new ArithmeticCrossover(crossoverRate, random, idGenerator, rangeFunction, this.sigma_adaptiveMutation);
+				this.crossover = new ArithmeticCrossover(crossoverRate, random, idGenerator, rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
 				break;
 			case "blend":
 				double alpha = Double.parseDouble(System.getProperty("alpha_blendCrossover", defaultConfiguration.alpha_blendCrossover));
-				this.crossover = new BlendCrossover(alpha, crossoverRate, random,  idGenerator, this.rangeFunction, this.sigma_adaptiveMutation);
+				this.crossover = new BlendCrossover(alpha, crossoverRate, random,  idGenerator, this.rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
 				break;
 			case "random":
-				this.crossover = new RandomCrossover(crossoverRate, random, idGenerator, this.rangeFunction, this.sigma_adaptiveMutation);
+				this.crossover = new RandomCrossover(crossoverRate, random, idGenerator, this.rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
 				break;
 			case "simple":
-				this.crossover = new SimpleCrossover(crossoverRate, random, idGenerator, this.rangeFunction, this.sigma_adaptiveMutation);
+				this.crossover = new SimpleCrossover(crossoverRate, random, idGenerator, this.rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
 				break;
 			case "uniform":
-				this.crossover = new UniformCrossover(crossoverRate, random, idGenerator, this.rangeFunction, this.sigma_adaptiveMutation);
+				this.crossover = new UniformCrossover(crossoverRate, random, idGenerator, this.rangeFunction, contestEvaluation, evaluationsCounter, this.sigma_adaptiveMutation);
 				break;
 		}
 		
@@ -64,20 +74,41 @@ public class Configuration {
 				this.mutation = new AdaptiveMutation(random, learningRate);
 				break;
 		}
-		
+
+		Selection parentSelection = null;
+		boolean genderAware = Boolean.parseBoolean(System.getProperty("genderaware", defaultConfiguration.genderAware));
+		boolean ancestryAware = Boolean.parseBoolean(System.getProperty("ancestryaware", defaultConfiguration.ancestryAware));
+		boolean inertiaAware = Boolean.parseBoolean(System.getProperty("inertiaaware", defaultConfiguration.inertiaAware));
 		switch(System.getProperty("parentselection", defaultConfiguration.parentSelection)) {
 			case "fitnessproportional":
-				this.parentSelection = new FitnessProportionalSelection(random);
+				parentSelection = new FitnessProportionalSelection(random);
 				break;
 			case "rankbased":
 				double sigma = Double.parseDouble(System.getProperty("sigma_rankbasedselection", defaultConfiguration.sigma_rankbasedselection));
-				this.parentSelection = new RankBasedSelection(random, sigma);
+				parentSelection = new RankBasedSelection(random, sigma);
 				break;
 			case "tournament":
 				int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
-				this.parentSelection = new TournamentSelection(tournamentSize, random);
+				parentSelection = new TournamentSelection(tournamentSize, random);
 				break;
 		}
+
+		if (genderAware) {
+			parentSelection = new GenderAware(parentSelection);
+			this.parentMatching = new GenderAwareParentMatching();
+		}
+		else if (ancestryAware){
+			parentSelection = new AncestryAware(parentSelection);
+			this.parentMatching = new AncestryAwareParentMatching();
+		}
+		else if (inertiaAware){
+			parentSelection = new InertiaAware(parentSelection);
+			this.parentMatching = new InertiaAwareParentMatching();
+		}
+		else {
+			this.parentMatching = new ParentMatching(random);
+		}
+		this.parentSelection = parentSelection;
 		
 		Selection survivorSelection = null;
 		int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
@@ -114,6 +145,7 @@ public class Configuration {
 				.append(", generationGap: ").append(generationGap)
 				.append(", crossover: ").append(crossover)
 				.append(", mutation: ").append(mutation)
+				.append(", range function: ").append(rangeFunction)
 			.append(", ")
 			.toString();
 	}
