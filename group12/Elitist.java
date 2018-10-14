@@ -24,7 +24,7 @@ public class Elitist extends Selection {
 
 		population.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
 		List<Individual> elite = population.subList(0, sizeOfElite);
-		List<Individual> commoners = this.selection.select(numberOfPicks - sizeOfElite, population.subList(sizeOfElite, population.size() - 1));
+		List<Individual> commoners = this.selection.select(numberOfPicks - sizeOfElite, population.subList(sizeOfElite - 1, population.size() - 1));
 
 		commoners.addAll(elite);
 

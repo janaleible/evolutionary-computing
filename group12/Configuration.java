@@ -4,7 +4,7 @@ import org.vu.contest.ContestEvaluation;
 
 public class Configuration {
 
-	public int numberOfMigrants;
+	/** general parameters **/
 	public Selection parentSelection;
 	public ParentMatching parentMatching;
 	public Selection survivorSelection;
@@ -14,7 +14,10 @@ public class Configuration {
 	public Mutation mutation;
 	public RangeFunction rangeFunction;
 	public double sigma_adaptiveMutation;
+
+	/** Island parameters **/
 	public int numberOfIslands;
+	public int numberOfMigrants;
 	public int generationsPerEpoch;
 
 	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
@@ -25,7 +28,7 @@ public class Configuration {
 		this.generationsPerEpoch = Integer.parseInt(System.getProperty("generationsperepoch", defaultConfiguration.generationsPerEpoch));
 		this.numberOfMigrants = Integer.parseInt(System.getProperty("numberofmigrants", defaultConfiguration.numberOfMigrants));
 
-		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize)) / numberOfIslands;
+		this.populationSize = Integer.parseInt(System.getProperty("populationsize", defaultConfiguration.populationSize));
 		this.generationGap = Double.parseDouble(System.getProperty("generationgap", defaultConfiguration.generationGap));
 
 		this.sigma_adaptiveMutation = Double.parseDouble(System.getProperty("sigma_adaptivemutation", defaultConfiguration.sigma_adaptivemutation));
@@ -135,15 +138,21 @@ public class Configuration {
 
 	@Override
 	public String toString() {
-		return (new StringBuilder()) // don't be fooled by what the IDE says: simple string concatenation crashes the system
-				.append(", parentSelection: ").append(parentSelection)
-				.append(", survivorSelection: ").append(survivorSelection)
-				.append(", populationSize: ").append(populationSize)
-				.append(", generationGap: ").append(generationGap)
-				.append(", crossover: ").append(crossover)
-				.append(", mutation: ").append(mutation)
-				.append(", range function: ").append(rangeFunction)
-			.append(", ")
-			.toString();
+		StringBuilder config = new StringBuilder(); // don't be fooled by what the IDE says: simple string concatenation crashes the system
+		config.append(", parentSelection: ").append(parentSelection)
+			.append(", survivorSelection: ").append(survivorSelection)
+			.append(", populationSize: ").append(populationSize)
+			.append(", generationGap: ").append(generationGap)
+			.append(", crossover: ").append(crossover)
+			.append(", mutation: ").append(mutation)
+			.append(", range function: ").append(rangeFunction);
+
+		if (this.numberOfIslands > 1) {
+			config.append(", numberOfIlands: ").append(this.numberOfIslands)
+				.append(", generationsPerEpoch: ").append(this.generationsPerEpoch)
+				.append(", numberOfMigrants: ").append(this.numberOfMigrants);
+		}
+
+		return config.toString();
 	}
 }
