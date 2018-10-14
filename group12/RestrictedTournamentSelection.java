@@ -1,7 +1,5 @@
 package group12;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
@@ -10,23 +8,28 @@ public class RestrictedTournamentSelection extends TournamentSelection {
 
     public RestrictedTournamentSelection(int tournamentSize, ExtendedRandom random) {
         super(tournamentSize, random);
-        this.tournamentSize = tournamentSize;
-        this.random = random;
     }
 
     @Override
     public String toString() {
-        return (new StringBuilder()).append("Restricted tournament selection (size: ").append(this.tournamentSize).append(")").toString();
+        return (new StringBuilder()).append("Restricted ").append(super.toString()).toString();
     }
 
     @Override
-    public List<Individual> select(int numberOffspring, List<Individual> population) {
-        List<Individual> offspring = new ArrayList<Individual>(numberOffspring);
-        List<Individual> existing = new ArrayList<Individual>(population.size() - numberOffspring);
+    public boolean RTSflag() { return true; }
 
-        offspring.addAll(population.subList(population.size() - numberOffspring, population.size()));
-        existing.addAll(population.subList(0, population.size() - numberOffspring));
+    @Override
+    public List<Individual> select(int generation, List<Individual> population) {
+        List<Individual> offspring = new ArrayList<Individual>();
+        List<Individual> existing = new ArrayList<Individual>();
 
+        for (Individual individual : population) {
+            if (individual.generation() == generation) {
+                offspring.add(individual);
+            } else {
+                existing.add(individual);
+            }
+        }
 
         for (Individual candidate : offspring) {
             Individual[] contestants = getContestants(existing);
@@ -39,13 +42,9 @@ public class RestrictedTournamentSelection extends TournamentSelection {
         return existing;
     }
 
-    public int RTSflag() {
-        return 1;
-    }
-
     private Individual findMostSimilar(Individual candidate, Individual[] contestants) {
 
-        Individual mostSimilar = contestants[0];
+        Individual mostSimilar = null;
         double lowestDistance = Double.POSITIVE_INFINITY;
 
         for (Individual contestant : contestants) {

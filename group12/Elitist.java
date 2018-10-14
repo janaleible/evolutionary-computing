@@ -7,12 +7,10 @@ public class Elitist extends Selection {
 
 	private Selection selection;
 	private int sizeOfElite;
-	private int RTSflag;
 
-	public Elitist(Selection selection, int sizeOfElite, int RTSflag) {
+	public Elitist(Selection selection, int sizeOfElite) {
 		this.selection = selection;
 		this.sizeOfElite = sizeOfElite;
-		this.RTSflag = RTSflag;
 	}
 
 	@Override
@@ -33,9 +31,6 @@ public class Elitist extends Selection {
 		return commoners;
 	}
 
-	public int RTSflag() {
-		return RTSflag;
-	}
 
 	@Override
 	public int sizeOfElite() {

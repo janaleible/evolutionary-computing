@@ -6,9 +6,7 @@ public abstract class Selection {
 
 	public abstract List<Individual> select(int numberOfPicks, List<Individual> population);
 
-	public int RTSflag() {
-		return 0;
-	}
+	public boolean RTSflag() { return false; }
 
 	public boolean isGenderAware() { return false; }
 

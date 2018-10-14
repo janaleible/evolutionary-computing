@@ -130,8 +130,7 @@ public class Configuration {
 		boolean elitism = Boolean.parseBoolean(System.getProperty("elitism", defaultConfiguration.elitism));
 		if (elitism) {
 			int sizeOfElite = Integer.parseInt(System.getProperty("sizeofelite", defaultConfiguration.sizeOfElite));
-			System.out.println("Elitist " + survivorSelection.getClass());
-			survivorSelection = new Elitist(survivorSelection, sizeOfElite, survivorSelection.RTSflag());
+			survivorSelection = new Elitist(survivorSelection, sizeOfElite);
 		}
 		this.survivorSelection = survivorSelection;
 	}
