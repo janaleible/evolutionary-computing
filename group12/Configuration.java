@@ -122,6 +122,7 @@ public class Configuration {
 				break;
 			case "tournament":
 				survivorSelection = new TournamentSelection(tournamentSize, random);
+				break;
 			case "restrictedtournament":
 				survivorSelection = new RestrictedTournamentSelection(tournamentSize, random);
 				break;

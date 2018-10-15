@@ -43,7 +43,7 @@ public class TournamentSelection extends Selection {
 
 	private Individual tournament(Individual[] contestants) {
 
-		Individual winner = null;
+		Individual winner = contestants[0];
 		for (Individual contestant : contestants) {
 			if (contestant.getFitness() > winner.getFitness()) {
 				winner = contestant;

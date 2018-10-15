@@ -116,9 +116,8 @@ public class player12 implements ContestSubmission {
 
 					if (island.getRTSflag()) {
 						island.replace(island.iterable(), offspring);
-						List<Individual> survivors = island.selectSurvivors(generation);
+						List<Individual> survivors = island.selectSurvivors(offspring.size());
 						island.replace(survivors, new ArrayList<>());
-						System.out.println("Population size" + island.iterable().size());
 					} else {
 						List<Individual> survivors = island.selectSurvivors(island.iterable().size() - offspring.size());
 

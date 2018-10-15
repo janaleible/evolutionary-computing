@@ -3,6 +3,8 @@ package group12;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
+import java.util.stream.Collectors;
+
 
 public class RestrictedTournamentSelection extends TournamentSelection {
 
@@ -19,17 +21,10 @@ public class RestrictedTournamentSelection extends TournamentSelection {
     public boolean RTSflag() { return true; }
 
     @Override
-    public List<Individual> select(int generation, List<Individual> population) {
-        List<Individual> offspring = new ArrayList<Individual>();
-        List<Individual> existing = new ArrayList<Individual>();
-
-        for (Individual individual : population) {
-            if (individual.generation() == generation) {
-                offspring.add(individual);
-            } else {
-                existing.add(individual);
-            }
-        }
+    public List<Individual> select(int numberOfPicks, List<Individual> population) {
+        int currentGeneration = population.stream().mapToInt(Individual::generation).max().orElse(0);
+        List<Individual> offspring = population.stream().filter(individual -> individual.generation() == currentGeneration).collect(Collectors.toList());
+        List<Individual> existing = population.stream().filter(individual -> individual.generation() < currentGeneration).collect(Collectors.toList());
 
         for (Individual candidate : offspring) {
             Individual[] contestants = getContestants(existing);
