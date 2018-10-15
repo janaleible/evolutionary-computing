@@ -126,9 +126,9 @@ public class player12 implements ContestSubmission {
 			// TODO: think of better solution
 
 			//PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
-			// this.populationStatistics.write();
+			 this.populationStatistics.write();
 
-			// System.out.println(config.toString());
+			 System.out.println(config.toString());
 
 			return;
 		}
