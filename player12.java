@@ -133,7 +133,6 @@ public class player12 implements ContestSubmission {
 
 			//PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
 			 this.populationStatistics.write();
-
 			 System.out.println(config.toString());
 
 			return;

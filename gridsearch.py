@@ -83,9 +83,14 @@ def generate_taboo():
 
 
 def generate_rts():
-    write_config({
-        'rts': 'true'
-    }, 'gridsearch/configs-rts/0.yaml')
+    filenumber = 0
+
+    for tournamentsize in [2, 5, 10]:
+        write_config({
+            'survivorselection': 'restrictedtournament',
+            'tournamentsize': tournamentsize
+        }, 'gridsearch/configs-rts/{}.yaml'.format(filenumber))
+        filenumber += 1
 
 def analyse(path):
 
@@ -103,7 +108,7 @@ def analyse(path):
 
 
     aggregated = sorted({key: sum(value) / len(value) for key, value in results.items()}.items(), key=operator.itemgetter(1), reverse=True)
-    print(aggregated)
+    print(aggregated[0])
 
 
 if __name__ == '__main__':
@@ -119,6 +124,9 @@ if __name__ == '__main__':
 
     if sys.argv[1] == 'generate-genders':
         generate_genders()
+
+    if sys.argv[1] == 'generate-rts':
+        generate_rts()
 
     if sys.argv[1] == 'analyse':
         analyse(sys.argv[2])
