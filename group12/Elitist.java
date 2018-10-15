@@ -20,6 +20,9 @@ public class Elitist extends Selection {
 	}
 
 	@Override
+	public boolean RTSflag() { return this.selection.RTSflag(); }
+
+	@Override
 	public List<Individual> select(int numberOfPicks, List<Individual> population) {
 
 		population.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
@@ -30,6 +33,7 @@ public class Elitist extends Selection {
 
 		return commoners;
 	}
+
 
 	@Override
 	public int sizeOfElite() {

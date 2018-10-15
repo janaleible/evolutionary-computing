@@ -5,8 +5,8 @@ import java.util.List;
 
 public class TournamentSelection extends Selection {
 
-	private int tournamentSize;
-	private ExtendedRandom random;
+	protected int tournamentSize;
+	protected ExtendedRandom random;
 
 	@Override
 	public String toString() {
@@ -30,7 +30,7 @@ public class TournamentSelection extends Selection {
 		return selection;
 	}
 
-	private Individual[] getContestants(List<Individual> population) {
+	protected Individual[] getContestants(List<Individual> population) {
 
 		Individual[] contestants = new Individual[this.tournamentSize];
 

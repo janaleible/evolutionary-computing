@@ -114,6 +114,7 @@ public class Configuration {
 		this.parentSelection = parentSelection;
 		
 		Selection survivorSelection = null;
+		int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
 		switch(System.getProperty("survivorselection", defaultConfiguration.survivorSelection)) {
 			case "fitnessproportional":
 				survivorSelection = new FitnessProportionalSelection(random);
@@ -123,8 +124,10 @@ public class Configuration {
 				survivorSelection = new RankBasedSelection(random, sigma);
 				break;
 			case "tournament":
-				int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
 				survivorSelection = new TournamentSelection(tournamentSize, random);
+				break;
+			case "restrictedtournament":
+				survivorSelection = new RestrictedTournamentSelection(tournamentSize, random);
 				break;
 		}
 		

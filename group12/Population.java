@@ -67,6 +67,8 @@ public class Population {
 		return this.survivorSelection.select(numberOfPicks, this.population);
 	}
 
+	public boolean getRTSflag() { return this.survivorSelection.RTSflag(); }
+
 	public void replace(List<Individual> survivors, List<Individual> offspring) {
 		this.population = new ArrayList<>(survivors.size() + offspring.size());
 		this.population.addAll(survivors);
