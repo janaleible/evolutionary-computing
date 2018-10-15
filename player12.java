@@ -114,9 +114,15 @@ public class player12 implements ContestSubmission {
 						ancestry.put(children[1].id, children[1]);
 					}
 
-					List<Individual> survivors = island.selectSurvivors(island.iterable().size() - offspring.size());
+					if (island.getRTSflag()) {
+						island.replace(island.iterable(), offspring);
+						List<Individual> survivors = island.selectSurvivors(offspring.size());
+						island.replace(survivors, new ArrayList<>());
+					} else {
+						List<Individual> survivors = island.selectSurvivors(island.iterable().size() - offspring.size());
 
-					island.replace(survivors, offspring);
+						island.replace(survivors, offspring);
+					}
 				}
 
 				if((generation + 1) % config.generationsPerEpoch == 0) galapagos.migration(config.numberOfMigrants);
