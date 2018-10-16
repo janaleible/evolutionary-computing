@@ -7,11 +7,14 @@ public class PopulationStatistics {
 
 	private List<String> csvRows;
 
+	public double maxFitness;
+
 	public PopulationStatistics() {
 		this.csvRows = new ArrayList<>();
 	}
 
 	public void update(int generation, int island, double maximumFitness, double averageFitness, double averageAge, double diversity) {
+		this.maxFitness = Math.max(maximumFitness, this.maxFitness);
 		this.csvRows.add(this.toCSV(generation, island, maximumFitness, averageFitness, averageAge, diversity));
 	}
 

@@ -131,10 +131,13 @@ public class player12 implements ContestSubmission {
 		} catch (EvaluationsLimitExceededException exception) {
 			// TODO: think of better solution
 
-			//PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
-			// this.populationStatistics.write();
+//			PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
+			 this.populationStatistics.write();
 
-			// System.out.println(config.toString());
+			 System.out.println(config.toString());
+
+			 System.out.print("score=");
+			 System.out.println(this.populationStatistics.maxFitness);
 
 			return;
 		}
