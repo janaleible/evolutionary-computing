@@ -55,8 +55,23 @@ public class Population {
 		this.population = new ArrayList<>(populationSize);
 
 		for (int i = 0; i < populationSize; i++) {
-			this.population.add(Individual.createRandom(this.random, this.idGenerator, contestEvaluation, counter, this.rangeFunction, this.sigma));
+			this.population.add(Individual.createRandom(
+				this.random,
+				this.idGenerator,
+				contestEvaluation,
+				counter,
+				this.rangeFunction,
+				this.sigma,
+				this.random.coinflip(1 - maleIndividualsRatio(population)) ? Gender.male : Gender.female
+			));
 		}
+	}
+
+	private double maleIndividualsRatio(List<Individual> population) {
+
+		if(population.size() == 0) return 0.5;
+
+		return (double)population.stream().filter(individual -> individual.gender() == Gender.male).count() / (double) population.size();
 	}
 
 	public List<Individual> selectParents(int numberOfPicks) {

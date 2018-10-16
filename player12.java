@@ -101,6 +101,10 @@ public class player12 implements ContestSubmission {
 						ancestry.put(children[1].id, children[1]);
 					}
 
+					if (offspring.size() > config.populationSize) {
+						offspring = offspring.subList(0, config.populationSize);
+					}
+
 					if (island.getRTSflag()) {
 						island.replace(island.iterable(), offspring);
 						List<Individual> survivors = island.selectSurvivors(offspring.size());
