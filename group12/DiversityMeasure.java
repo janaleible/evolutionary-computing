@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public abstract class DiversityMeasure {
 
-	public abstract double measure(Population population);
+	public abstract double measure(List<Individual> population);
 
 	public static double hammingDistance(double[] from, double[] to) {
 

@@ -92,7 +92,7 @@ public class Population {
 	}
 
 	public double getDiversity() {
-		return this.diversityMeasure.measure(this);
+		return this.diversityMeasure.measure(this.population);
 	}
 
 	public Individual getFittestIndividual() throws EvaluationsLimitExceededException {

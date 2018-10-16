@@ -76,32 +76,19 @@ public class player12 implements ContestSubmission {
 			));
 		}
 
-		Archipelago galapagos = new Archipelago(this.random, islands);
+		Archipelago galapagos = new Archipelago(this.random, islands, this.diversityMeasure);
 		Map<Integer, Individual> ancestry = new HashMap<>();
 
 		try {
 			while (true) {
 
 				generation++;
-//
-//				for(Individual individual : population.iterable()) {
-//					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
-//				}
 
 				for (Population island : galapagos.islands()) {
 
 					for (Individual individual : island.iterable()) {
 						ancestry.put(individual.id, individual);
 					}
-
-					this.populationStatistics.update(
-						generation,
-						island.islandID,
-						island.getMaximumFitness(),
-						island.getAverageFitness(),
-						island.getAverageAge(generation),
-						island.getDiversity()
-					);
 
 					List<Individual> parents = island.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
 					List<Individual> offspring = new ArrayList<>(parents.size());
@@ -125,11 +112,22 @@ public class player12 implements ContestSubmission {
 					}
 				}
 
-				if((generation + 1) % config.generationsPerEpoch == 0) galapagos.migration(config.numberOfMigrants);
+				if(
+					config.numberOfIslands > 1
+					&& (generation + 1) % config.generationsPerEpoch == 0
+				) galapagos.migration(config.numberOfMigrants);
+
+				this.populationStatistics.update(
+					generation,
+					-1,
+					galapagos.getMaximumFitness(),
+					galapagos.getAverageFitness(),
+					galapagos.getAverageAge(generation),
+					galapagos.getDiversity()
+				);
 			}
 
 		} catch (EvaluationsLimitExceededException exception) {
-			// TODO: think of better solution
 
 			//PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
 			 this.populationStatistics.write();
