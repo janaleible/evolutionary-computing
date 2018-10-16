@@ -52,7 +52,7 @@ public class Individual {
 		this.genotype = this.rangeFunction.limitToRange(newGenome);
 	}
 
-	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, RangeFunction rangeFunction, double sigma) {
+	public static Individual createRandom(ExtendedRandom random, IDGenerator idGenerator, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, RangeFunction rangeFunction, double sigma, Gender gender) {
 
 		return new Individual(
 			random.array(10, -5, 5),
@@ -63,7 +63,7 @@ public class Individual {
 			evaluationsCounter,
 			rangeFunction,
 			sigma,
-			random.coinflip() ? Gender.male : Gender.female
+			gender
 		);
 	}
 

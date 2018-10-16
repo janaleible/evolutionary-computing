@@ -24,8 +24,8 @@ public class GenderAware extends Selection {
 		List<Individual> females = population.stream().filter(individual -> individual.gender() == Gender.female).collect(Collectors.toList());
 
 		List<Individual> parents = new ArrayList<>(numberOfPicks);
-		parents.addAll(this.selection.select((int)Math.floor(numberOfPicks / 2.0), males));
-		parents.addAll(this.selection.select((int)Math.ceil(numberOfPicks / 2.0), females));
+		parents.addAll(females);
+		parents.addAll(this.selection.select(females.size(), males));
 
 		return parents;
 	}
