@@ -20,7 +20,7 @@ public class Configuration {
 	public int numberOfMigrants;
 	public int generationsPerEpoch;
 
-	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter) {
+	public Configuration(ExtendedRandom random, IDGenerator idGenerator, String function, ContestEvaluation contestEvaluation, EvaluationsCounter evaluationsCounter, DiversityMeasure diversityMeasure) {
 		
 		DefaultConfiguration defaultConfiguration = new DefaultConfiguration(function);
 
@@ -108,7 +108,7 @@ public class Configuration {
 		}
 		else if (inertiaAware){
 			parentSelection = new InertiaAware(parentSelection);
-			this.parentMatching = new InertiaAwareParentMatching();
+			this.parentMatching = new InertiaAwareParentMatching(random, diversityMeasure);
 		}
 		else {
 			this.parentMatching = new ParentMatching(random);

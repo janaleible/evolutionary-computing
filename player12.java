@@ -55,7 +55,7 @@ public class player12 implements ContestSubmission {
 
 	public void run() {
 
-		Configuration config = new Configuration(this.random, this.idGenerator, this.function, this.contestEvaluation, this.evaluationsCounter);
+		Configuration config = new Configuration(this.random, this.idGenerator, this.function, this.contestEvaluation, this.evaluationsCounter, this.diversityMeasure);
 
 		int generation = 0;
 
