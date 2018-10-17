@@ -94,7 +94,7 @@ public class player12 implements ContestSubmission {
 					List<Individual> offspring = new ArrayList<>(parents.size());
 
 					for (Individual[] couple : config.parentMatching.getMatches(parents)) {
-						Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
+						Individual[] children = config.crossover.cross(couple[0], couple[1], generation, island.maleIndividualsRatio());
 						offspring.add(config.mutation.mutate(children[0]));
 						offspring.add(config.mutation.mutate(children[1]));
 						ancestry.add(children[0]);
