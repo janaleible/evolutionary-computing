@@ -17,7 +17,7 @@ mkdir -p experiments/"$approach"-"$function"_results
 ./build.sh > /dev/null
 
 params=""
-for ((seed=0; seed<numberOfRuns; seed++)); do
+for ((seed=5; seed<numberOfRuns+5; seed++)); do
 
     if [ -e $configfile ]
     then
@@ -26,5 +26,6 @@ for ((seed=0; seed<numberOfRuns; seed++)); do
 
     java $params -jar testrun.jar -submission=player12 -evaluation=$function -seed=$seed > experiments/"$approach"-"$function"/$seed.txt
     ./postprocessing.sh experiments/"$approach"-"$function"/$seed.txt experiments/"$approach"-"$function"_results/$seed
+
     echo $seed
 done
