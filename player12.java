@@ -77,7 +77,7 @@ public class player12 implements ContestSubmission {
 		}
 
 		Archipelago galapagos = new Archipelago(this.random, islands, this.diversityMeasure);
-		Map<Integer, Individual> ancestry = new HashMap<>();
+		List<Individual> ancestry = new ArrayList<>();
 
 		try {
 			while (true) {
@@ -87,7 +87,7 @@ public class player12 implements ContestSubmission {
 				for (Population island : galapagos.islands()) {
 
 					for (Individual individual : island.iterable()) {
-						ancestry.put(individual.id, individual);
+						ancestry.add(individual);
 					}
 
 					List<Individual> parents = island.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
@@ -97,8 +97,8 @@ public class player12 implements ContestSubmission {
 						Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
 						offspring.add(config.mutation.mutate(children[0]));
 						offspring.add(config.mutation.mutate(children[1]));
-						ancestry.put(children[0].id, children[0]);
-						ancestry.put(children[1].id, children[1]);
+						ancestry.add(children[0]);
+						ancestry.add(children[1]);
 					}
 
 					if (offspring.size() > config.populationSize) {
@@ -127,7 +127,8 @@ public class player12 implements ContestSubmission {
 					galapagos.getMaximumFitness(),
 					galapagos.getAverageFitness(),
 					galapagos.getAverageAge(generation),
-					galapagos.getDiversity()
+					galapagos.getDiversity(),
+					this.diversityMeasure.measure(ancestry)
 				);
 			}
 
