@@ -12,6 +12,7 @@ avgFitness_by_generation = defaultdict(lambda: [])
 maxFitness_by_generation = defaultdict(lambda: [])
 diversity_by_generation = defaultdict(lambda: [])
 
+
 function = sys.argv[1]
 out_dir = sys.argv[2]
 
@@ -75,5 +76,4 @@ diversityAxis.plot(generations, diversity, color=diversityColor)
 diversityAxis.tick_params(axis='y', labelcolor=diversityColor)
 
 figure.tight_layout()
-plt.savefig('{}/{}.pdf'.format(out_dir, function))
-
+plt.savefig('{}/{}.svg'.format(out_dir, function))
