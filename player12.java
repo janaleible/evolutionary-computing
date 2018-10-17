@@ -39,7 +39,8 @@ public class player12 implements ContestSubmission {
 		Properties properties = evaluation.getProperties();
 
 		int evaluationsLimit = Integer.parseInt(properties.getProperty("Evaluations"));
-        this.evaluationsCounter = new EvaluationsCounter(evaluationsLimit);
+//        this.evaluationsCounter = new EvaluationsCounter(evaluationsLimit);
+		this.evaluationsCounter = new EvaluationsCounter(10000);
 
         // Property keys depend on specific evaluation
 		// E.g. double param = Double.parseDouble(props.getProperty("property_name"));
@@ -135,7 +136,7 @@ public class player12 implements ContestSubmission {
 		} catch (EvaluationsLimitExceededException exception) {
 
 			//PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
-			 this.populationStatistics.write();
+//			 this.populationStatistics.write();
 			 System.out.println(config.toString());
 
 			return;
