@@ -39,8 +39,7 @@ public class player12 implements ContestSubmission {
 		Properties properties = evaluation.getProperties();
 
 		int evaluationsLimit = Integer.parseInt(properties.getProperty("Evaluations"));
-//        this.evaluationsCounter = new EvaluationsCounter(evaluationsLimit);
-		this.evaluationsCounter = new EvaluationsCounter(10000);
+        this.evaluationsCounter = new EvaluationsCounter(evaluationsLimit);
 
         // Property keys depend on specific evaluation
 		// E.g. double param = Double.parseDouble(props.getProperty("property_name"));
