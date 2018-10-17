@@ -96,9 +96,11 @@ public class Configuration {
 				break;
 		}
 
+		boolean elitism = Boolean.parseBoolean(System.getProperty("elitism", defaultConfiguration.elitism));
 		if (genderAware) {
 			parentSelection = new GenderAware(parentSelection);
 			this.parentMatching = new GenderAwareParentMatching();
+			elitism = false; // do not use elitism with genderaware matching
 		}
 		else if (ancestryAware){
 			parentSelection = new AncestryAware(parentSelection);
@@ -112,7 +114,7 @@ public class Configuration {
 			this.parentMatching = new ParentMatching(random);
 		}
 		this.parentSelection = parentSelection;
-		
+
 		Selection survivorSelection = null;
 		int tournamentSize = Integer.parseInt(System.getProperty("tournamentsize", defaultConfiguration.tournamentSize));
 		switch(System.getProperty("survivorselection", defaultConfiguration.survivorSelection)) {
@@ -130,8 +132,7 @@ public class Configuration {
 				survivorSelection = new RestrictedTournamentSelection(tournamentSize, random);
 				break;
 		}
-		
-		boolean elitism = Boolean.parseBoolean(System.getProperty("elitism", defaultConfiguration.elitism));
+
 		if (elitism) {
 			int sizeOfElite = Integer.parseInt(System.getProperty("sizeofelite", defaultConfiguration.sizeOfElite));
 			survivorSelection = new Elitist(survivorSelection, sizeOfElite);
