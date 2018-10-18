@@ -8,7 +8,7 @@ visualisations/*
 gridsearch/*
 !gridsearch/.gitkeep
 experiments/*
-!experiments/.gitkeep
+!experiments/configs/
 
 *.jar
 *.class

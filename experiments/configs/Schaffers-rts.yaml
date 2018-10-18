@@ -1,0 +1,2 @@
+{generationgap: 0.5, populationsize: 30, survivorselection: restrictedtournament,
+  tournamentsize: 15}
