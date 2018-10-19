@@ -51,12 +51,12 @@ for generation in generations:
 
 print(max(maximumFitness))
 
-figure, maxAxis = plt.subplots()
+figure, maxAxis = plt.subplots(figsize=(8, 4))
 
 maxAxis.set_xlabel('Generations')
 maxColor = 'tab:blue'
-averageColor = 'tab:red'
-diversityColor = 'tab:green'
+averageColor = 'tab:green'
+diversityColor = 'tab:red'
 
 # averageAxis = maxAxis.twinx()
 # averageAxis.set_ylabel('Average fitness', color=averageColor)
@@ -74,6 +74,7 @@ diversityAxis.set_yscale('log')
 diversityAxis.set_ylabel('Diversity', color=diversityColor)
 diversityAxis.plot(generations, diversity, color=diversityColor)
 diversityAxis.tick_params(axis='y', labelcolor=diversityColor)
+diversityAxis.set_ylim(0.0001, 100)
 
 figure.tight_layout()
-plt.savefig('{}/{}.svg'.format(out_dir, function))
+plt.savefig('{}/{}.eps'.format(out_dir, function))

@@ -8,7 +8,7 @@ numberOfRuns=$3
 configfile=$4
 
 
-echo $function, $numberOfRuns
+echo $function, $approach, $numberOfRuns
 
 mkdir -p experiments
 mkdir -p experiments/"$approach"-"$function"
@@ -24,8 +24,8 @@ for ((seed=5; seed<numberOfRuns+5; seed++)); do
         params=$(python3 config2params.py $configfile)
     fi
 
+    echo $seed
+
     java $params -jar testrun.jar -submission=player12 -evaluation=$function -seed=$seed > experiments/"$approach"-"$function"/$seed.txt
     ./postprocessing.sh experiments/"$approach"-"$function"/$seed.txt experiments/"$approach"-"$function"_results/$seed
-
-    echo $seed
 done
