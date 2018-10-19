@@ -3,6 +3,7 @@ import operator
 import os
 import sys
 import yaml
+import copy
 
 functions = ['SphereEvaluation', 'BentCigarFunction', 'KatsuuraEvaluation', 'SchaffersEvaluation']
 
@@ -11,15 +12,16 @@ def write_config(config, filename):
         file.write(yaml.dump(config))
 
 
-def generate_baseline():
-    filenumber = 0
+def generate_baseline(approach):
+
+    configs = []
     for range_function in ['wrap']:
-        for crossover in ['arithmetic', 'blend', 'random', 'uniform']:
-            for mutation in ['random', 'adaptive']:
-                for mutation_rate in [0.01, 0.3, 0.5]:
-                    for parent_selection in ['fitnessproportional', 'rankbased', 'tournament']:
-                        for elitism in ['true', 'false']:
-                            for population_size in [30, 100, 250]:
+        for crossover in ['arithmetic']:
+            for mutation in ['random']:
+                for mutation_rate in [0.01, 0.1]:
+                    for parent_selection in ['fitnessproportional', 'rankbased']:
+                        for elitism in ['true']:
+                            for population_size in [250]:
                                 for generation_gap in [0.5, 1]:
                                     for crossover_rate in [1]:
 
@@ -36,22 +38,42 @@ def generate_baseline():
                                         }
 
                                         if generation_gap < 1:
-                                            for survivor_selection in ['fitnessproportional', 'rankbased', 'tournament']:
+                                            for survivor_selection in ['tournament']:
                                                 config['survivorselection'] = survivor_selection
 
                                                 if parent_selection == 'tournament' or survivor_selection == 'tournament':
-                                                    for tournamentsize in [2, 5, 10]:
+                                                    for tournamentsize in [2, 5]:
                                                         config['tournamentsize'] = tournamentsize
-                                                        write_config(config, 'gridsearch/configs-baseline/{}.yaml'.format(filenumber))
-                                                        filenumber += 1
+                                                        # write_config(config, 'gridsearch/configs-baseline/{}.yaml'.format(filenumber))
+                                                        # filenumber += 1
+                                                        configs.append(config)
                                                 else:
-                                                    write_config(config, 'gridsearch/configs-baseline/{}.yaml'.format(filenumber))
-                                                    filenumber += 1
+                                                    # write_config(config, 'gridsearch/configs-baseline/{}.yaml'.format(filenumber))
+                                                    # filenumber += 1
+                                                    configs.append(config)
                                         else:
-                                            write_config(config, 'gridsearch/configs-baseline/{}.yaml'.format(filenumber))
-                                            filenumber += 1
+                                            # write_config(config, 'gridsearch/configs-baseline/{}.yaml'.format(filenumber))
+                                            # filenumber += 1
+                                            configs.append(config)
 
-    print(filenumber)
+    if approach == 'island':
+
+        island_configs = []
+        for config in configs:
+            for numberOfIslands in [2, 4, 8]:
+                for numberOfMigrants in [1, 2, 4]:
+                    for generationsPerEpoch in [32, 64, 128]:
+                        newConf = copy.deepcopy(config)
+                        newConf['numberofislands'] = numberOfIslands
+                        newConf['numberofmigrants'] = numberOfMigrants
+                        newConf['generationsperepoch'] = generationsPerEpoch
+                        island_configs.append(newConf)
+
+        for i, config in enumerate(island_configs):
+            write_config(config, 'gridsearch/configs-island/{}.yaml'.format(i))
+
+
+        print(i)
 
 
 def generate_island():
@@ -85,12 +107,15 @@ def generate_taboo():
 def generate_rts():
     filenumber = 0
 
-    for tournamentsize in [2, 5, 10]:
-        write_config({
-            'survivorselection': 'restrictedtournament',
-            'tournamentsize': tournamentsize
-        }, 'gridsearch/configs-rts/{}.yaml'.format(filenumber))
-        filenumber += 1
+    for tournamentratio in [0.5, 0.25, 0.1]:
+        for populationsize in [30, 100, 250]:
+            write_config({
+                'survivorselection': 'restrictedtournament',
+                'populationsize': populationsize,
+                'tournamentsize': int(populationsize * tournamentratio),
+                'generationgap': 0.5
+            }, 'gridsearch/configs-rts/{}.yaml'.format(filenumber))
+            filenumber += 1
 
 def analyse(path):
 
@@ -114,10 +139,10 @@ def analyse(path):
 if __name__ == '__main__':
 
     if sys.argv[1] == 'generate-baseline':
-        generate_baseline()
+        generate_baseline('')
 
     if sys.argv[1] == 'generate-island':
-        generate_island()
+        generate_baseline('island')
 
     if sys.argv[1] == 'generate-taboo':
         generate_taboo()
