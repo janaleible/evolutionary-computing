@@ -75,6 +75,42 @@ def generate_baseline(approach):
 
         print(i)
 
+    if approach == 'genders':
+        gender_configs = []
+        for population_size in [256, 128, 64]:
+
+            for config in configs:
+                newConf = copy.deepcopy(config)
+                newConf['populationsize'] = population_size
+                newConf['genderaware'] = 'true'
+                gender_configs.append(newConf)
+
+        for i, config in enumerate(gender_configs):
+            write_config(config, 'gridsearch/configs-gender/{}.yaml'.format(i))
+
+        print(i)
+
+    if approach == 'taboo':
+        for i, config in enumerate(configs):
+            config['inertiaaware'] = 'true'
+            write_config(config, 'gridsearch/configs-taboo/{}.yaml'.format(i))
+        print(i)
+
+    if approach == 'rts':
+
+        rts_configs = set()
+        for config in configs:
+            for tournamentsize in [4, 16, 32, 64]:
+
+                newConf = copy.deepcopy(config)
+                newConf['survivorSelection'] = 'restrictedtournament'
+                newConf['generationgap'] = '0.5'
+                newConf['tournamentsize'] = tournamentsize
+                rts_configs.add(config)
+
+        for i, config in enumerate(rts_configs):
+            write_config(config, 'gridsearch/configs-rts/{}.yaml'.format(i))
+
 
 def generate_island():
 
@@ -145,13 +181,13 @@ if __name__ == '__main__':
         generate_baseline('island')
 
     if sys.argv[1] == 'generate-taboo':
-        generate_taboo()
+        generate_baseline('taboo')
 
     if sys.argv[1] == 'generate-genders':
-        generate_genders()
+        generate_baseline('genders')
 
     if sys.argv[1] == 'generate-rts':
-        generate_rts()
+        generate_baseline('rts')
 
     if sys.argv[1] == 'analyse':
         analyse(sys.argv[2])
