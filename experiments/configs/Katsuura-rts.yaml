@@ -1,2 +1,3 @@
-{generationgap: 0.5, populationsize: 250, survivorselection: restrictedtournament,
-  tournamentsize: 125}
+{crossover: arithmetic, crossoverrate: 1, elitism: 'true', generationgap: 0.5, mutation: random,
+  mutationrate: 0.1, parentselection: rankbased, populationsize: 250, rangefunction: wrap,
+  survivorselection: tournament, tournamentsize: 5}

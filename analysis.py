@@ -110,3 +110,15 @@ if __name__ == '__main__':
         print(
             'final accumulated diversity: ', average(baselineFinalDivByRun.values()) if approach == 'baseline' else average(islandFinalDivByRun.values())
         )
+
+    if sys.argv[1] == 'results':
+
+        baselineMaxPerRun = list(baselineFullMaxFitness.values())[-1]
+
+        print(function, approach)
+        print(
+            'score: ',
+            max(islandMaxFitness),
+            ' + ' if max(islandMaxFitness) > max(baselineMaxFitness) else ' - ',
+            wilcoxon(list(baselineMaxFitness_by_run.values()), list(islandMaxFitness_by_run.values())).pvalue < 0.05
+        )
