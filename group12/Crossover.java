@@ -22,11 +22,11 @@ public abstract class Crossover {
 		this.sigma = sigma;
 	}
 
-	protected abstract Individual[] getOffspring(Individual one, Individual another, int generation);
+	protected abstract Individual[] getOffspring(Individual one, Individual another, int generation, double maleIndividualsRatio);
 
-	public Individual[] cross(Individual one, Individual another, int generation) {
+	public Individual[] cross(Individual one, Individual another, int generation, double maleIndividualsRatio) {
 		if(this.random.coinflip(this.crossoverRate)) {
-			return getOffspring(one, another, generation);
+			return getOffspring(one, another, generation, maleIndividualsRatio);
 		} else {
 			return new Individual[]{one, another};
 		}

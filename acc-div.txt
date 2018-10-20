@@ -1,0 +1,60 @@
+BentCigarFunction baseline
+average diversity:  0.207061707632921 False
+final accumulated diversity:  2.5534891965066593
+
+BentCigarFunction island
+average diversity:  4.522576139405988 True
+final accumulated diversity:  7.704386536220504
+
+BentCigarFunction gender
+average diversity:  0.32811974994155746 True
+final accumulated diversity:  2.2381259830654794
+
+BentCigarFunction taboo
+average diversity:  0.2085431019944794 False
+final accumulated diversity:  2.652081993623225
+
+BentCigarFunction rts
+average diversity:  64.57923232094745 True
+final accumulated diversity:  47.71540831184259
+
+SchaffersEvaluation baseline
+average diversity:  3.7587229401740663 False
+final accumulated diversity:  4.911760500612103
+
+SchaffersEvaluation island
+average diversity:  4.002256702439912 True
+final accumulated diversity:  5.301292912448186
+
+SchaffersEvaluation gender
+average diversity:  7.395110596138654 True
+final accumulated diversity:  7.946938374202055
+
+SchaffersEvaluation taboo
+average diversity:  3.8143860075302674 True
+final accumulated diversity:  5.0297887058930995
+
+SchaffersEvaluation rts
+average diversity:  23.562479319324 True
+final accumulated diversity:  16.75251876780342
+
+KatsuuraEvaluation baseline
+average diversity:  0.18684133038057932 False
+final accumulated diversity:  -1.0
+
+KatsuuraEvaluation island
+average diversity:  0.2590530701312022 True
+final accumulated diversity:  -1.0
+
+KatsuuraEvaluation gender
+average diversity:  0.212268596509824 True
+final accumulated diversity:  -1.0
+
+KatsuuraEvaluation taboo
+average diversity:  0.36216472541052747 True
+final accumulated diversity:  1.0722825278385204
+
+KatsuuraEvaluation rts
+average diversity:  6.636906651231412 True
+final accumulated diversity:  0.0
+

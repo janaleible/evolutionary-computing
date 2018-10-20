@@ -19,9 +19,9 @@ public class InertiaDiversityMeasure extends DiversityMeasure {
 	 * */
 
 	@Override
-	public double measure(Population population) {
+	public double measure(List<Individual> population) {
 
-		List<double[]> genomes = population.iterable().stream().map(Individual::genome).collect(Collectors.toList());
+		List<double[]> genomes = population.stream().map(Individual::genome).collect(Collectors.toList());
 
 		double[] centroid = DiversityMeasure.centroid(genomes);
 		double inertia = 0;
@@ -30,7 +30,7 @@ public class InertiaDiversityMeasure extends DiversityMeasure {
 			inertia += DiversityMeasure.hammingDistance(genome, centroid);
 		}
 
-		return inertia / population.getPopulationSize();
+		return inertia / population.size();
 	}
 
 

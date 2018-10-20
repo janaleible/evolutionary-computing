@@ -62,16 +62,16 @@ public class Population {
 				counter,
 				this.rangeFunction,
 				this.sigma,
-				this.random.coinflip(1 - maleIndividualsRatio(population)) ? Gender.male : Gender.female
+				this.random.coinflip(maleIndividualsRatio()) ? Gender.female : Gender.male
 			));
 		}
 	}
 
-	private double maleIndividualsRatio(List<Individual> population) {
+	public double maleIndividualsRatio() {
 
-		if(population.size() == 0) return 0.5;
+		if(this.population.size() == 0) return 0.5;
 
-		return (double)population.stream().filter(individual -> individual.gender() == Gender.male).count() / (double) population.size();
+		return (double)this.population.stream().filter(individual -> individual.gender() == Gender.male).count() / (double) population.size();
 	}
 
 	public List<Individual> selectParents(int numberOfPicks) {
@@ -107,7 +107,7 @@ public class Population {
 	}
 
 	public double getDiversity() {
-		return this.diversityMeasure.measure(this);
+		return this.diversityMeasure.measure(this.population);
 	}
 
 	public Individual getFittestIndividual() throws EvaluationsLimitExceededException {

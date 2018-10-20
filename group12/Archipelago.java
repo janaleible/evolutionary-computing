@@ -1,15 +1,18 @@
 package group12;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Archipelago {
 
+	private final DiversityMeasure diversityMeasure;
 	private List<Population> islands;
 	private ExtendedRandom random;
 
-	public Archipelago(ExtendedRandom random, List<Population> islands) {
+	public Archipelago(ExtendedRandom random, List<Population> islands, DiversityMeasure diversityMeasure) {
 		this.random = random;
 		this.islands = islands;
+		this.diversityMeasure = diversityMeasure;
 	}
 
 	public List<Population> islands() {
@@ -38,5 +41,23 @@ public class Archipelago {
 			}
 			toIsland.addAll(immigrants);
 		}
+	}
+
+	public double getMaximumFitness() {
+		return this.islands().stream().mapToDouble(Population::getMaximumFitness).max().orElse(-1000000);
+	}
+
+	public double getAverageFitness() {
+		return this.islands().stream().mapToDouble(Population::getAverageFitness).average().orElse(-100000);
+	}
+
+	public double getAverageAge(int generation) {
+		return this.islands().stream().mapToDouble(population -> population.getAverageAge(generation)).average().orElse(-1000000);
+	}
+
+	public double getDiversity() {
+		return this.diversityMeasure.measure(
+			this.islands().stream().map(Population::iterable).flatMap(List::stream).collect(Collectors.toList())
+		);
 	}
 }

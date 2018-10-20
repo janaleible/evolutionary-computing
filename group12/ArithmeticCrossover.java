@@ -14,7 +14,7 @@ public class ArithmeticCrossover extends Crossover {
 	}
 
 	@Override
-	public Individual[] getOffspring(Individual one, Individual another, int generation) {
+	public Individual[] getOffspring(Individual one, Individual another, int generation, double maleIndividualsRatio) {
 
 		double[] childGenome1 = new double[10];
 		double[] childGenome2 = new double[10];
@@ -27,8 +27,8 @@ public class ArithmeticCrossover extends Crossover {
 		}
 
 		return new Individual[] {
-			new Individual(childGenome1, generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female),
-			new Individual(childGenome2, generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female)
+			new Individual(childGenome1, generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip(maleIndividualsRatio) ? Gender.female : Gender.male),
+			new Individual(childGenome2, generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip(maleIndividualsRatio) ? Gender.female : Gender.male)
 		};
 	}
 }

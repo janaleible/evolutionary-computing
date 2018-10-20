@@ -1,0 +1,3 @@
+{crossover: arithmetic, crossoverrate: 1, elitism: 'true', generationgap: 1, inertiaaware: 'true',
+  mutation: random, mutationrate: 0.1, parentselection: fitnessproportional, populationsize: 250,
+  rangefunction: wrap}

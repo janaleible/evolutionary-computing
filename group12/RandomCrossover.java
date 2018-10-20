@@ -9,7 +9,7 @@ public class RandomCrossover extends Crossover {
 	}
 
 	@Override
-	public Individual[] getOffspring(Individual one, Individual another, int generation) {
+	public Individual[] getOffspring(Individual one, Individual another, int generation, double maleIndividualsRatio) {
 
 		Individual[] parents = {one, another};
 
@@ -28,8 +28,8 @@ public class RandomCrossover extends Crossover {
 		}
 
 		Individual[] children = new Individual[2];
-		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female);
-		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female);
+		children[0] = new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip(maleIndividualsRatio) ? Gender.female : Gender.male);
+		children[1] = new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip(maleIndividualsRatio) ? Gender.female : Gender.male);
 
 		return children;
 	}

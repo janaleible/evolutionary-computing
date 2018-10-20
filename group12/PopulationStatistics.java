@@ -11,8 +11,8 @@ public class PopulationStatistics {
 		this.csvRows = new ArrayList<>();
 	}
 
-	public void update(int generation, int island, double maximumFitness, double averageFitness, double averageAge, double diversity) {
-		this.csvRows.add(this.toCSV(generation, island, maximumFitness, averageFitness, averageAge, diversity));
+	public void update(int generation, int island, double maximumFitness, double averageFitness, double averageAge, double diversity, double intergenerationDiversity) {
+		this.csvRows.add(this.toCSV(generation, island, maximumFitness, averageFitness, averageAge, diversity, intergenerationDiversity));
 	}
 
 	public void write() {

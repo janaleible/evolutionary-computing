@@ -2,19 +2,30 @@
 
 export LD_LIBRARY_PATH=.
 
-function=$1
-numberOfRuns=$2
+approach=$1
+function=$2
+numberOfRuns=$3
+configfile=$4
 
-echo $function, $numberOfRuns
+
+echo $function, $approach, $numberOfRuns
 
 mkdir -p experiments
-mkdir -p experiments/$function
-mkdir -p experiments/"$function"_results
+mkdir -p experiments/"$approach"-"$function"
+mkdir -p experiments/"$approach"-"$function"_results
 
 ./build.sh > /dev/null
 
-for ((seed=0; seed<numberOfRuns; seed++)); do
-    java -jar testrun.jar -submission=player12 -evaluation=$function -seed=$seed > experiments/$function/$seed.txt
-    ./postprocessing.sh experiments/$function/$seed.txt experiments/"$function"_results/$seed
+params=""
+for ((seed=5; seed<numberOfRuns+5; seed++)); do
+
+    if [ -e $configfile ]
+    then
+        params=$(python3 config2params.py $configfile)
+    fi
+
     echo $seed
+
+    java $params -jar testrun.jar -submission=player12 -evaluation=$function -seed=$seed > experiments/"$approach"-"$function"/$seed.txt
+    ./postprocessing.sh experiments/"$approach"-"$function"/$seed.txt experiments/"$approach"-"$function"_results/$seed
 done

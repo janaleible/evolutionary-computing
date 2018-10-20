@@ -14,7 +14,7 @@ public class UniformCrossover extends Crossover {
 	}
 
 	@Override
-    public Individual[] getOffspring(Individual one, Individual another, int generation) {
+    public Individual[] getOffspring(Individual one, Individual another, int generation, double maleIndividualsRatio) {
 
         Individual[] parents = new Individual[2];
         parents[0] = one;
@@ -34,8 +34,8 @@ public class UniformCrossover extends Crossover {
         }
 
 		return new Individual[] {
-			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female),
-			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, this.random.coinflip() ? Gender.male : Gender.female)
+			new Individual(childGenomes[0], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip(maleIndividualsRatio) ? Gender.female : Gender.male),
+			new Individual(childGenomes[1], generation, parents, this.idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip(maleIndividualsRatio) ? Gender.female : Gender.male)
 		};
     }
 }

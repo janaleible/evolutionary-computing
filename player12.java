@@ -55,7 +55,7 @@ public class player12 implements ContestSubmission {
 
 	public void run() {
 
-		Configuration config = new Configuration(this.random, this.idGenerator, this.function, this.contestEvaluation, this.evaluationsCounter);
+		Configuration config = new Configuration(this.random, this.idGenerator, this.function, this.contestEvaluation, this.evaluationsCounter, this.diversityMeasure);
 
 		int generation = 0;
 
@@ -76,42 +76,29 @@ public class player12 implements ContestSubmission {
 			));
 		}
 
-		Archipelago galapagos = new Archipelago(this.random, islands);
-		Map<Integer, Individual> ancestry = new HashMap<>();
+		Archipelago galapagos = new Archipelago(this.random, islands, this.diversityMeasure);
+//		List<Individual> ancestry = new ArrayList<>();
 
 		try {
 			while (true) {
 
 				generation++;
-//
-//				for(Individual individual : population.iterable()) {
-//					individual.evaluate(this.contestEvaluation, this.evaluationsCounter);
-//				}
 
 				for (Population island : galapagos.islands()) {
 
-					for (Individual individual : island.iterable()) {
-						ancestry.put(individual.id, individual);
-					}
-
-					this.populationStatistics.update(
-						generation,
-						island.islandID,
-						island.getMaximumFitness(),
-						island.getAverageFitness(),
-						island.getAverageAge(generation),
-						island.getDiversity()
-					);
+//					for (Individual individual : island.iterable()) {
+////						ancestry.add(individual);
+//					}
 
 					List<Individual> parents = island.selectParents((int) (config.generationGap * (config.populationSize - config.survivorSelection.sizeOfElite())));
 					List<Individual> offspring = new ArrayList<>(parents.size());
 
 					for (Individual[] couple : config.parentMatching.getMatches(parents)) {
-						Individual[] children = config.crossover.cross(couple[0], couple[1], generation);
+						Individual[] children = config.crossover.cross(couple[0], couple[1], generation, island.maleIndividualsRatio());
 						offspring.add(config.mutation.mutate(children[0]));
 						offspring.add(config.mutation.mutate(children[1]));
-						ancestry.put(children[0].id, children[0]);
-						ancestry.put(children[1].id, children[1]);
+//						ancestry.add(children[0]);
+//						ancestry.add(children[1]);
 					}
 
 					if (offspring.size() > config.populationSize) {
@@ -129,16 +116,29 @@ public class player12 implements ContestSubmission {
 					}
 				}
 
-				if((generation + 1) % config.generationsPerEpoch == 0) galapagos.migration(config.numberOfMigrants);
+				if(
+					config.numberOfIslands > 1
+					&& (generation + 1) % config.generationsPerEpoch == 0
+				) galapagos.migration(config.numberOfMigrants);
+
+				this.populationStatistics.update(
+					generation,
+					-1,
+					galapagos.getMaximumFitness(),
+					galapagos.getAverageFitness(),
+					galapagos.getAverageAge(generation),
+					galapagos.getDiversity(),
+					-1
+//					this.diversityMeasure.measure(ancestry)
+				);
 			}
 
+
 		} catch (EvaluationsLimitExceededException exception) {
-			// TODO: think of better solution
 
 			//PopulationVisualiser.visualise("population", ancestry, island.getFittestIndividual());
-			// this.populationStatistics.write();
-
-			// System.out.println(config.toString());
+//			 this.populationStatistics.write();
+			 System.out.println(config.toString());
 
 			return;
 		}

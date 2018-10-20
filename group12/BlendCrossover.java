@@ -22,7 +22,7 @@ public class BlendCrossover extends Crossover {
 	}
 
 	@Override
-	public Individual[] getOffspring(Individual one, Individual another, int generation) {
+	public Individual[] getOffspring(Individual one, Individual another, int generation, double maleIndividualsRatio) {
 
 		double[] childGenome1 = new double[one.genome().length];
 		double[] childGenome2 = new double[one.genome().length];
@@ -44,8 +44,8 @@ public class BlendCrossover extends Crossover {
 		Individual[] parents = {one, another};
 
 		return new Individual[]{
-			new Individual(childGenome1, generation, parents, idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female),
-			new Individual(childGenome2, generation, parents, idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip() ? Gender.male : Gender.female)
+			new Individual(childGenome1, generation, parents, idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip(maleIndividualsRatio) ? Gender.female : Gender.male),
+			new Individual(childGenome2, generation, parents, idGenerator, this.contestEvaluation, this.evaluationsCounter, this.rangeFunction, this.sigma, random.coinflip(maleIndividualsRatio) ? Gender.female : Gender.male)
 		};
 	}
 }
