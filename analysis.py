@@ -82,7 +82,7 @@ if __name__ == '__main__':
         plt.plot(range(numberOfGenerations), pvalues)
         plt.plot(range(numberOfGenerations), [0.05] * numberOfGenerations)
 
-        plt.saveFig(outFile)
+        plt.savefig(outFile)
 
     if sys.argv[1] == 'scatter':
 
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         plt.scatter(baselineFinalDivByRun.values(), baselineMaxFitness_by_run.values(), color='tab:red')
         plt.scatter(islandFinalDivByRun.values(), islandMaxFitness_by_run.values(), color='tab:blue')
 
-        plt.saveFig(outFile)
+        plt.savefig(outFile)
 
     if sys.argv[1] == 'div-score':
 
