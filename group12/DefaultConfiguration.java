@@ -72,9 +72,6 @@ public class DefaultConfiguration {
 				this.rangeFunction = "wrap";
 				this.survivorSelection = "tournament";
 				this.tournamentSize = "2";
-				this.numberOfIslands = "2";
-				this.numberOfMigrants = "1";
-				this.generationsPerEpoch = "25";
 				break;
 			case "Katsuura":
 				this.crossover = "arithmetic";
@@ -86,9 +83,6 @@ public class DefaultConfiguration {
 				this.parentSelection = "rankbased";
 				this.populationSize = "250";
 				this.rangeFunction = "wrap";
-				this.numberOfIslands = "2";
-				this.numberOfMigrants = "1";
-				this.generationsPerEpoch = "25";
 				break;
 		}
 	}
