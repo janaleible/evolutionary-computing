@@ -1,4 +1,5 @@
 ./build.sh > /dev/null
+export LD_LIBRARY_PATH=.
 
 echo "===== Test Sphere function ==========="
 params=$(python3 config2params.py sphere_config.yaml)
