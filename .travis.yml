@@ -5,6 +5,6 @@ before_install:
 jdk:
   - oraclejdk8
 install: true
-script: ./submit.sh
+script: ./build.sh
 env:
   - LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR
