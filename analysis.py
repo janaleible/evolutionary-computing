@@ -107,9 +107,6 @@ if __name__ == '__main__':
             'average diversity: ', average(baselineDiv) if approach == 'baseline' else average(islandDiv),
             wilcoxon(list(islandDiversity_by_run.values()), list(baselineDiversity_by_run.values())).pvalue < 0.05
         )
-        print(
-            'final accumulated diversity: ', average(baselineFinalDivByRun.values()) if approach == 'baseline' else average(islandFinalDivByRun.values())
-        )
 
     if sys.argv[1] == 'results':
 

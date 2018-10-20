@@ -1,3 +1,1 @@
-{crossover: arithmetic, crossoverrate: 1, elitism: 'true', generationgap: 0.5, generationsperepoch: 32,
-  mutation: random, mutationrate: 0.1, numberofislands: 2, numberofmigrants: 4, parentselection: fitnessproportional,
-  populationsize: 250, rangefunction: wrap, survivorselection: tournament, tournamentsize: 5}
+{generationsperepoch: 150, numberofislands: 2, numberofmigrants: 1}

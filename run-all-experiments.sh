@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# ./experiment.sh baseline SchaffersEvaluation 100 none
-# ./experiment.sh baseline KatsuuraEvaluation 100 none
-# ./experiment.sh baseline BentCigarFunction 100 none
+./experiment.sh baseline SchaffersEvaluation 100 none
+./experiment.sh baseline KatsuuraEvaluation 100 none
+./experiment.sh baseline BentCigarFunction 100 none
 
 ./experiment.sh island BentCigarFunction 100 experiments/configs/BentCigar-island.yaml
 ./experiment.sh gender BentCigarFunction 100 experiments/configs/BentCigar-genders.yaml

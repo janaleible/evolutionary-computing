@@ -1,3 +1,1 @@
-{crossover: arithmetic, crossoverrate: 1, elitism: 'true', generationgap: 0.5, inertiaaware: 'true',
-  mutation: random, mutationrate: 0.1, parentselection: rankbased, populationsize: 250,
-  rangefunction: wrap, survivorselection: tournament, tournamentsize: 5}
+{inertiaaware: 'true'}
