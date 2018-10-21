@@ -98,15 +98,15 @@ def generate_baseline(approach):
 
     if approach == 'rts':
 
-        rts_configs = set()
+        rts_configs = []
         for config in configs:
             for tournamentsize in [4, 16, 32, 64]:
 
                 newConf = copy.deepcopy(config)
-                newConf['survivorSelection'] = 'restrictedtournament'
+                newConf['survivorselection'] = 'restrictedtournament'
                 newConf['generationgap'] = '0.5'
                 newConf['tournamentsize'] = tournamentsize
-                rts_configs.add(config)
+                rts_configs.append(newConf)
 
         for i, config in enumerate(rts_configs):
             write_config(config, 'gridsearch/configs-rts/{}.yaml'.format(i))
